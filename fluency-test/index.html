@@ -664,15 +664,34 @@
       const scores = {
         speechFlow: clamp(base + (event.includes("pauses") ? -12 : 0) + (event.includes("stop") ? -14 : 0)),
         wordAvailability: clamp(base + (problem.includes("right words") || event.includes("forget") ? -16 : 0)),
-        sentencePattern: clamp(base + (problem.includes("grammar") || event.includes("simple") ? -12 : 0)),
+        sentencePatternComfort: clamp(base + (problem.includes("grammar") || event.includes("simple") ? -12 : 0)),
         expressionClarity: clamp(base + (a.goal === "Express thoughts clearly" ? -8 : 2)),
         naturalness: clamp(base + (problem.includes("natural") ? -14 : 0)),
         speakingConfidence: clamp(base + (problem.includes("nervous") || event.includes("avoid") ? -18 : 0) + confidence * 2)
       };
-      const overall = Math.round(Object.values(scores).reduce((sum, item) => sum + item, 0) / 6);
+      const overall = Math.round(
+        scores.speechFlow * .2 +
+        scores.wordAvailability * .2 +
+        scores.sentencePatternComfort * .2 +
+        scores.expressionClarity * .15 +
+        scores.naturalness * .15 +
+        scores.speakingConfidence * .1
+      );
       const level = getLevel(overall);
       const block = getBlock(problem, event, scores);
-      return { scores, overall, level, block, recommendedPlan: block.planKey };
+      const recommendedPlan = getRecommendedPlan(block);
+      return {
+        scores,
+        subScores: scores,
+        overall,
+        overallScore: overall,
+        level,
+        fluencyLevel: level,
+        block,
+        mainSpeakingBlock: block,
+        recommendedPlan: block.planKey,
+        plan: recommendedPlan
+      };
     }
 
     function clamp(value) {
@@ -680,34 +699,52 @@
     }
 
     function getLevel(score) {
-      if (score <= 25) return { name: "Silent Understander", range: "0-25", description: "You may understand some English, but speaking feels uncomfortable. Your first focus is mouth movement, simple sentence flow, and basic confidence." };
-      if (score <= 45) return { name: "Hesitant Speaker", range: "26-45", description: "You can speak some English, but you may pause, translate, search for words, or worry about grammar. Your first focus is speech flow, word combinations, and daily speaking practice." };
-      if (score <= 65) return { name: "Functional Speaker", range: "46-65", description: "You can communicate basic ideas, but speech may feel slow, simple, or unnatural. You need stronger patterns, better word groups, and more expression practice." };
-      if (score <= 82) return { name: "Natural Speaker", range: "66-82", description: "You can speak clearly in many situations, but you may still need polish, confidence, professional expression, and stronger fluency." };
-      return { name: "Confident Communicator", range: "83-100", description: "You speak with clarity, flow, and confidence. Your next focus is advanced expression, storytelling, professional presence, and powerful communication." };
+      if (score <= 25) return { levelNumber: 1, name: "Silent Understander", levelName: "Silent Understander", range: "0-25", scoreRange: "0-25", headline: "Your voice is ready to start moving.", description: "You may understand some English, but speaking feels uncomfortable or difficult. You may avoid speaking, stop after a few words, or feel unsure about how to begin.", nextFocus: ["Short speaking drills", "Mouth flow practice", "Simple sentence patterns", "Daily 30-second speaking habit"], encouragingLine: "You do not need to speak perfectly. You need to start training your voice step by step." };
+      if (score <= 45) return { levelNumber: 2, name: "Hesitant Speaker", levelName: "Hesitant Speaker", range: "26-45", scoreRange: "26-45", headline: "You have English inside you. Now it needs to flow.", description: "You can speak some English, but you may pause often, translate in your mind, search for words, or worry about grammar while speaking.", nextFocus: ["Speech Flow", "Word Combinations", "Sentence Patterns", "Daily speaking missions"], encouragingLine: "You are not starting from zero. You already have English inside you. Now we need to make it flow." };
+      if (score <= 65) return { levelNumber: 3, name: "Functional Speaker", levelName: "Functional Speaker", range: "46-65", scoreRange: "46-65", headline: "Your foundation is there. Now your expression needs more range.", description: "You can communicate basic ideas in English, but your speech may feel slow, simple, repetitive, or not fully natural.", nextFocus: ["Natural word groups", "Sentence expansion", "Expression upgrade drills", "Real-life conversation practice"], encouragingLine: "Your foundation is already there. Now Fluency Magic will help you sound more natural, clear, and confident." };
+      if (score <= 82) return { levelNumber: 4, name: "Natural Speaker", levelName: "Natural Speaker", range: "66-82", scoreRange: "66-82", headline: "You are close to strong fluency.", description: "You can speak clearly in many situations, but you may still need more polish, smoother expression, professional fluency, and stronger confidence in important moments.", nextFocus: ["Advanced expression", "Professional speaking practice", "Storytelling", "Interview and meeting fluency"], encouragingLine: "Now the focus is polish, presence, and powerful expression." };
+      return { levelNumber: 5, name: "Confident Communicator", levelName: "Confident Communicator", range: "83-100", scoreRange: "83-100", headline: "Your voice is already strong.", description: "You speak with clarity, flow, and confidence. You can express your ideas naturally and handle many real-life English situations well.", nextFocus: ["Leadership communication", "Advanced storytelling", "Persuasive speaking", "Presentation fluency"], encouragingLine: "Now we help you make your voice more powerful, precise, and memorable." };
     }
 
     function getBlock(problem, event, scores) {
       const blocks = {
-        mouth: { name: "Mouth Flow Block", planKey: "mouthFlow", meaning: "You know what to say, but your mouth does not move smoothly in English.", practice: "Speech organ drills, rhythm practice, and repeated phrase speaking." },
-        word: { name: "Word Availability Block", planKey: "wordAvailability", meaning: "You understand many words, but useful words do not come quickly while speaking.", practice: "Word combination drills, core word command, and phrase groups." },
-        sentence: { name: "Sentence Formation Block", planKey: "sentenceFormation", meaning: "You know words, but sentences do not form naturally.", practice: "Sentence pattern gym and sentence expansion drills." },
-        grammar: { name: "Grammar Fear Block", planKey: "grammarFear", meaning: "You think too much about correctness while speaking, and that breaks your flow.", practice: "Pattern-based grammar practice and repeated natural sentence structures." },
-        expression: { name: "Expression Block", planKey: "expression", meaning: "You can speak basic English, but your real thoughts, feelings, and personality do not come out clearly.", practice: "Expression upgrade drills, storytelling practice, and real-life speaking tasks." },
-        confidence: { name: "Confidence Block", planKey: "confidence", meaning: "Your English may be better than you think, but nervousness stops your flow.", practice: "Daily speaking missions, safe recording practice, and confidence-building repetition." }
+        mouth: { name: "Mouth Flow Block", blockName: "Mouth Flow Block", planKey: "mouthFlow", meaning: "You may know what you want to say, but your mouth, tongue, breath, and voice are not yet comfortable producing English smoothly.", whyItHappens: "English has not been practised enough as a physical speaking skill.", practice: "Short phrase repetition, mouth movement drills, slow-clear-fast speaking practice, sentence expansion, and daily voice practice.", recommendedPractice: ["Short phrase repetition", "Mouth movement drills", "Slow-clear-fast speaking practice"] },
+        word: { name: "Word Availability Block", blockName: "Word Availability Block", planKey: "wordAvailability", meaning: "You may know many words, but useful words and word groups do not come quickly while speaking.", whyItHappens: "Most learners memorise isolated words, but fluent speakers use natural word combinations.", practice: "Word combination drills, core word mastery, phrase group practice, verb-noun combinations, and common expressions.", recommendedPractice: ["Word combination drills", "Core word mastery", "Phrase group practice"] },
+        sentence: { name: "Sentence Formation Block", blockName: "Sentence Formation Block", planKey: "sentenceFormation", meaning: "You may know words, but full sentences do not form naturally and quickly.", whyItHappens: "Your mind may be collecting words one by one instead of using ready sentence patterns.", practice: "Sentence pattern drills, sentence expansion practice, common speaking structures, and repeated pattern-based practice.", recommendedPractice: ["Sentence pattern drills", "Sentence expansion practice", "Common speaking structures"] },
+        grammar: { name: "Grammar Pattern Block", blockName: "Grammar Pattern Block", planKey: "grammarPattern", meaning: "You may think too much about grammar while speaking, and that breaks your flow.", whyItHappens: "Grammar has been learned as rules, not as natural speaking patterns.", practice: "Pattern-based grammar practice, natural sentence repetition, common tense structures through speaking, and grammar without rule memorisation.", recommendedPractice: ["Pattern-based grammar practice", "Natural sentence repetition", "Common tense structures"] },
+        expression: { name: "Expression Block", blockName: "Expression Block", planKey: "expression", meaning: "You can say basic things, but your real thoughts, feelings, and personality do not fully come out in English.", whyItHappens: "You may be using very simple sentences or direct translations.", practice: "Say It Better drills, opinion speaking, storytelling practice, emotion expression, and real-life speaking missions.", recommendedPractice: ["Say It Better drills", "Opinion speaking", "Storytelling practice"] },
+        confidence: { name: "Confidence Block", blockName: "Confidence Block", planKey: "confidence", meaning: "Your English may be better than you think, but nervousness, fear, or self-doubt blocks your speaking.", whyItHappens: "Negative experiences, fear of mistakes, or lack of safe speaking practice can make your mind go blank.", practice: "Safe daily recording practice, low-pressure speaking tasks, repetition, confidence-building feedback, and gradual real-life speaking challenges.", recommendedPractice: ["Safe daily recording practice", "Low-pressure speaking tasks", "Confidence-building repetition"] }
       };
       if (problem.includes("right words") || event.includes("forget")) return blocks.word;
       if (problem.includes("grammar") || event.includes("grammar")) return blocks.grammar;
       if (problem.includes("nervous") || event.includes("avoid")) return blocks.confidence;
       if (problem.includes("natural") || event.includes("polished")) return blocks.expression;
       if (event.includes("simple sentences")) return blocks.sentence;
-      const weakest = Object.entries(scores).sort((a, b) => a[1] - b[1])[0][0];
-      if (weakest === "speechFlow") return blocks.mouth;
-      if (weakest === "wordAvailability") return blocks.word;
-      if (weakest === "sentencePattern") return blocks.sentence;
-      if (weakest === "naturalness") return blocks.expression;
-      if (weakest === "speakingConfidence") return blocks.confidence;
+      if (scores.naturalness <= 45 && scores.sentencePatternComfort <= 50) return blocks.grammar;
+      const priority = [
+        ["speechFlow", blocks.mouth],
+        ["wordAvailability", blocks.word],
+        ["sentencePatternComfort", blocks.sentence],
+        ["speakingConfidence", blocks.confidence],
+        ["expressionClarity", blocks.expression],
+        ["naturalness", blocks.expression]
+      ];
+      const lowest = Math.min(...Object.values(scores));
+      const match = priority.find(([key]) => scores[key] === lowest);
+      if (match) return match[1];
       return blocks.mouth;
+    }
+
+    function getRecommendedPlan(block) {
+      const plans = {
+        mouthFlow: { planName: "7-Day Voice Flow Activation", focus: "Train your mouth, breath, rhythm, and speaking flow.", cta: "Start My Free 7-Day Plan" },
+        wordAvailability: { planName: "7-Day Word Combination Activation", focus: "Make useful words and natural word groups ready for speaking.", cta: "Start My Free 7-Day Plan" },
+        sentenceFormation: { planName: "7-Day Sentence Pattern Activation", focus: "Make common sentence structures automatic.", cta: "Start My Free 7-Day Plan" },
+        grammarPattern: { planName: "7-Day Natural Grammar Pattern Activation", focus: "Practise grammar as speaking patterns, not rules.", cta: "Start My Free 7-Day Plan" },
+        expression: { planName: "7-Day Expression Upgrade Activation", focus: "Say basic ideas in clearer, more natural, and more confident ways.", cta: "Start My Free 7-Day Plan" },
+        confidence: { planName: "7-Day Speaking Confidence Activation", focus: "Build comfort through safe, simple, daily speaking practice.", cta: "Start My Free 7-Day Plan" }
+      };
+      return plans[block.planKey] || plans.wordAvailability;
     }
 
     function escapeHtml(value) {

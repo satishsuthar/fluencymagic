@@ -89,6 +89,7 @@
     .panel, .score-card, .conversion { padding: 24px; }
     .scores { display: grid; gap: 12px; }
     .score-row { display: grid; grid-template-columns: 1fr 74px; gap: 12px; align-items: center; }
+    .score-row p { margin: 4px 0 8px; color: var(--muted); font-size: 13px; }
     .track { height: 10px; border-radius: 999px; background: rgba(16, 19, 24, .08); overflow: hidden; }
     .fill { display: block; height: 100%; width: var(--w); border-radius: inherit; background: linear-gradient(90deg, var(--green), var(--yellow), var(--blue)); }
     .block-card {
@@ -136,61 +137,89 @@
   <script>
     const levelTemplates = {
       "Silent Understander": {
-        what: "You may understand some English, but speaking still feels uncomfortable or heavy.",
-        focus: "Focus on mouth movement, short phrase repetition, simple sentence flow, and safe daily speaking.",
-        encourage: "You are not behind. Your first win is to make English feel speakable."
+        headline: "Your voice is ready to start moving.",
+        what: "Your English may be sitting in your mind, but it is not yet ready on your tongue.",
+        focus: "Short speaking drills, mouth flow practice, simple sentence patterns, and a daily 30-second speaking habit.",
+        encourage: "This is a starting point, not a limitation. Your first goal is simple speaking comfort, not perfection.",
+        cta: "Start your free 7-day plan and begin training your voice step by step."
       },
       "Hesitant Speaker": {
-        what: "You can speak some English, but you may pause, translate, search for words, or worry about grammar.",
-        focus: "Focus on speech flow, natural word combinations, sentence patterns, and daily speaking practice.",
-        encourage: "Your English is already inside you. Now it needs speaking training."
+        headline: "You have English inside you. Now it needs to flow.",
+        what: "You are not starting from zero. You already understand English. But your speaking system needs daily practice so words come faster and sentences form more naturally.",
+        focus: "Speech flow, word combinations, sentence patterns, and reducing the translation habit.",
+        encourage: "With the right daily practice, you can start feeling the difference quickly.",
+        cta: "Start your free 7-day plan and begin training your speaking flow today."
       },
       "Functional Speaker": {
-        what: "You can communicate basic ideas, but your speech may feel slow, simple, or less natural than your real thinking.",
-        focus: "Focus on stronger sentence patterns, better word groups, and expression practice.",
-        encourage: "You are close to a much smoother version of your English."
+        headline: "Your foundation is there. Now your expression needs more range.",
+        what: "You can speak, but you may not express your complete personality, ideas, confidence, or intelligence in English yet.",
+        focus: "Natural word groups, sentence expansion, expression upgrade drills, real-life conversation practice, and storytelling.",
+        encourage: "Your foundation is already there. Now Fluency Magic will help you sound more natural, clear, and confident.",
+        cta: "Start your free 7-day plan and strengthen your natural expression."
       },
       "Natural Speaker": {
-        what: "You can speak clearly in many situations, but you may still need polish, presence, and professional expression.",
-        focus: "Focus on confident delivery, storytelling, advanced expression, and real-life speaking missions.",
-        encourage: "Your next level is not just accuracy. It is presence."
+        headline: "You are close to strong fluency.",
+        what: "You are already communicating well, but you can become sharper, more expressive, and more powerful in important conversations.",
+        focus: "Advanced expression, professional speaking practice, storytelling, interview and meeting fluency, and confident presence.",
+        encourage: "Now the focus is polish, presence, and powerful expression.",
+        cta: "Start your free 7-day plan and polish your speaking presence."
       },
       "Confident Communicator": {
-        what: "You speak with clarity, flow, and confidence.",
-        focus: "Focus on advanced expression, professional presence, persuasive speaking, and powerful communication.",
-        encourage: "Keep training your voice so your ideas land with even more impact."
+        headline: "Your voice is already strong.",
+        what: "Your next level is not basic fluency. Your next level is influence, storytelling, professional presence, emotional expression, and powerful communication.",
+        focus: "Leadership communication, advanced storytelling, persuasive speaking, presentation fluency, and high-level professional expression.",
+        encourage: "You already have a strong foundation. Your next level is making your voice more powerful, precise, and memorable.",
+        cta: "Start your free 7-day plan and sharpen your advanced expression."
       }
     };
 
     const blockTemplates = {
       "Mouth Flow Block": {
+        explanation: "Your main block is Mouth Flow. This means English may be present in your mind, but it does not come out smoothly when you speak.",
         why: "This often happens when English has been learned silently through reading, listening, or thinking, but not spoken enough aloud.",
         practice: "Speech organ drills, rhythm practice, repeated phrase speaking, and slow-clear-fast practice help your mouth become comfortable with English.",
+        plan: "7-Day Voice Flow Activation",
+        planWhy: "This plan is recommended because your first need is smoother mouth movement, breath, rhythm, and speaking flow.",
         cta: "Start mouth-flow practice"
       },
       "Word Availability Block": {
+        explanation: "Your main block is Word Availability. This means you may know English words, but they are not ready in natural groups when you speak.",
         why: "Words may be familiar in your mind, but they are not stored in ready-to-speak groups.",
         practice: "Word combination drills, core word command, and phrase groups help words come faster when you speak.",
+        plan: "7-Day Word Combination Activation",
+        planWhy: "This plan is recommended because useful words need to become ready in natural speaking groups.",
         cta: "Start word-flow practice"
       },
       "Sentence Formation Block": {
+        explanation: "Your main block is Sentence Formation. This means you may know the words, but your sentences do not form quickly enough while speaking.",
         why: "This happens when words are known individually, but common sentence patterns are not automatic yet.",
         practice: "Sentence pattern gym, sentence expansion drills, and repeated starters help sentences form naturally.",
+        plan: "7-Day Sentence Pattern Activation",
+        planWhy: "This plan is recommended because common sentence structures need to become automatic.",
         cta: "Start sentence-pattern practice"
       },
-      "Grammar Fear Block": {
+      "Grammar Pattern Block": {
+        explanation: "Your main block is Grammar Pattern Comfort. This means you may be overthinking grammar while speaking.",
         why: "Your mind may check grammar while your conversation is moving, and that breaks flow.",
         practice: "Pattern-based grammar practice helps you use natural structures without stopping to think about rules.",
+        plan: "7-Day Natural Grammar Pattern Activation",
+        planWhy: "This plan is recommended because grammar needs to become a speaking pattern, not a rule-checking habit.",
         cta: "Start pattern practice"
       },
       "Expression Block": {
+        explanation: "Your main block is Expression. Your English may communicate basic meaning, but it does not yet carry your full personality, confidence, or ideas.",
         why: "You may be able to speak basic English, but your real thoughts, feelings, and personality need stronger expression patterns.",
         practice: "Expression upgrade drills, storytelling practice, and real-life speaking tasks help your English sound more like you.",
+        plan: "7-Day Expression Upgrade Activation",
+        planWhy: "This plan is recommended because your next step is clearer, more natural, and more confident expression.",
         cta: "Start expression practice"
       },
       "Confidence Block": {
+        explanation: "Your main block is Confidence. Your English ability may be stronger than your speaking confidence.",
         why: "Your English may be better than you think, but nervousness interrupts your voice before your ideas come out.",
         practice: "Safe recording practice, daily speaking missions, and confidence-building repetition help your voice stay steady.",
+        plan: "7-Day Speaking Confidence Activation",
+        planWhy: "This plan is recommended because confidence grows through safe, simple, repeated speaking practice.",
         cta: "Start confidence practice"
       }
     };
@@ -198,10 +227,19 @@
     const labels = {
       speechFlow: "Speech Flow",
       wordAvailability: "Word Availability",
-      sentencePattern: "Sentence Pattern Comfort",
+      sentencePatternComfort: "Sentence Pattern Comfort",
       expressionClarity: "Expression Clarity",
       naturalness: "Naturalness",
       speakingConfidence: "Speaking Confidence"
+    };
+
+    const scoreDescriptions = {
+      speechFlow: "Smoothness, pauses, rhythm, and ability to continue speaking.",
+      wordAvailability: "How quickly useful words and natural word groups come while speaking.",
+      sentencePatternComfort: "How naturally complete sentence patterns form in real time.",
+      expressionClarity: "How clearly your ideas are explained and understood.",
+      naturalness: "How conversational your English sounds, with less translation-style structure.",
+      speakingConfidence: "Voice steadiness, energy, and willingness to keep speaking."
     };
 
     function render() {
@@ -223,6 +261,11 @@
       const block = result.block;
       const levelCopy = levelTemplates[level.name];
       const blockCopy = blockTemplates[block.name];
+      const scores = { ...result.scores };
+      if (scores.sentencePattern && !scores.sentencePatternComfort) {
+        scores.sentencePatternComfort = scores.sentencePattern;
+        delete scores.sentencePattern;
+      }
       localStorage.setItem("fluencyMagicPlanKey", result.recommendedPlan);
 
       root.innerHTML = `
@@ -231,9 +274,10 @@
             <div>
               <div class="badge">Your Fluency Snapshot Is Ready</div>
               <h1>${lead.firstName ? `${lead.firstName}, y` : "Y"}our fluency score is ${result.overall}/100</h1>
-              <p class="lead">Level: <strong>${level.name}</strong>. ${level.description}</p>
+              <p class="lead">This is not a judgement of your intelligence or potential. It is a simple diagnosis of where your spoken English gets stuck and what to practise next.</p>
+              <p class="lead">Level ${level.levelNumber || ""}: <strong>${level.name}</strong>. ${level.description}</p>
               <div class="actions">
-                <a class="button" href="/7-day-plan">Start My 7-Day Practice Plan</a>
+                <a class="button" href="/7-day-plan">Start My Free 7-Day Plan</a>
               </div>
             </div>
             <div class="score-ring" style="--score-deg:${result.overall * 3.6}deg">
@@ -246,9 +290,9 @@
           <article class="panel">
             <h2>Your Score Breakdown</h2>
             <div class="scores">
-              ${Object.entries(result.scores).map(([key, value]) => `
+              ${Object.entries(scores).map(([key, value]) => `
                 <div class="score-row">
-                  <div><strong>${labels[key]}</strong><div class="track"><span class="fill" style="--w:${value}%"></span></div></div>
+                  <div><strong>${labels[key]}</strong><p>${scoreDescriptions[key]}</p><div class="track"><span class="fill" style="--w:${value}%"></span></div></div>
                   <strong>${value}/100</strong>
                 </div>
               `).join("")}
@@ -256,18 +300,21 @@
           </article>
 
           <article class="panel block-card">
-            <h2>Your main block: ${block.name}</h2>
-            <p>${block.meaning}</p>
+            <h2>Your Main Speaking Block</h2>
+            <h3>${block.name}</h3>
+            <p>${blockCopy.explanation}</p>
             <h3>Why this happens</h3>
             <p>${blockCopy.why}</p>
             <h3>What helps</h3>
             <p>${block.practice}</p>
+            <div class="actions"><a class="button" href="/7-day-plan">Start My Free 7-Day Plan</a></div>
           </article>
         </section>
 
         <section class="grid">
           <article class="panel">
             <h2>What This Means</h2>
+            <h3>${levelCopy.headline}</h3>
             <p>${levelCopy.what}</p>
             <h3>What to focus on next</h3>
             <p>${levelCopy.focus}</p>
@@ -276,9 +323,10 @@
 
           <article class="panel">
             <h2>Your Recommended Next Step</h2>
-            <p>Start the 7-Day Fluency Activation Plan. It gives you your first set of guided speaking drills based on your main block.</p>
+            <h3>${blockCopy.plan}</h3>
+            <p>${blockCopy.planWhy}</p>
             <p>You do not need to become perfect before you speak. You become fluent by speaking in the right way every day.</p>
-            <div class="actions"><a class="button" href="/7-day-plan">${blockCopy.cta}</a></div>
+            <div class="actions"><a class="button" href="/7-day-plan">Start My Free 7-Day Plan</a></div>
           </article>
         </section>
 
@@ -286,6 +334,8 @@
           <h2>Your Fluency Can Improve Faster When You Practise the Right Way</h2>
           <p class="lead">Most people keep watching English videos, memorising words, or waiting for confidence. But speaking improves when you practise the right word groups, sentence patterns, and voice flow every day.</p>
           <p class="lead">Your report shows where your fluency is getting stuck. The 7-Day Fluency Activation Plan gives you your first set of guided speaking drills to start building flow.</p>
+          <h3>You Do Not Become Fluent by Waiting. You Become Fluent by Speaking.</h3>
+          <p class="lead">You do not need perfect English before you begin. You need the right speaking practice, repeated daily. Fluency Magic will help you train your voice, words, sentence patterns, and confidence step by step.</p>
           <div class="actions"><a class="button" href="/7-day-plan">Start My Free 7-Day Plan</a></div>
         </section>
       `;

@@ -128,7 +128,7 @@ Word Availability Block: words are understood but not ready in useful groups. Pr
 
 Sentence Formation Block: words are known, but sentences do not form naturally. Practice: sentence pattern gym, sentence expansion drills.
 
-Grammar Fear Block: correctness checking breaks flow. Practice: pattern-based grammar and repeated natural sentence structures.
+Grammar Pattern Block: correctness checking breaks flow. Practice: pattern-based grammar and repeated natural sentence structures.
 
 Expression Block: basic English works, but real thoughts and personality do not come out. Practice: expression upgrade drills, storytelling, real-life tasks.
 
@@ -145,7 +145,7 @@ Day 1 confidence; Day 2 problem; Day 3 improve; Day 4 work; Day 5 word group spe
 Sentence Formation Block:
 Day 1 I want to; Day 2 I have been trying to; Day 3 One challenge I face is; Day 4 The reason is; Day 5 What I mean is; Day 6 Let me explain; Day 7 60-second pattern speaking.
 
-Grammar Fear Block:
+Grammar Pattern Block:
 Day 1 I am / I have / I want patterns; Day 2 past experience; Day 3 future plan; Day 4 opinion; Day 5 question; Day 6 correction without rule memorisation; Day 7 natural speaking review.
 
 Expression Block:
