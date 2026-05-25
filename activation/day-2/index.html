@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>7-Day Fluency Activation | Fluency Magic</title>
+  <style>
+    :root {
+      --ink: #101318;
+      --muted: #667085;
+      --line: #e5e7eb;
+      --paper: #fffefa;
+      --soft: #f4f8f6;
+      --green: #149f5b;
+      --green-dark: #0c6d3e;
+      --yellow: #f7b801;
+      --blue: #4387ee;
+      --shadow: 0 24px 80px rgba(16, 19, 24, .1);
+      --radius: 8px;
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 82% 12%, rgba(247, 184, 1, .2), transparent 28%),
+        radial-gradient(circle at 10% 76%, rgba(67, 135, 238, .14), transparent 30%),
+        linear-gradient(180deg, #fffefa, #f6fbf8);
+      font-family: "Segoe UI Variable", "Aptos", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      right: -14%;
+      top: 8%;
+      z-index: -1;
+      width: 44vw;
+      min-width: 300px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(20, 159, 91, .12), transparent 68%);
+      animation: floatGlow 14s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatGlow {
+      from { transform: translate3d(0, 0, 0) scale(1); }
+      to { transform: translate3d(-4%, 4%, 0) scale(1.08); }
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; }
+    .shell { width: min(var(--max), calc(100% - 32px)); margin: 0 auto; padding: 22px 0 72px; }
+    .topbar { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 950; font-size: 20px; }
+    .brand img { width: 42px; height: 42px; object-fit: contain; }
+    .top-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(16, 19, 24, .1);
+      background: rgba(255, 255, 255, .86);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { line-height: 1.04; letter-spacing: 0; }
+    h1 { margin-bottom: 18px; font-size: clamp(40px, 7vw, 72px); font-weight: 950; }
+    h2 { margin-bottom: 16px; font-size: clamp(28px, 4.6vw, 48px); font-weight: 950; }
+    h3 { margin-bottom: 10px; font-size: 21px; font-weight: 930; }
+    .lead { color: var(--muted); font-size: 19px; }
+    .hero, .panel, .day-card, .task-card {
+      border: 1px solid rgba(16, 19, 24, .1);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .92);
+      box-shadow: var(--shadow);
+      animation: riseIn .45s ease both;
+    }
+
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(28px, 5vw, 54px);
+      margin-top: 22px;
+    }
+
+    .hero::before, .panel.accent::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 10px;
+      background: linear-gradient(90deg, var(--green), var(--yellow), var(--blue));
+    }
+
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 290px; gap: 34px; align-items: center; }
+    .progress-ring {
+      width: 220px;
+      height: 220px;
+      display: grid;
+      place-items: center;
+      margin-left: auto;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, #fff 0 57%, transparent 58%),
+        conic-gradient(var(--green) var(--progress-deg), rgba(16, 19, 24, .08) 0deg);
+      text-align: center;
+    }
+    .progress-ring strong { display: block; font-size: 54px; line-height: 1; }
+    .progress-ring span { color: var(--muted); font-weight: 850; }
+    .button {
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 22px;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+      color: #fff;
+      background: var(--green);
+      font-weight: 930;
+      box-shadow: 0 18px 38px rgba(20, 159, 91, .24);
+      cursor: pointer;
+    }
+    .button.secondary { color: var(--ink); background: #fff; border-color: rgba(16, 19, 24, .14); box-shadow: none; }
+    .button.blue { background: var(--blue); }
+    .actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 26px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; }
+    .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-top: 22px; }
+    .day-card { min-height: 172px; padding: 18px; }
+    .day-card.done { border-color: rgba(20, 159, 91, .34); background: #f6fcf8; }
+    .day-card.current { outline: 3px solid rgba(247, 184, 1, .34); }
+    .day-card strong, .task-number {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      border-radius: var(--radius);
+      color: #fff;
+      background: var(--accent);
+    }
+    .day-card p, .task-card p { margin-bottom: 0; color: var(--muted); }
+    .panel { position: relative; overflow: hidden; margin-top: 22px; padding: 28px; }
+    .task-card { padding: 22px; }
+    .task-list { display: grid; gap: 14px; margin-top: 22px; }
+    .recorder {
+      display: grid;
+      gap: 14px;
+      margin-top: 22px;
+      padding: 20px;
+      border: 1px solid rgba(67, 135, 238, .16);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(67, 135, 238, .08), rgba(20, 159, 91, .06)), #fff;
+    }
+    .timer { font-size: 42px; font-weight: 950; }
+    .note { color: var(--muted); font-size: 14px; font-weight: 760; }
+    .form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 22px; }
+    label { display: grid; gap: 8px; color: var(--muted); font-size: 13px; font-weight: 850; }
+    input, select {
+      min-height: 52px;
+      width: 100%;
+      padding: 0 14px;
+      border: 1px solid rgba(16, 19, 24, .14);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--ink);
+    }
+    .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    audio { width: 100%; margin-top: 10px; }
+
+    @media (max-width: 900px) {
+      .hero-grid, .grid, .review-grid { grid-template-columns: 1fr; }
+      .progress-ring { margin-left: 0; }
+      .days { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .top-actions { display: none; }
+      .days, .form { grid-template-columns: 1fr; }
+      .button { width: 100%; }
+      .actions { align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="/">
+        <img src="../logo_1.png" alt="" aria-hidden="true">
+        <span>Fluency Magic</span>
+      </a>
+      <div class="top-actions">
+        <span class="pill" id="profilePill">Activation Dashboard</span>
+        <a class="pill" href="/login">Magic link access</a>
+      </div>
+    </header>
+
+    <main id="app"></main>
+  </div>
+
+  <script>
+    const plans = {
+      mouthFlow: {
+        name: "7-Day Voice Flow Activation",
+        focus: "Train your mouth, breath, rhythm, and speaking flow.",
+        days: ["Short phrase repetition", "Mouth movement sentence expansion", "Slow-clear-fast speaking drill", "Rhythm and breath practice", "60-second simple speaking task", "Re-record and compare", "Fluency flow review"]
+      },
+      wordAvailability: {
+        name: "7-Day Word Combination Activation",
+        focus: "Make useful words and natural word groups ready for speaking.",
+        days: ["Core word confidence", "Core word problem", "Core word improve", "Core word work", "Word group speaking", "Sentence creation from word groups", "Personal speaking task"]
+      },
+      sentenceFormation: {
+        name: "7-Day Sentence Pattern Activation",
+        focus: "Make common sentence structures automatic.",
+        days: ["I want to...", "I have been trying to...", "One challenge I face is...", "The reason is...", "What I mean is...", "Let me explain...", "60-second pattern speaking"]
+      },
+      grammarPattern: {
+        name: "7-Day Natural Grammar Pattern Activation",
+        focus: "Practise grammar as speaking patterns, not rules.",
+        days: ["Common I am / I have / I want patterns", "Past experience patterns", "Future plan patterns", "Opinion patterns", "Question patterns", "Correction without rule memorisation", "Natural speaking review"]
+      },
+      expression: {
+        name: "7-Day Expression Upgrade Activation",
+        focus: "Say basic ideas in clearer, more natural, and more confident ways.",
+        days: ["Say it better - feelings", "Say it better - opinions", "Say it better - problems", "Say it better - workplace", "Storytelling basics", "Personal introduction upgrade", "Real conversation practice"]
+      },
+      confidence: {
+        name: "7-Day Speaking Confidence Activation",
+        focus: "Build comfort through safe, simple, daily speaking practice.",
+        days: ["Safe 30-second speaking", "Speak slowly and clearly", "Record without deleting", "Speak about yourself", "Speak about your goal", "Repeat and improve", "Confidence review"]
+      }
+    };
+
+    const colors = ["var(--green)", "var(--yellow)", "var(--blue)", "var(--green)", "var(--yellow)", "var(--blue)", "var(--green)"];
+    const app = document.getElementById("app");
+    let activeRecorder = null;
+    let activeChunks = [];
+    let timer = null;
+    let secondsLeft = 60;
+
+    function getProfile() {
+      const saved = JSON.parse(localStorage.getItem("fluencyMagicActivation") || "null");
+      if (saved) return saved;
+
+      const test = JSON.parse(localStorage.getItem("fluencyMagicTest") || "null");
+      const planKey = localStorage.getItem("fluencyMagicPlanKey") || test?.result?.recommendedPlan || "wordAvailability";
+      const token = crypto.randomUUID ? crypto.randomUUID() : `fm-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      const profile = {
+        token,
+        createdAt: new Date().toISOString(),
+        lead: test?.lead || {},
+        result: test?.result || null,
+        planKey,
+        currentDay: 1,
+        completedDays: [],
+        recordings: {},
+        reminderPreference: {
+          email: Boolean(test?.lead?.email),
+          whatsapp: Boolean(test?.lead?.phone),
+          time: "08:00"
+        }
+      };
+      localStorage.setItem("fluencyMagicActivation", JSON.stringify(profile));
+      return profile;
+    }
+
+    function saveProfile(profile) {
+      localStorage.setItem("fluencyMagicActivation", JSON.stringify(profile));
+    }
+
+    function routeDay() {
+      const match = location.pathname.match(/day-(\d)/);
+      return match ? Number(match[1]) : null;
+    }
+
+    function activePlan(profile) {
+      return plans[profile.planKey] || plans.wordAvailability;
+    }
+
+    function render() {
+      if (location.pathname.includes("/login")) return renderLogin();
+      const profile = getProfile();
+      document.getElementById("profilePill").textContent = profile.lead?.firstName ? `${profile.lead.firstName}'s Activation` : "Activation Dashboard";
+      const day = routeDay();
+      if (day) return renderDay(profile, day);
+      renderDashboard(profile);
+    }
+
+    function renderDashboard(profile) {
+      const plan = activePlan(profile);
+      const completed = profile.completedDays.length;
+      const currentDay = Math.min(7, Math.max(profile.currentDay, completed + 1));
+      const accessUrl = `${location.origin}/activation?access=${encodeURIComponent(profile.token)}`;
+      app.innerHTML = `
+        <section class="hero">
+          <div class="hero-grid">
+            <div>
+              <span class="pill">Lightweight profile created</span>
+              <h1>Your 7-Day Fluency Activation Dashboard</h1>
+              <p class="lead">${plan.name}: ${plan.focus}</p>
+              <div class="actions">
+                <a class="button" href="/activation/day-${currentDay}">Continue Day ${currentDay}</a>
+                <button class="button secondary" type="button" id="copyLink">Copy access link</button>
+              </div>
+              <p class="note">MVP access uses a secure-style unique link stored in this browser. Production magic links need a small backend to work across devices.</p>
+            </div>
+            <div class="progress-ring" style="--progress-deg:${(completed / 7) * 360}deg">
+              <div><strong>${completed}/7</strong><span>days complete</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="days">
+          ${plan.days.map((title, index) => {
+            const day = index + 1;
+            const done = profile.completedDays.includes(day);
+            const current = day === currentDay && !done;
+            return `<a class="day-card ${done ? "done" : ""} ${current ? "current" : ""}" href="/activation/day-${day}">
+              <strong style="--accent:${colors[index]}">${done ? "✓" : day}</strong>
+              <h3>Day ${day}</h3>
+              <p>${title}</p>
+            </a>`;
+          }).join("")}
+        </section>
+
+        <section class="grid">
+          <article class="panel">
+            <h2>Reminder Settings</h2>
+            <p class="lead">Choose how you want reminders for daily speaking practice.</p>
+            <form class="form" id="reminderForm">
+              <label>Email reminders<select name="email"><option ${profile.reminderPreference.email ? "selected" : ""}>On</option><option ${!profile.reminderPreference.email ? "selected" : ""}>Off</option></select></label>
+              <label>WhatsApp reminders<select name="whatsapp"><option ${profile.reminderPreference.whatsapp ? "selected" : ""}>On</option><option ${!profile.reminderPreference.whatsapp ? "selected" : ""}>Off</option></select></label>
+              <label>Preferred time<input name="time" value="${profile.reminderPreference.time || "08:00"}"></label>
+            </form>
+            <div class="actions"><button class="button secondary" form="reminderForm" type="submit">Save reminder preference</button></div>
+            <p class="note">Preferences are saved locally in this MVP. Email/WhatsApp delivery requires backend messaging integration.</p>
+          </article>
+          <article class="panel accent">
+            <h2>After Day 7</h2>
+            <p class="lead">Compare your Day 1 and Day 7 recordings, review your progress, and continue into deeper guided practice.</p>
+            <div class="actions"><a class="button blue" href="/activation/day-7">Go to Day 7 Review</a></div>
+          </article>
+        </section>
+      `;
+      document.getElementById("copyLink").addEventListener("click", async () => {
+        await navigator.clipboard?.writeText(accessUrl);
+        document.getElementById("copyLink").textContent = "Access link copied";
+      });
+      document.getElementById("reminderForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const data = Object.fromEntries(new FormData(event.currentTarget).entries());
+        profile.reminderPreference = { email: data.email === "On", whatsapp: data.whatsapp === "On", time: data.time };
+        saveProfile(profile);
+        renderDashboard(profile);
+      });
+    }
+
+    function renderDay(profile, day) {
+      const plan = activePlan(profile);
+      const title = plan.days[day - 1] || plan.days[0];
+      const done = profile.completedDays.includes(day);
+      const recording = profile.recordings[`day-${day}`];
+      const isReview = day === 7;
+      app.innerHTML = `
+        <section class="hero">
+          <div class="hero-grid">
+            <div>
+              <span class="pill">${plan.name}</span>
+              <h1>Day ${day}: ${title}</h1>
+              <p class="lead">${getDayPrompt(day, profile.planKey)}</p>
+              <div class="actions">
+                <a class="button secondary" href="/activation">Back to dashboard</a>
+                ${done ? `<a class="button" href="/activation/day-${Math.min(7, day + 1)}">Next day</a>` : ""}
+              </div>
+            </div>
+            <div class="progress-ring" style="--progress-deg:${((day - 1) / 7) * 360}deg">
+              <div><strong>${day}</strong><span>of 7</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="task-list">
+          <article class="task-card">
+            <span class="task-number" style="--accent:${colors[day - 1]}">1</span>
+            <h2>Speak Aloud</h2>
+            <p>${getSpeakingTask(day, profile.planKey)}</p>
+          </article>
+          <article class="task-card">
+            <span class="task-number" style="--accent:${colors[day % colors.length]}">2</span>
+            <h2>Repeat and Improve</h2>
+            <p>Record once naturally. Listen once. Then record again with clearer rhythm, stronger word groups, or smoother sentence flow.</p>
+          </article>
+        </section>
+
+        <section class="recorder">
+          <h2>Daily Recording</h2>
+          <div class="timer" id="timer">60</div>
+          <div class="actions">
+            <button class="button" type="button" id="recordButton">Start Recording</button>
+            <button class="button secondary" type="button" id="completeButton">${done ? "Completed" : "Mark Day Complete"}</button>
+          </div>
+          <p class="note" id="recordStatus">${recording ? "Recording saved for this day." : "Record your daily speaking task. Audio stays in this browser in the MVP."}</p>
+          ${recording?.url ? `<audio controls src="${recording.url}"></audio>` : ""}
+        </section>
+
+        ${isReview ? renderDaySevenReview(profile) : ""}
+      `;
+      document.getElementById("recordButton").addEventListener("click", () => toggleDayRecording(profile, day));
+      document.getElementById("completeButton").addEventListener("click", () => {
+        if (!profile.completedDays.includes(day)) profile.completedDays.push(day);
+        profile.currentDay = Math.min(7, day + 1);
+        saveProfile(profile);
+        renderDay(profile, day);
+      });
+    }
+
+    function renderDaySevenReview(profile) {
+      const day1 = profile.recordings["day-1"];
+      const day7 = profile.recordings["day-7"];
+      return `
+        <section class="panel accent">
+          <h2>Day 7 Review</h2>
+          <p class="lead">Listen to Day 1 and Day 7. Notice your flow, confidence, and sentence control. Progress becomes real when you can hear it.</p>
+          <div class="review-grid">
+            <div><h3>Day 1 Recording</h3>${day1?.url ? `<audio controls src="${day1.url}"></audio>` : `<p class="note">No Day 1 recording found yet.</p>`}</div>
+            <div><h3>Day 7 Recording</h3>${day7?.url ? `<audio controls src="${day7.url}"></audio>` : `<p class="note">Record Day 7 to compare your progress.</p>`}</div>
+          </div>
+          <div class="actions"><a class="button blue" href="#challenge">Join the 30-Day Fluency Magic Challenge</a></div>
+        </section>
+        <section class="panel" id="challenge">
+          <h2>Ready for the 30-Day Fluency Magic Challenge?</h2>
+          <p class="lead">The 7-day plan starts your speaking habit. The 30-day challenge builds deeper fluency through guided daily voice practice, word-combination mastery, sentence-pattern training, and real-life expression missions.</p>
+          <div class="actions"><a class="button" href="/">Notify Me About the Challenge</a></div>
+        </section>
+      `;
+    }
+
+    async function toggleDayRecording(profile, day) {
+      const button = document.getElementById("recordButton");
+      const status = document.getElementById("recordStatus");
+      if (activeRecorder && activeRecorder.state === "recording") {
+        activeRecorder.stop();
+        button.textContent = "Start Recording";
+        return;
+      }
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        activeChunks = [];
+        activeRecorder = new MediaRecorder(stream);
+        secondsLeft = 60;
+        document.getElementById("timer").textContent = secondsLeft;
+        activeRecorder.ondataavailable = (event) => activeChunks.push(event.data);
+        activeRecorder.onstop = () => {
+          window.clearInterval(timer);
+          stream.getTracks().forEach((track) => track.stop());
+          const blob = new Blob(activeChunks, { type: "audio/webm" });
+          const url = URL.createObjectURL(blob);
+          profile.recordings[`day-${day}`] = { createdAt: new Date().toISOString(), size: blob.size, url };
+          saveProfile(profile);
+          status.textContent = "Recording saved for this day.";
+          renderDay(profile, day);
+        };
+        activeRecorder.start();
+        button.textContent = "Stop Recording";
+        status.textContent = "Recording... speak naturally.";
+        timer = window.setInterval(() => {
+          secondsLeft -= 1;
+          document.getElementById("timer").textContent = Math.max(0, secondsLeft);
+          if (secondsLeft <= 0 && activeRecorder.state === "recording") activeRecorder.stop();
+        }, 1000);
+      } catch (error) {
+        status.textContent = "Microphone access is blocked. You can still mark the day complete after practising aloud.";
+      }
+    }
+
+    function renderLogin() {
+      app.innerHTML = `
+        <section class="hero">
+          <span class="pill">Magic link access</span>
+          <h1>Return to Your Fluency Activation</h1>
+          <p class="lead">Enter the email or WhatsApp number you used in the Free Fluency Test. In this static MVP, we restore the activation saved in this browser. Production will send a secure magic link.</p>
+          <form class="form" id="loginForm">
+            <label>Email or WhatsApp<input required name="identifier" placeholder="you@example.com"></label>
+          </form>
+          <div class="actions"><button class="button" type="submit" form="loginForm">Send My Magic Link</button></div>
+          <p class="note">No password needed for the MVP flow.</p>
+        </section>
+      `;
+      document.getElementById("loginForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+        getProfile();
+        location.href = "/activation";
+      });
+    }
+
+    function getDayPrompt(day, planKey) {
+      const prompts = {
+        mouthFlow: "Focus on mouth movement, breath, and rhythm. Do not chase perfect grammar today.",
+        wordAvailability: "Focus on making useful words ready in natural groups.",
+        sentenceFormation: "Focus on completing full spoken thoughts with simple sentence patterns.",
+        grammarPattern: "Focus on repeating natural patterns until grammar feels automatic.",
+        expression: "Focus on saying your idea more clearly, naturally, and personally.",
+        confidence: "Focus on safe, steady speaking. Your goal is to continue, not to be perfect."
+      };
+      return prompts[planKey] || prompts.wordAvailability;
+    }
+
+    function getSpeakingTask(day, planKey) {
+      const base = activePlan(getProfile()).days[day - 1];
+      return `Speak for 60 seconds using today's focus: ${base}. Keep your voice steady and continue even if you make small mistakes.`;
+    }
+
+    render();
+  </script>
+</body>
+</html>

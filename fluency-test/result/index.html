@@ -291,6 +291,7 @@
         delete scores.sentencePattern;
       }
       localStorage.setItem("fluencyMagicPlanKey", result.recommendedPlan);
+      ensureActivationProfile(saved);
 
       root.innerHTML = `
         <section class="hero">
@@ -301,7 +302,7 @@
               <p class="lead">This is not a judgement of your intelligence or potential. It is a simple diagnosis of where your spoken English gets stuck and what to practise next.</p>
               <p class="lead">Level ${level.levelNumber || ""}: <strong>${level.name}</strong>. ${level.description}</p>
               <div class="actions">
-                <a class="button" href="/7-day-plan">Start My Free 7-Day Plan</a>
+                <a class="button" href="/activation">Start My Free 7-Day Plan</a>
               </div>
             </div>
             <div class="score-ring" style="--score-deg:${result.overall * 3.6}deg">
@@ -331,7 +332,7 @@
             <p>${blockCopy.why}</p>
             <h3>What helps</h3>
             <p>${block.practice}</p>
-            <div class="actions"><a class="button" href="/7-day-plan">Start My Free 7-Day Plan</a></div>
+            <div class="actions"><a class="button" href="/activation">Start My Free 7-Day Plan</a></div>
           </article>
         </section>
 
@@ -350,7 +351,7 @@
             <h3>${blockCopy.plan}</h3>
             <p>${blockCopy.planWhy}</p>
             <p>You do not need to become perfect before you speak. You become fluent by speaking in the right way every day.</p>
-            <div class="actions"><a class="button" href="/7-day-plan">Start My Free 7-Day Plan</a></div>
+            <div class="actions"><a class="button" href="/activation">Start My Free 7-Day Plan</a></div>
           </article>
         </section>
 
@@ -360,9 +361,29 @@
           <p class="lead">Your report shows where your fluency is getting stuck. The 7-Day Fluency Activation Plan gives you your first set of guided speaking drills to start building flow.</p>
           <h3>You Do Not Become Fluent by Waiting. You Become Fluent by Speaking.</h3>
           <p class="lead">You do not need perfect English before you begin. You need the right speaking practice, repeated daily. Fluency Magic will help you train your voice, words, sentence patterns, and confidence step by step.</p>
-          <div class="actions"><a class="button" href="/7-day-plan">Start My Free 7-Day Plan</a></div>
+          <div class="actions"><a class="button" href="/activation">Start My Free 7-Day Plan</a></div>
         </section>
       `;
+    }
+
+    function ensureActivationProfile(saved) {
+      if (localStorage.getItem("fluencyMagicActivation")) return;
+      const token = crypto.randomUUID ? crypto.randomUUID() : `fm-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      localStorage.setItem("fluencyMagicActivation", JSON.stringify({
+        token,
+        createdAt: new Date().toISOString(),
+        lead: saved.lead || {},
+        result: saved.result || null,
+        planKey: saved.result?.recommendedPlan || "wordAvailability",
+        currentDay: 1,
+        completedDays: [],
+        recordings: {},
+        reminderPreference: {
+          email: Boolean(saved.lead?.email),
+          whatsapp: Boolean(saved.lead?.phone),
+          time: "08:00"
+        }
+      }));
     }
 
     render();
