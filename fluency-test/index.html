@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Free Fluency Test | Fluency Magic</title>
+  <meta name="description" content="Discover your English speaking fluency level, biggest speaking block, and recommended 7-day practice direction.">
+  <style>
+    :root {
+      --ink: #101318;
+      --muted: #667085;
+      --line: #e5e7eb;
+      --paper: #fffefa;
+      --soft: #f4f8f6;
+      --green: #149f5b;
+      --green-dark: #0c6d3e;
+      --yellow: #f7b801;
+      --blue: #4387ee;
+      --shadow: 0 24px 80px rgba(16, 19, 24, .1);
+      --radius: 8px;
+      --max: 980px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 80% 8%, rgba(247, 184, 1, .2), transparent 28%),
+        radial-gradient(circle at 8% 70%, rgba(67, 135, 238, .13), transparent 30%),
+        linear-gradient(180deg, #fffefa, #f6fbf8);
+      font-family: "Segoe UI Variable", "Aptos", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; }
+
+    .shell {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 54px;
+    }
+
+    .topbar {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 950;
+      font-size: 20px;
+    }
+
+    .brand img { width: 42px; height: 42px; object-fit: contain; }
+    .back { color: var(--muted); font-size: 14px; font-weight: 800; }
+
+    .progress-wrap {
+      margin: 22px 0 28px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .progress-track {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(16, 19, 24, .08);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      display: block;
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--green), var(--yellow), var(--blue));
+      transition: width .35s ease;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(16, 19, 24, .1);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .92);
+      box-shadow: var(--shadow);
+      padding: clamp(24px, 5vw, 52px);
+      min-height: 620px;
+      display: grid;
+      align-content: center;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 10px;
+      background: linear-gradient(90deg, var(--green), var(--yellow), var(--blue));
+    }
+
+    .kicker {
+      display: inline-flex;
+      width: max-content;
+      max-width: 100%;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(20, 159, 91, .18);
+      color: var(--green-dark);
+      background: #fff;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .kicker::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--yellow);
+      box-shadow: 0 0 0 6px rgba(247, 184, 1, .18);
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { line-height: 1.04; letter-spacing: 0; }
+    h1 { max-width: 780px; margin-bottom: 20px; font-size: clamp(42px, 7vw, 76px); font-weight: 950; }
+    h2 { max-width: 760px; margin-bottom: 18px; font-size: clamp(30px, 5vw, 54px); font-weight: 950; }
+    h3 { margin-bottom: 10px; font-size: 22px; font-weight: 930; }
+    .lead { max-width: 760px; margin-bottom: 0; color: var(--muted); font-size: 19px; }
+
+    .bullets {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 28px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .bullets li, .option, .field {
+      border: 1px solid rgba(16, 19, 24, .1);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .bullets li {
+      padding: 16px;
+      font-weight: 780;
+    }
+
+    .bullets li::before {
+      content: "";
+      display: block;
+      width: 34px;
+      height: 7px;
+      margin-bottom: 14px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--green), var(--yellow), var(--blue));
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .button {
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 22px;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      font-weight: 930;
+      cursor: pointer;
+      transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+
+    .button:hover { transform: translateY(-2px); }
+    .button-primary { color: #fff; background: var(--green); box-shadow: 0 18px 38px rgba(20, 159, 91, .24); }
+    .button-primary:hover { background: var(--green-dark); }
+    .button-secondary { color: var(--ink); background: #fff; border-color: rgba(16, 19, 24, .14); }
+    .button:disabled { cursor: not-allowed; opacity: .5; transform: none; }
+
+    .microcopy { margin-top: 18px; color: var(--muted); font-size: 14px; font-weight: 760; }
+    .options { display: grid; gap: 12px; margin-top: 28px; }
+    .option {
+      width: 100%;
+      min-height: 58px;
+      padding: 16px 18px;
+      text-align: left;
+      color: var(--ink);
+      cursor: pointer;
+      font-weight: 830;
+      transition: border .2s ease, box-shadow .2s ease, transform .2s ease, background .2s ease;
+    }
+
+    .option:hover, .option.selected {
+      border-color: rgba(20, 159, 91, .45);
+      background: #f7fcf9;
+      box-shadow: 0 12px 32px rgba(20, 159, 91, .08);
+      transform: translateY(-1px);
+    }
+
+    .scale {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .scale .option {
+      min-height: 96px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .recorder {
+      margin-top: 28px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .timer {
+      width: 156px;
+      height: 156px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, #fff 0 58%, transparent 59%),
+        conic-gradient(var(--green) var(--timer-progress, 0deg), rgba(16, 19, 24, .08) 0deg);
+      color: var(--ink);
+      font-size: 40px;
+      font-weight: 950;
+    }
+
+    .prompt-card {
+      display: grid;
+      gap: 10px;
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: var(--radius);
+      background: var(--soft);
+      border: 1px solid rgba(16, 19, 24, .08);
+    }
+
+    .prompt-card ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    label { display: grid; gap: 8px; color: var(--muted); font-size: 13px; font-weight: 850; }
+    input, select {
+      min-height: 52px;
+      width: 100%;
+      padding: 0 14px;
+      border: 1px solid rgba(16, 19, 24, .14);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 720px) {
+      .shell { width: min(100% - 24px, var(--max)); padding-top: 14px; }
+      .brand { font-size: 17px; }
+      .brand img { width: 36px; height: 36px; }
+      .back { display: none; }
+      .card { min-height: calc(100vh - 150px); }
+      .bullets, .form-grid, .scale { grid-template-columns: 1fr; }
+      .button { width: 100%; }
+      .actions { align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="/">
+        <img src="../logo_1.png" alt="" aria-hidden="true">
+        <span>Fluency Magic</span>
+      </a>
+      <a class="back" href="/">Back to landing page</a>
+    </header>
+
+    <div class="progress-wrap" aria-label="Test progress">
+      <div class="progress-meta">
+        <span id="stepLabel">Free Fluency Test</span>
+        <span id="stepCount">Intro</span>
+      </div>
+      <div class="progress-track"><span class="progress-fill" id="progressFill"></span></div>
+    </div>
+
+    <main class="card" id="app" tabindex="-1"></main>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        id: "category",
+        title: "What best describes you?",
+        options: ["Student", "Job seeker", "Working professional", "Business owner", "Homemaker", "Migrant / living abroad", "Other"]
+      },
+      {
+        id: "problem",
+        title: "What is your biggest English speaking problem?",
+        options: ["I understand English but cannot speak fluently", "I translate in my mind before speaking", "I cannot find the right words quickly", "I worry about grammar while speaking", "My pronunciation or voice feels unclear", "I feel nervous or embarrassed", "I can speak, but I do not sound natural"]
+      },
+      {
+        id: "need",
+        title: "Where do you need English the most?",
+        options: ["Job interviews", "Workplace meetings", "Client calls", "Study / college", "Social conversations", "Travel / daily life", "Presentations", "General confidence"]
+      },
+      {
+        id: "confidence",
+        title: "How confident do you feel while speaking English?",
+        scale: true,
+        options: ["1 = Very nervous", "2 = Hesitant", "3 = Sometimes okay", "4 = Mostly confident", "5 = Very confident"]
+      },
+      {
+        id: "whenSpeaking",
+        title: "What usually happens when you try to speak English?",
+        options: ["I stop after a few words", "I speak slowly with many pauses", "I use very simple sentences", "I make grammar mistakes and lose confidence", "I forget words", "I avoid speaking", "I can speak but I do not sound polished"]
+      },
+      {
+        id: "practice",
+        title: "How often do you practise speaking English aloud?",
+        options: ["Almost never", "Once or twice a week", "A few minutes daily", "Regularly", "I speak often but still want to improve"]
+      },
+      {
+        id: "goal",
+        title: "What is your main goal?",
+        options: ["Speak without hesitation", "Improve interview confidence", "Speak better at work", "Sound more natural", "Improve pronunciation and clarity", "Build daily speaking habit", "Express thoughts clearly"]
+      }
+    ];
+
+    const tasks = [
+      {
+        id: "main60",
+        title: "60-Second Speaking Task",
+        headline: "Now speak for 60 seconds.",
+        seconds: 60,
+        prompt: "Tell us about yourself, where you use English, and what problem you face when you try to speak.",
+        bullets: ["Who are you?", "Where do you need English?", "What happens when you try to speak?", "What do you want to improve?", "How would your life change if you spoke English confidently?"],
+        microcopy: "Speak naturally. This is not an exam. We are checking your speaking flow, word availability, sentence formation, and confidence."
+      },
+      {
+        id: "wordFlow",
+        title: "Word Flow Check",
+        headline: "Use the word confidence in three spoken sentences.",
+        seconds: 45,
+        prompt: "Record 3 sentences using the word confidence.",
+        bullets: ["Try to make each sentence meaningful.", "Use the word naturally.", "You can use confidence, confident, or confidently."],
+        microcopy: "This checks whether useful words are ready in natural combinations, not just stored as isolated vocabulary."
+      },
+      {
+        id: "patterns",
+        title: "Sentence Pattern Check",
+        headline: "Complete and speak these sentence starters naturally.",
+        seconds: 60,
+        prompt: "Speak all four sentence starters in one recording.",
+        bullets: ["I want to improve...", "I have been trying to...", "One challenge I face is...", "I feel more confident when..."],
+        microcopy: "This checks sentence completion, grammar pattern comfort, natural flow, and your ability to extend ideas."
+      },
+      {
+        id: "realLife",
+        title: "Real-Life Speaking Check",
+        headline: "Imagine you are in a job interview or professional introduction.",
+        seconds: 45,
+        prompt: "Answer this: Tell me about yourself.",
+        bullets: ["Speak for 30-45 seconds.", "Keep it clear and natural.", "Focus on your ideas, not perfect grammar."],
+        microcopy: "This checks clarity, organisation, confidence, sentence flow, and natural expression."
+      }
+    ];
+
+    const app = document.getElementById("app");
+    const progressFill = document.getElementById("progressFill");
+    const stepLabel = document.getElementById("stepLabel");
+    const stepCount = document.getElementById("stepCount");
+    const state = {
+      index: -1,
+      answers: {},
+      recordings: {},
+      lead: {}
+    };
+
+    let mediaRecorder = null;
+    let chunks = [];
+    let timerId = null;
+    let remaining = 0;
+    let activeTask = null;
+
+    function totalSteps() {
+      return 1 + questions.length + tasks.length + 1;
+    }
+
+    function setProgress(label, current) {
+      const total = totalSteps();
+      const safeCurrent = Math.max(1, Math.min(current, total));
+      progressFill.style.width = `${Math.round((safeCurrent / total) * 100)}%`;
+      stepLabel.textContent = label;
+      stepCount.textContent = `Step ${safeCurrent} of ${total}`;
+    }
+
+    function renderIntro() {
+      setProgress("Test intro", 1);
+      app.innerHTML = `
+        <section>
+          <div class="kicker">Free Fluency Test</div>
+          <h1>Find Out Why You Get Stuck While Speaking English</h1>
+          <p class="lead">You may understand English. You may know the words. But if your voice freezes when it is time to speak, your fluency system needs training. This free test will show where you are getting stuck and what to practise next.</p>
+          <ul class="bullets">
+            <li>Discover your current fluency level</li>
+            <li>Identify your biggest speaking block</li>
+            <li>Understand whether your issue is word flow, sentence formation, grammar patterns, confidence, or expression</li>
+            <li>Get your personalised 7-day practice direction</li>
+          </ul>
+          <div class="actions">
+            <button class="button button-primary" type="button" id="start">Start My Free Test</button>
+          </div>
+          <p class="microcopy">Takes around 3-5 minutes. No grammar exam. No judgement. Just a simple speaking diagnosis.</p>
+        </section>
+      `;
+      document.getElementById("start").addEventListener("click", () => {
+        state.index = 0;
+        renderQuestion();
+      });
+    }
+
+    function renderQuestion() {
+      const q = questions[state.index];
+      setProgress("Basic profile", 2 + state.index);
+      const optionsClass = q.scale ? "scale" : "options";
+      app.innerHTML = `
+        <section>
+          <div class="kicker">Quick self-check</div>
+          <h2>${q.title}</h2>
+          <p class="lead">Choose the answer that feels closest. There are no wrong answers here.</p>
+          <div class="${optionsClass}">
+            ${q.options.map((option) => `<button class="option" type="button" data-value="${escapeHtml(option)}">${option}</button>`).join("")}
+          </div>
+          <div class="actions">
+            <button class="button button-secondary" type="button" id="back">Back</button>
+            <button class="button button-primary" type="button" id="next" disabled>Continue</button>
+          </div>
+        </section>
+      `;
+      let selected = state.answers[q.id] || "";
+      document.querySelectorAll(".option").forEach((button) => {
+        if (button.dataset.value === selected) button.classList.add("selected");
+        button.addEventListener("click", () => {
+          selected = button.dataset.value;
+          state.answers[q.id] = selected;
+          document.querySelectorAll(".option").forEach((item) => item.classList.remove("selected"));
+          button.classList.add("selected");
+          document.getElementById("next").disabled = false;
+        });
+      });
+      document.getElementById("next").disabled = !selected;
+      document.getElementById("back").addEventListener("click", () => {
+        if (state.index === 0) renderIntro();
+        else {
+          state.index -= 1;
+          renderQuestion();
+        }
+      });
+      document.getElementById("next").addEventListener("click", () => {
+        if (state.index < questions.length - 1) {
+          state.index += 1;
+          renderQuestion();
+        } else {
+          state.index = 0;
+          renderTask();
+        }
+      });
+    }
+
+    function renderTask() {
+      activeTask = tasks[state.index];
+      setProgress(activeTask.title, 2 + questions.length + state.index);
+      const existing = state.recordings[activeTask.id];
+      app.innerHTML = `
+        <section>
+          <div class="kicker">${activeTask.title}</div>
+          <h2>${activeTask.headline}</h2>
+          <p class="lead">${activeTask.prompt}</p>
+          <div class="prompt-card">
+            <strong>You can include:</strong>
+            <ul>${activeTask.bullets.map((item) => `<li>${item}</li>`).join("")}</ul>
+          </div>
+          <div class="recorder">
+            <div class="timer" id="timer">${activeTask.seconds}</div>
+            <div class="actions">
+              <button class="button button-primary" type="button" id="record">${existing ? "Re-record Once" : "Start Recording"}</button>
+              <button class="button button-secondary" type="button" id="complete">${existing ? "Continue" : "Use Practice Mode"}</button>
+            </div>
+            <p class="microcopy" id="recordStatus">${existing ? "Recording saved for this task. You can continue or re-record once." : activeTask.microcopy}</p>
+          </div>
+        </section>
+      `;
+      remaining = activeTask.seconds;
+      updateTimer();
+      document.getElementById("record").addEventListener("click", toggleRecording);
+      document.getElementById("complete").addEventListener("click", completeTask);
+    }
+
+    async function toggleRecording() {
+      if (mediaRecorder && mediaRecorder.state === "recording") {
+        stopRecording();
+        return;
+      }
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        chunks = [];
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = (event) => chunks.push(event.data);
+        mediaRecorder.onstop = () => {
+          stream.getTracks().forEach((track) => track.stop());
+          const blob = new Blob(chunks, { type: "audio/webm" });
+          state.recordings[activeTask.id] = {
+            recorded: true,
+            duration: activeTask.seconds - remaining,
+            size: blob.size,
+            note: "Audio captured in browser. Production storage should upload this blob securely."
+          };
+          document.getElementById("recordStatus").textContent = "Recording saved. You can continue to the next step.";
+          document.getElementById("complete").textContent = "Continue";
+        };
+        mediaRecorder.start();
+        document.getElementById("record").textContent = "Stop Recording";
+        document.getElementById("recordStatus").textContent = "Recording... speak naturally. This is not an exam.";
+        timerId = window.setInterval(() => {
+          remaining -= 1;
+          updateTimer();
+          if (remaining <= 0) stopRecording();
+        }, 1000);
+      } catch (error) {
+        state.recordings[activeTask.id] = {
+          recorded: false,
+          duration: 0,
+          fallback: true,
+          note: "Microphone permission was unavailable. User continued in practice mode."
+        };
+        document.getElementById("recordStatus").textContent = "Microphone access is blocked. You can still continue and receive a self-assessment based report.";
+        document.getElementById("complete").textContent = "Continue";
+      }
+    }
+
+    function stopRecording() {
+      window.clearInterval(timerId);
+      if (mediaRecorder && mediaRecorder.state === "recording") mediaRecorder.stop();
+      document.getElementById("record").textContent = "Re-record Once";
+    }
+
+    function updateTimer() {
+      const timer = document.getElementById("timer");
+      if (!timer || !activeTask) return;
+      timer.textContent = remaining;
+      const progress = ((activeTask.seconds - remaining) / activeTask.seconds) * 360;
+      timer.style.setProperty("--timer-progress", `${progress}deg`);
+    }
+
+    function completeTask() {
+      if (!state.recordings[activeTask.id]) {
+        state.recordings[activeTask.id] = { recorded: false, duration: 0, fallback: true, note: "Skipped recording; practice-mode completion." };
+      }
+      if (state.index < tasks.length - 1) {
+        state.index += 1;
+        renderTask();
+      } else {
+        renderLead();
+      }
+    }
+
+    function renderLead() {
+      setProgress("Lead capture", totalSteps());
+      app.innerHTML = `
+        <section>
+          <div class="kicker">Your Fluency Report Is Ready</div>
+          <h2>Your Fluency Report Is Ready</h2>
+          <p class="lead">Enter your details to receive your fluency level, speaking block diagnosis, and personalised 7-day practice direction.</p>
+          <form class="form-grid" id="leadForm">
+            <label>First name<input required name="firstName" autocomplete="given-name"></label>
+            <label>Email<input required type="email" name="email" autocomplete="email"></label>
+            <label>WhatsApp number<input required name="phone" autocomplete="tel"></label>
+            <label>Country<input required name="country" autocomplete="country-name"></label>
+            <label>Main goal<select required name="mainGoal">
+              <option value="">Choose one</option>
+              <option>Speak without hesitation</option>
+              <option>Improve interview confidence</option>
+              <option>Speak better at work</option>
+              <option>Sound more natural</option>
+              <option>Improve pronunciation and clarity</option>
+              <option>Build daily speaking habit</option>
+              <option>Express thoughts clearly</option>
+            </select></label>
+          </form>
+          <div class="actions">
+            <button class="button button-primary" type="submit" form="leadForm">Show My Fluency Report</button>
+          </div>
+          <p class="microcopy">We'll send your practice plan and reminders. No spam.</p>
+        </section>
+      `;
+      document.getElementById("leadForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+        state.lead = Object.fromEntries(new FormData(event.currentTarget).entries());
+        const result = buildResult();
+        localStorage.setItem("fluencyMagicTest", JSON.stringify({
+          ...state,
+          result,
+          createdAt: new Date().toISOString()
+        }));
+        window.location.href = "/fluency-test/result";
+      });
+    }
+
+    function buildResult() {
+      const a = state.answers;
+      const confidence = Number((a.confidence || "3").charAt(0)) || 3;
+      const practiceMap = {
+        "Almost never": -12,
+        "Once or twice a week": -6,
+        "A few minutes daily": 3,
+        "Regularly": 10,
+        "I speak often but still want to improve": 14
+      };
+      const problem = a.problem || "";
+      const event = a.whenSpeaking || "";
+      const practiceBonus = practiceMap[a.practice] || 0;
+      const recordingBonus = Object.values(state.recordings).filter((item) => item.recorded).length * 3;
+      const base = 24 + confidence * 8 + practiceBonus + recordingBonus;
+      const scores = {
+        speechFlow: clamp(base + (event.includes("pauses") ? -12 : 0) + (event.includes("stop") ? -14 : 0)),
+        wordAvailability: clamp(base + (problem.includes("right words") || event.includes("forget") ? -16 : 0)),
+        sentencePattern: clamp(base + (problem.includes("grammar") || event.includes("simple") ? -12 : 0)),
+        expressionClarity: clamp(base + (a.goal === "Express thoughts clearly" ? -8 : 2)),
+        naturalness: clamp(base + (problem.includes("natural") ? -14 : 0)),
+        speakingConfidence: clamp(base + (problem.includes("nervous") || event.includes("avoid") ? -18 : 0) + confidence * 2)
+      };
+      const overall = Math.round(Object.values(scores).reduce((sum, item) => sum + item, 0) / 6);
+      const level = getLevel(overall);
+      const block = getBlock(problem, event, scores);
+      return { scores, overall, level, block, recommendedPlan: block.planKey };
+    }
+
+    function clamp(value) {
+      return Math.max(8, Math.min(96, Math.round(value)));
+    }
+
+    function getLevel(score) {
+      if (score <= 25) return { name: "Silent Understander", range: "0-25", description: "You may understand some English, but speaking feels uncomfortable. Your first focus is mouth movement, simple sentence flow, and basic confidence." };
+      if (score <= 45) return { name: "Hesitant Speaker", range: "26-45", description: "You can speak some English, but you may pause, translate, search for words, or worry about grammar. Your first focus is speech flow, word combinations, and daily speaking practice." };
+      if (score <= 65) return { name: "Functional Speaker", range: "46-65", description: "You can communicate basic ideas, but speech may feel slow, simple, or unnatural. You need stronger patterns, better word groups, and more expression practice." };
+      if (score <= 82) return { name: "Natural Speaker", range: "66-82", description: "You can speak clearly in many situations, but you may still need polish, confidence, professional expression, and stronger fluency." };
+      return { name: "Confident Communicator", range: "83-100", description: "You speak with clarity, flow, and confidence. Your next focus is advanced expression, storytelling, professional presence, and powerful communication." };
+    }
+
+    function getBlock(problem, event, scores) {
+      const blocks = {
+        mouth: { name: "Mouth Flow Block", planKey: "mouthFlow", meaning: "You know what to say, but your mouth does not move smoothly in English.", practice: "Speech organ drills, rhythm practice, and repeated phrase speaking." },
+        word: { name: "Word Availability Block", planKey: "wordAvailability", meaning: "You understand many words, but useful words do not come quickly while speaking.", practice: "Word combination drills, core word command, and phrase groups." },
+        sentence: { name: "Sentence Formation Block", planKey: "sentenceFormation", meaning: "You know words, but sentences do not form naturally.", practice: "Sentence pattern gym and sentence expansion drills." },
+        grammar: { name: "Grammar Fear Block", planKey: "grammarFear", meaning: "You think too much about correctness while speaking, and that breaks your flow.", practice: "Pattern-based grammar practice and repeated natural sentence structures." },
+        expression: { name: "Expression Block", planKey: "expression", meaning: "You can speak basic English, but your real thoughts, feelings, and personality do not come out clearly.", practice: "Expression upgrade drills, storytelling practice, and real-life speaking tasks." },
+        confidence: { name: "Confidence Block", planKey: "confidence", meaning: "Your English may be better than you think, but nervousness stops your flow.", practice: "Daily speaking missions, safe recording practice, and confidence-building repetition." }
+      };
+      if (problem.includes("right words") || event.includes("forget")) return blocks.word;
+      if (problem.includes("grammar") || event.includes("grammar")) return blocks.grammar;
+      if (problem.includes("nervous") || event.includes("avoid")) return blocks.confidence;
+      if (problem.includes("natural") || event.includes("polished")) return blocks.expression;
+      if (event.includes("simple sentences")) return blocks.sentence;
+      const weakest = Object.entries(scores).sort((a, b) => a[1] - b[1])[0][0];
+      if (weakest === "speechFlow") return blocks.mouth;
+      if (weakest === "wordAvailability") return blocks.word;
+      if (weakest === "sentencePattern") return blocks.sentence;
+      if (weakest === "naturalness") return blocks.expression;
+      if (weakest === "speakingConfidence") return blocks.confidence;
+      return blocks.mouth;
+    }
+
+    function escapeHtml(value) {
+      return value.replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char]));
+    }
+
+    renderIntro();
+  </script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>7-Day Fluency Activation Plan | Fluency Magic</title>
+  <style>
+    :root {
+      --ink: #101318;
+      --muted: #667085;
+      --line: #e5e7eb;
+      --paper: #fffefa;
+      --soft: #f4f8f6;
+      --green: #149f5b;
+      --green-dark: #0c6d3e;
+      --yellow: #f7b801;
+      --blue: #4387ee;
+      --shadow: 0 24px 80px rgba(16, 19, 24, .1);
+      --radius: 8px;
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 76% 10%, rgba(247, 184, 1, .22), transparent 28%),
+        radial-gradient(circle at 12% 68%, rgba(67, 135, 238, .14), transparent 30%),
+        linear-gradient(180deg, #fffefa, #f6fbf8);
+      font-family: "Segoe UI Variable", "Aptos", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .shell { width: min(var(--max), calc(100% - 32px)); margin: 0 auto; padding: 24px 0 64px; }
+    .topbar { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 950; font-size: 20px; }
+    .brand img { width: 42px; height: 42px; object-fit: contain; }
+    .link { color: var(--muted); font-size: 14px; font-weight: 850; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { line-height: 1.04; letter-spacing: 0; }
+    h1 { margin-bottom: 18px; font-size: clamp(42px, 7vw, 76px); font-weight: 950; }
+    h2 { margin-bottom: 16px; font-size: clamp(30px, 4.5vw, 52px); font-weight: 950; }
+    h3 { margin-bottom: 10px; font-size: 22px; font-weight: 930; }
+    .lead { color: var(--muted); font-size: 19px; }
+    .hero, .day, .panel {
+      border: 1px solid rgba(16, 19, 24, .1);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .92);
+      box-shadow: var(--shadow);
+    }
+    .hero { position: relative; overflow: hidden; padding: clamp(28px, 5vw, 54px); margin-top: 22px; }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 10px;
+      background: linear-gradient(90deg, var(--green), var(--yellow), var(--blue));
+    }
+    .badge {
+      display: inline-flex;
+      width: max-content;
+      max-width: 100%;
+      margin-bottom: 18px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      color: var(--green-dark);
+      background: #fff;
+      border: 1px solid rgba(20, 159, 91, .18);
+      font-size: 13px;
+      font-weight: 930;
+    }
+    .button {
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 22px;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+      color: #fff;
+      background: var(--green);
+      font-weight: 930;
+      box-shadow: 0 18px 38px rgba(20, 159, 91, .24);
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
+    .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-top: 24px; }
+    .day { padding: 18px; min-height: 178px; }
+    .day strong {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      border-radius: var(--radius);
+      color: #fff;
+      background: var(--accent);
+    }
+    .day p { margin: 0; color: var(--muted); font-weight: 760; }
+    .panel { margin-top: 22px; padding: 28px; background: #fff; }
+    .panel ul { margin: 0; padding-left: 20px; color: var(--muted); }
+    @media (max-width: 1050px) { .days { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px) {
+      .days { grid-template-columns: 1fr; }
+      .button { width: 100%; }
+      .link { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="/">
+        <img src="../logo_1.png" alt="" aria-hidden="true">
+        <span>Fluency Magic</span>
+      </a>
+      <a class="link" href="/fluency-test/result">Back to result</a>
+    </header>
+
+    <main id="plan"></main>
+  </div>
+
+  <script>
+    const plans = {
+      mouthFlow: {
+        title: "Mouth Flow Block",
+        focus: "Make English physically easier to speak through rhythm, breath, and repeated phrase movement.",
+        days: ["Short phrase repetition", "Mouth movement sentence expansion", "Slow-clear-fast speaking drill", "Rhythm and breath practice", "60-second simple speaking task", "Re-record and compare", "Fluency flow review"]
+      },
+      wordAvailability: {
+        title: "Word Availability Block",
+        focus: "Make useful words ready in natural combinations so they come faster when you speak.",
+        days: ["Core word confidence", "Core word problem", "Core word improve", "Core word work", "Word group speaking", "Sentence creation from word groups", "Personal speaking task"]
+      },
+      sentenceFormation: {
+        title: "Sentence Formation Block",
+        focus: "Train common sentence starters until your thoughts form complete spoken sentences more naturally.",
+        days: ["I want to...", "I have been trying to...", "One challenge I face is...", "The reason is...", "What I mean is...", "Let me explain...", "60-second pattern speaking"]
+      },
+      grammarFear: {
+        title: "Grammar Fear Block",
+        focus: "Reduce grammar panic by practising useful patterns until they feel automatic while speaking.",
+        days: ["Common I am / I have / I want patterns", "Past experience patterns", "Future plan patterns", "Opinion patterns", "Question patterns", "Correction without rule memorisation", "Natural speaking review"]
+      },
+      expression: {
+        title: "Expression Block",
+        focus: "Upgrade basic speaking into clearer, more personal expression for real conversations.",
+        days: ["Say it better - feelings", "Say it better - opinions", "Say it better - problems", "Say it better - workplace", "Storytelling basics", "Personal introduction upgrade", "Real conversation practice"]
+      },
+      confidence: {
+        title: "Confidence Block",
+        focus: "Build a safe daily speaking habit so your voice stays steadier when it matters.",
+        days: ["Safe 30-second speaking", "Speak slowly and clearly", "Record without deleting", "Speak about yourself", "Speak about your goal", "Repeat and improve", "Confidence review"]
+      }
+    };
+
+    const colors = ["var(--green)", "var(--yellow)", "var(--blue)", "var(--green)", "var(--yellow)", "var(--blue)", "var(--green)"];
+
+    function render() {
+      const saved = JSON.parse(localStorage.getItem("fluencyMagicTest") || "null");
+      const key = localStorage.getItem("fluencyMagicPlanKey") || saved?.result?.recommendedPlan || "wordAvailability";
+      const plan = plans[key] || plans.wordAvailability;
+      const root = document.getElementById("plan");
+      root.innerHTML = `
+        <section class="hero">
+          <div class="badge">Your Recommended Next Step</div>
+          <h1>Your 7-Day Fluency Activation Plan</h1>
+          <p class="lead">Based on your fluency snapshot, your first practice focus is <strong>${plan.title}</strong>. This plan gives you one simple speaking drill each day so you can start building flow without feeling overwhelmed.</p>
+          <div class="actions">
+            <a class="button" href="/fluency-test">Retake the Free Fluency Test</a>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Practice Focus</h2>
+          <p class="lead">${plan.focus}</p>
+        </section>
+
+        <section class="days">
+          ${plan.days.map((day, index) => `
+            <article class="day" style="--accent:${colors[index]}">
+              <strong>${index + 1}</strong>
+              <h3>Day ${index + 1}</h3>
+              <p>${day}</p>
+            </article>
+          `).join("")}
+        </section>
+
+        <section class="panel">
+          <h2>How to Use This Plan</h2>
+          <ul>
+            <li>Practise aloud every day, even if your English is not perfect.</li>
+            <li>Record short answers so you can hear your progress.</li>
+            <li>Repeat useful word groups and sentence patterns until they feel easier.</li>
+            <li>Focus on flow first. Polish comes after movement.</li>
+          </ul>
+          <div class="actions"><a class="button" href="/">Back to Fluency Magic</a></div>
+        </section>
+      `;
+    }
+
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Fluency Result | Fluency Magic</title>
+  <style>
+    :root {
+      --ink: #101318;
+      --muted: #667085;
+      --line: #e5e7eb;
+      --paper: #fffefa;
+      --soft: #f4f8f6;
+      --green: #149f5b;
+      --green-dark: #0c6d3e;
+      --yellow: #f7b801;
+      --blue: #4387ee;
+      --shadow: 0 24px 80px rgba(16, 19, 24, .1);
+      --radius: 8px;
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 82% 14%, rgba(247, 184, 1, .2), transparent 28%),
+        linear-gradient(180deg, #fffefa, #f6fbf8);
+      font-family: "Segoe UI Variable", "Aptos", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .shell { width: min(var(--max), calc(100% - 32px)); margin: 0 auto; padding: 24px 0 64px; }
+    .topbar { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 950; font-size: 20px; }
+    .brand img { width: 42px; height: 42px; object-fit: contain; }
+    .link { color: var(--muted); font-size: 14px; font-weight: 850; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { line-height: 1.04; letter-spacing: 0; }
+    h1 { margin-bottom: 18px; font-size: clamp(42px, 7vw, 76px); font-weight: 950; }
+    h2 { margin-bottom: 16px; font-size: clamp(30px, 4.5vw, 52px); font-weight: 950; }
+    h3 { margin-bottom: 10px; font-size: 22px; font-weight: 930; }
+    .lead { color: var(--muted); font-size: 19px; }
+    .hero, .panel, .score-card, .conversion {
+      border: 1px solid rgba(16, 19, 24, .1);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .92);
+      box-shadow: var(--shadow);
+    }
+    .hero { position: relative; overflow: hidden; padding: clamp(28px, 5vw, 54px); margin-top: 22px; }
+    .hero::before, .conversion::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 10px;
+      background: linear-gradient(90deg, var(--green), var(--yellow), var(--blue));
+    }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 34px; align-items: center; }
+    .score-ring {
+      width: 220px;
+      height: 220px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, #fff 0 57%, transparent 58%),
+        conic-gradient(var(--green) var(--score-deg), rgba(16, 19, 24, .08) 0deg);
+      margin-left: auto;
+      text-align: center;
+    }
+    .score-ring strong { display: block; font-size: 54px; line-height: 1; }
+    .score-ring span { color: var(--muted); font-weight: 850; }
+    .badge {
+      display: inline-flex;
+      width: max-content;
+      max-width: 100%;
+      margin-bottom: 18px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      color: var(--green-dark);
+      background: #fff;
+      border: 1px solid rgba(20, 159, 91, .18);
+      font-size: 13px;
+      font-weight: 930;
+    }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; }
+    .panel, .score-card, .conversion { padding: 24px; }
+    .scores { display: grid; gap: 12px; }
+    .score-row { display: grid; grid-template-columns: 1fr 74px; gap: 12px; align-items: center; }
+    .track { height: 10px; border-radius: 999px; background: rgba(16, 19, 24, .08); overflow: hidden; }
+    .fill { display: block; height: 100%; width: var(--w); border-radius: inherit; background: linear-gradient(90deg, var(--green), var(--yellow), var(--blue)); }
+    .block-card {
+      border-left: 7px solid var(--yellow);
+      background: #fff8d7;
+    }
+    .button {
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 22px;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+      color: #fff;
+      background: var(--green);
+      font-weight: 930;
+      box-shadow: 0 18px 38px rgba(20, 159, 91, .24);
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
+    .conversion { position: relative; overflow: hidden; margin-top: 22px; }
+    .empty { text-align: center; padding: 80px 24px; }
+
+    @media (max-width: 820px) {
+      .hero-grid, .grid { grid-template-columns: 1fr; }
+      .score-ring { margin: 0; }
+      .link { display: none; }
+      .button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="/">
+        <img src="../../logo_1.png" alt="" aria-hidden="true">
+        <span>Fluency Magic</span>
+      </a>
+      <a class="link" href="/fluency-test">Retake test</a>
+    </header>
+
+    <main id="result"></main>
+  </div>
+
+  <script>
+    const levelTemplates = {
+      "Silent Understander": {
+        what: "You may understand some English, but speaking still feels uncomfortable or heavy.",
+        focus: "Focus on mouth movement, short phrase repetition, simple sentence flow, and safe daily speaking.",
+        encourage: "You are not behind. Your first win is to make English feel speakable."
+      },
+      "Hesitant Speaker": {
+        what: "You can speak some English, but you may pause, translate, search for words, or worry about grammar.",
+        focus: "Focus on speech flow, natural word combinations, sentence patterns, and daily speaking practice.",
+        encourage: "Your English is already inside you. Now it needs speaking training."
+      },
+      "Functional Speaker": {
+        what: "You can communicate basic ideas, but your speech may feel slow, simple, or less natural than your real thinking.",
+        focus: "Focus on stronger sentence patterns, better word groups, and expression practice.",
+        encourage: "You are close to a much smoother version of your English."
+      },
+      "Natural Speaker": {
+        what: "You can speak clearly in many situations, but you may still need polish, presence, and professional expression.",
+        focus: "Focus on confident delivery, storytelling, advanced expression, and real-life speaking missions.",
+        encourage: "Your next level is not just accuracy. It is presence."
+      },
+      "Confident Communicator": {
+        what: "You speak with clarity, flow, and confidence.",
+        focus: "Focus on advanced expression, professional presence, persuasive speaking, and powerful communication.",
+        encourage: "Keep training your voice so your ideas land with even more impact."
+      }
+    };
+
+    const blockTemplates = {
+      "Mouth Flow Block": {
+        why: "This often happens when English has been learned silently through reading, listening, or thinking, but not spoken enough aloud.",
+        practice: "Speech organ drills, rhythm practice, repeated phrase speaking, and slow-clear-fast practice help your mouth become comfortable with English.",
+        cta: "Start mouth-flow practice"
+      },
+      "Word Availability Block": {
+        why: "Words may be familiar in your mind, but they are not stored in ready-to-speak groups.",
+        practice: "Word combination drills, core word command, and phrase groups help words come faster when you speak.",
+        cta: "Start word-flow practice"
+      },
+      "Sentence Formation Block": {
+        why: "This happens when words are known individually, but common sentence patterns are not automatic yet.",
+        practice: "Sentence pattern gym, sentence expansion drills, and repeated starters help sentences form naturally.",
+        cta: "Start sentence-pattern practice"
+      },
+      "Grammar Fear Block": {
+        why: "Your mind may check grammar while your conversation is moving, and that breaks flow.",
+        practice: "Pattern-based grammar practice helps you use natural structures without stopping to think about rules.",
+        cta: "Start pattern practice"
+      },
+      "Expression Block": {
+        why: "You may be able to speak basic English, but your real thoughts, feelings, and personality need stronger expression patterns.",
+        practice: "Expression upgrade drills, storytelling practice, and real-life speaking tasks help your English sound more like you.",
+        cta: "Start expression practice"
+      },
+      "Confidence Block": {
+        why: "Your English may be better than you think, but nervousness interrupts your voice before your ideas come out.",
+        practice: "Safe recording practice, daily speaking missions, and confidence-building repetition help your voice stay steady.",
+        cta: "Start confidence practice"
+      }
+    };
+
+    const labels = {
+      speechFlow: "Speech Flow",
+      wordAvailability: "Word Availability",
+      sentencePattern: "Sentence Pattern Comfort",
+      expressionClarity: "Expression Clarity",
+      naturalness: "Naturalness",
+      speakingConfidence: "Speaking Confidence"
+    };
+
+    function render() {
+      const saved = JSON.parse(localStorage.getItem("fluencyMagicTest") || "null");
+      const root = document.getElementById("result");
+      if (!saved || !saved.result) {
+        root.innerHTML = `
+          <section class="hero empty">
+            <h1>Your Fluency Snapshot Is Waiting</h1>
+            <p class="lead">Complete the Free Fluency Test first so we can show your level, speaking block, and practice direction.</p>
+            <div class="actions" style="justify-content:center"><a class="button" href="/fluency-test">Start My Free Fluency Test</a></div>
+          </section>
+        `;
+        return;
+      }
+
+      const { result, lead } = saved;
+      const level = result.level;
+      const block = result.block;
+      const levelCopy = levelTemplates[level.name];
+      const blockCopy = blockTemplates[block.name];
+      localStorage.setItem("fluencyMagicPlanKey", result.recommendedPlan);
+
+      root.innerHTML = `
+        <section class="hero">
+          <div class="hero-grid">
+            <div>
+              <div class="badge">Your Fluency Snapshot Is Ready</div>
+              <h1>${lead.firstName ? `${lead.firstName}, y` : "Y"}our fluency score is ${result.overall}/100</h1>
+              <p class="lead">Level: <strong>${level.name}</strong>. ${level.description}</p>
+              <div class="actions">
+                <a class="button" href="/7-day-plan">Start My 7-Day Practice Plan</a>
+              </div>
+            </div>
+            <div class="score-ring" style="--score-deg:${result.overall * 3.6}deg">
+              <div><strong>${result.overall}</strong><span>out of 100</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid">
+          <article class="panel">
+            <h2>Your Score Breakdown</h2>
+            <div class="scores">
+              ${Object.entries(result.scores).map(([key, value]) => `
+                <div class="score-row">
+                  <div><strong>${labels[key]}</strong><div class="track"><span class="fill" style="--w:${value}%"></span></div></div>
+                  <strong>${value}/100</strong>
+                </div>
+              `).join("")}
+            </div>
+          </article>
+
+          <article class="panel block-card">
+            <h2>Your main block: ${block.name}</h2>
+            <p>${block.meaning}</p>
+            <h3>Why this happens</h3>
+            <p>${blockCopy.why}</p>
+            <h3>What helps</h3>
+            <p>${block.practice}</p>
+          </article>
+        </section>
+
+        <section class="grid">
+          <article class="panel">
+            <h2>What This Means</h2>
+            <p>${levelCopy.what}</p>
+            <h3>What to focus on next</h3>
+            <p>${levelCopy.focus}</p>
+            <p><strong>${levelCopy.encourage}</strong></p>
+          </article>
+
+          <article class="panel">
+            <h2>Your Recommended Next Step</h2>
+            <p>Start the 7-Day Fluency Activation Plan. It gives you your first set of guided speaking drills based on your main block.</p>
+            <p>You do not need to become perfect before you speak. You become fluent by speaking in the right way every day.</p>
+            <div class="actions"><a class="button" href="/7-day-plan">${blockCopy.cta}</a></div>
+          </article>
+        </section>
+
+        <section class="conversion">
+          <h2>Your Fluency Can Improve Faster When You Practise the Right Way</h2>
+          <p class="lead">Most people keep watching English videos, memorising words, or waiting for confidence. But speaking improves when you practise the right word groups, sentence patterns, and voice flow every day.</p>
+          <p class="lead">Your report shows where your fluency is getting stuck. The 7-Day Fluency Activation Plan gives you your first set of guided speaking drills to start building flow.</p>
+          <div class="actions"><a class="button" href="/7-day-plan">Start My Free 7-Day Plan</a></div>
+        </section>
+      `;
+    }
+
+    render();
+  </script>
+</body>
+</html>
