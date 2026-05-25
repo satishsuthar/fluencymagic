@@ -21,7 +21,9 @@
     }
 
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
+      min-height: 100vh;
       margin: 0;
       color: var(--ink);
       background:
@@ -30,7 +32,6 @@
         linear-gradient(180deg, #fffefa, #f6fbf8);
       font-family: "Segoe UI Variable", "Aptos", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.55;
-      min-height: 100vh;
     }
 
     body::before {
@@ -52,14 +53,25 @@
       to { transform: translate3d(-4%, 4%, 0) scale(1.08); }
     }
 
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    @keyframes wavePulse {
+      0%, 100% { transform: scaleY(.45); opacity: .55; }
+      50% { transform: scaleY(1); opacity: 1; }
+    }
+
     a { color: inherit; text-decoration: none; }
-    button, input, select { font: inherit; }
+    button, input, select, textarea { font: inherit; }
+    textarea { resize: vertical; min-height: 116px; }
     .shell { width: min(var(--max), calc(100% - 32px)); margin: 0 auto; padding: 22px 0 72px; }
     .topbar { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
     .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 950; font-size: 20px; }
     .brand img { width: 42px; height: 42px; object-fit: contain; }
     .top-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .pill {
+    .pill, .badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -71,33 +83,25 @@
       font-size: 13px;
       font-weight: 850;
     }
+    .badge.green { color: var(--green-dark); background: rgba(20, 159, 91, .1); }
+    .badge.blue { color: #1e5ab8; background: rgba(67, 135, 238, .1); }
+    .badge.yellow { color: #8a5d00; background: rgba(247, 184, 1, .16); }
 
     h1, h2, h3, p { margin-top: 0; }
     h1, h2, h3 { line-height: 1.04; letter-spacing: 0; }
-    h1 { margin-bottom: 18px; font-size: clamp(40px, 7vw, 72px); font-weight: 950; }
-    h2 { margin-bottom: 16px; font-size: clamp(28px, 4.6vw, 48px); font-weight: 950; }
+    h1 { margin-bottom: 18px; font-size: clamp(38px, 7vw, 72px); font-weight: 950; }
+    h2 { margin-bottom: 14px; font-size: clamp(26px, 4.4vw, 46px); font-weight: 950; }
     h3 { margin-bottom: 10px; font-size: 21px; font-weight: 930; }
     .lead { color: var(--muted); font-size: 19px; }
-    .hero, .panel, .day-card, .task-card {
+    .note { color: var(--muted); font-size: 14px; font-weight: 760; }
+    .hero, .panel, .day-card, .practice-card {
       border: 1px solid rgba(16, 19, 24, .1);
       border-radius: var(--radius);
       background: rgba(255, 255, 255, .92);
       box-shadow: var(--shadow);
       animation: riseIn .45s ease both;
     }
-
-    @keyframes riseIn {
-      from { opacity: 0; transform: translateY(14px); }
-      to { opacity: 1; transform: none; }
-    }
-
-    .hero {
-      position: relative;
-      overflow: hidden;
-      padding: clamp(28px, 5vw, 54px);
-      margin-top: 22px;
-    }
-
+    .hero, .panel { position: relative; overflow: hidden; margin-top: 22px; padding: clamp(24px, 4vw, 42px); }
     .hero::before, .panel.accent::before {
       content: "";
       position: absolute;
@@ -105,8 +109,8 @@
       height: 10px;
       background: linear-gradient(90deg, var(--green), var(--yellow), var(--blue));
     }
-
     .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 290px; gap: 34px; align-items: center; }
+    .stats { display: flex; gap: 10px; flex-wrap: wrap; margin: 18px 0 0; }
     .progress-ring {
       width: 220px;
       height: 220px;
@@ -137,10 +141,12 @@
     }
     .button.secondary { color: var(--ink); background: #fff; border-color: rgba(16, 19, 24, .14); box-shadow: none; }
     .button.blue { background: var(--blue); }
-    .actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 26px; }
+    .button:disabled { opacity: .55; cursor: not-allowed; box-shadow: none; }
+    .actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 24px; }
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; }
     .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-top: 22px; }
-    .day-card { min-height: 172px; padding: 18px; }
+    .day-card { min-height: 178px; padding: 18px; }
+    .day-card.locked { opacity: .58; }
     .day-card.done { border-color: rgba(20, 159, 91, .34); background: #f6fcf8; }
     .day-card.current { outline: 3px solid rgba(247, 184, 1, .34); }
     .day-card strong, .task-number {
@@ -153,10 +159,20 @@
       color: #fff;
       background: var(--accent);
     }
-    .day-card p, .task-card p { margin-bottom: 0; color: var(--muted); }
-    .panel { position: relative; overflow: hidden; margin-top: 22px; padding: 28px; }
-    .task-card { padding: 22px; }
-    .task-list { display: grid; gap: 14px; margin-top: 22px; }
+    .day-card p, .practice-card p { margin-bottom: 0; color: var(--muted); }
+    .practice-grid { display: grid; gap: 16px; margin-top: 22px; }
+    .practice-card { padding: 22px; }
+    .practice-card ul { margin: 12px 0 0; padding-left: 20px; color: var(--muted); }
+    .practice-card li + li { margin-top: 7px; }
+    .quote-lines { display: grid; gap: 8px; margin-top: 14px; }
+    .quote-lines span {
+      display: block;
+      padding: 12px 14px;
+      border: 1px solid rgba(16, 19, 24, .08);
+      border-radius: var(--radius);
+      background: #fff;
+      font-weight: 760;
+    }
     .recorder {
       display: grid;
       gap: 14px;
@@ -167,13 +183,17 @@
       background: linear-gradient(135deg, rgba(67, 135, 238, .08), rgba(20, 159, 91, .06)), #fff;
     }
     .timer { font-size: 42px; font-weight: 950; }
-    .note { color: var(--muted); font-size: 14px; font-weight: 760; }
+    .wave { display: flex; align-items: end; gap: 5px; height: 40px; }
+    .wave span { width: 8px; height: 30px; border-radius: 999px; background: var(--green); transform-origin: bottom; animation: wavePulse 1s ease-in-out infinite; }
+    .wave span:nth-child(2) { animation-delay: .12s; background: var(--yellow); }
+    .wave span:nth-child(3) { animation-delay: .24s; background: var(--blue); }
+    .wave span:nth-child(4) { animation-delay: .36s; }
+    .wave span:nth-child(5) { animation-delay: .48s; background: var(--yellow); }
     .form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 22px; }
     label { display: grid; gap: 8px; color: var(--muted); font-size: 13px; font-weight: 850; }
-    input, select {
-      min-height: 52px;
+    input, select, textarea {
       width: 100%;
-      padding: 0 14px;
+      padding: 13px 14px;
       border: 1px solid rgba(16, 19, 24, .14);
       border-radius: var(--radius);
       background: #fff;
@@ -193,6 +213,7 @@
       .days, .form { grid-template-columns: 1fr; }
       .button { width: 100%; }
       .actions { align-items: stretch; }
+      .hero, .panel { padding: 22px; }
     }
   </style>
 </head>
@@ -200,7 +221,7 @@
   <div class="shell">
     <header class="topbar">
       <a class="brand" href="/">
-        <img src="../logo_1.png" alt="" aria-hidden="true">
+        <img src="/logo_1.png" alt="" aria-hidden="true">
         <span>Fluency Magic</span>
       </a>
       <div class="top-actions">
@@ -213,38 +234,165 @@
   </div>
 
   <script>
-    const plans = {
+    const planGuidance = {
       mouthFlow: {
         name: "7-Day Voice Flow Activation",
-        focus: "Train your mouth, breath, rhythm, and speaking flow.",
-        days: ["Short phrase repetition", "Mouth movement sentence expansion", "Slow-clear-fast speaking drill", "Rhythm and breath practice", "60-second simple speaking task", "Re-record and compare", "Fluency flow review"]
+        block: "Mouth Flow Block",
+        focus: "Your main focus this week: voice flow and mouth comfort. Pay extra attention to the Voice Flow Drill each day."
       },
       wordAvailability: {
         name: "7-Day Word Combination Activation",
-        focus: "Make useful words and natural word groups ready for speaking.",
-        days: ["Core word confidence", "Core word problem", "Core word improve", "Core word work", "Word group speaking", "Sentence creation from word groups", "Personal speaking task"]
+        block: "Word Availability Block",
+        focus: "Your main focus this week: making useful words ready. Pay extra attention to the Word Combination Drill each day."
       },
       sentenceFormation: {
         name: "7-Day Sentence Pattern Activation",
-        focus: "Make common sentence structures automatic.",
-        days: ["I want to...", "I have been trying to...", "One challenge I face is...", "The reason is...", "What I mean is...", "Let me explain...", "60-second pattern speaking"]
+        block: "Sentence Formation Block",
+        focus: "Your main focus this week: forming complete sentences faster. Pay extra attention to the Sentence Pattern Drill each day."
       },
       grammarPattern: {
         name: "7-Day Natural Grammar Pattern Activation",
-        focus: "Practise grammar as speaking patterns, not rules.",
-        days: ["Common I am / I have / I want patterns", "Past experience patterns", "Future plan patterns", "Opinion patterns", "Question patterns", "Correction without rule memorisation", "Natural speaking review"]
+        block: "Grammar Pattern Block",
+        focus: "Your main focus this week: natural grammar through patterns. Do not memorise rules. Repeat patterns aloud."
       },
       expression: {
         name: "7-Day Expression Upgrade Activation",
-        focus: "Say basic ideas in clearer, more natural, and more confident ways.",
-        days: ["Say it better - feelings", "Say it better - opinions", "Say it better - problems", "Say it better - workplace", "Storytelling basics", "Personal introduction upgrade", "Real conversation practice"]
+        block: "Expression Block",
+        focus: "Your main focus this week: expressing your real thoughts more naturally. Pay extra attention to the Say It Better Drill each day."
       },
       confidence: {
         name: "7-Day Speaking Confidence Activation",
-        focus: "Build comfort through safe, simple, daily speaking practice.",
-        days: ["Safe 30-second speaking", "Speak slowly and clearly", "Record without deleting", "Speak about yourself", "Speak about your goal", "Repeat and improve", "Confidence review"]
+        block: "Confidence Block",
+        focus: "Your main focus this week: building speaking comfort. Complete the daily recording even if it is not perfect."
       }
     };
+
+    const dayContent = [
+      {
+        title: "Start Speaking Without Freezing",
+        purpose: "Activate your voice and reduce fear of speaking.",
+        focus: "Today you will start speaking slowly and clearly without judging yourself. The goal is not perfect English. The goal is to begin.",
+        voice: ["I can speak.", "I can speak slowly.", "I can speak slowly and clearly.", "I can speak slowly and clearly without rushing.", "I can speak slowly and clearly without judging myself."],
+        voiceInstruction: "Say each line slowly. Let your mouth feel the words. Do not rush.",
+        coreWord: "confidence",
+        combinations: ["build confidence", "gain confidence", "lose confidence", "speak with confidence", "confidence in myself", "more confident", "confident speaker", "speak confidently"],
+        sentences: ["I want to build confidence in English.", "I lose confidence when I cannot find the right words.", "Daily speaking practice helps me become more confident.", "I want to speak confidently in real conversations."],
+        patterns: ["I want to improve...", "I feel nervous when...", "I lose confidence when...", "I feel more confident when...", "I am learning to..."],
+        betterBase: "My English is weak.",
+        better: ["I am still building my English fluency.", "I understand English, but I need more speaking practice.", "I want to become more natural and confident in English.", "My speaking is improving step by step."],
+        mission: "Why do you want to improve your English speaking?",
+        support: ["Where do you need English?", "What happens when you try to speak?", "How do you want to feel when speaking English?"],
+        reflection: "What felt easier today: starting the sentence, finding words, or speaking aloud?",
+        completion: "Day 1 complete. You have started training your voice. That is the first real step."
+      },
+      {
+        title: "Make Words Come Faster",
+        purpose: "Understand that fluency comes from ready word groups, not isolated words.",
+        focus: "Today you will practise useful word combinations so words come faster when you speak.",
+        voice: ["Words can come.", "Words can come faster.", "Useful words can come faster.", "Useful words can come faster when I practise them in groups.", "Useful words can come faster when I practise them in real sentences."],
+        voiceInstruction: "Speak each line three times. Keep the rhythm smooth and simple.",
+        coreWord: "problem",
+        combinations: ["face a problem", "solve a problem", "create a problem", "avoid a problem", "serious problem", "common problem", "main problem", "problem with communication"],
+        sentences: ["I face this problem when I try to speak English.", "The main problem is that I translate in my mind.", "I want to solve this problem through daily practice.", "Lack of speaking practice creates this problem."],
+        patterns: ["The main problem is...", "I face this problem when...", "I want to solve...", "One common problem is...", "This becomes difficult because..."],
+        betterBase: "I don't get words.",
+        better: ["I cannot find the right words quickly.", "The words do not come fast enough when I speak.", "I know the words, but they are not ready when I need them.", "I need to practise useful word groups so I can speak faster."],
+        mission: "What is the biggest problem you face while speaking English?",
+        support: ["Do words come slowly?", "Do you translate?", "Do you worry about grammar?", "Do you stop after a few words?"],
+        reflection: "Which word group felt most useful today?",
+        completion: "Day 2 complete. Today you trained words in groups, not as isolated vocabulary."
+      },
+      {
+        title: "Form Sentences Naturally",
+        purpose: "Practise sentence patterns so grammar becomes automatic.",
+        focus: "Today you will practise natural sentence patterns so complete sentences come more easily.",
+        voice: ["I can form sentences.", "I can form simple sentences.", "I can form simple sentences clearly.", "I can form simple sentences clearly with practice.", "I can form simple sentences clearly without overthinking grammar."],
+        voiceInstruction: "Say the line, pause, breathe, and say it again with more control.",
+        coreWord: "improve",
+        combinations: ["improve my English", "improve my speaking", "improve my confidence", "improve my pronunciation", "improve step by step", "improve through practice", "improve my communication", "improve every day"],
+        sentences: ["I want to improve my English speaking.", "I can improve step by step.", "Daily practice can improve my confidence.", "I am improving my communication every day."],
+        patterns: ["I want to improve...", "I am trying to improve...", "I have been trying to improve...", "I can improve by...", "I will improve if..."],
+        betterBase: "I want good English.",
+        better: ["I want to improve my spoken English.", "I want to speak English more clearly and confidently.", "I want to express my thoughts naturally in English.", "I want to build real fluency through daily practice."],
+        mission: "What exactly do you want to improve in your English speaking?",
+        support: ["Fluency?", "Confidence?", "Pronunciation?", "Interviews?", "Meetings?", "Daily conversation?"],
+        reflection: "Which sentence pattern helped you speak most easily today?",
+        completion: "Day 3 complete. You are now training sentence patterns instead of memorising grammar rules."
+      },
+      {
+        title: "Stop Translating In Your Head",
+        purpose: "Practise direct English thinking through repeated patterns and simple idea flow.",
+        focus: "Today you will practise speaking directly in English without translating every word in your mind.",
+        voice: ["I can think in English.", "I can think in simple English.", "I can speak in simple English.", "I can express one idea at a time.", "I can express one idea at a time without translating everything."],
+        voiceInstruction: "Keep the words simple. One clear idea is enough.",
+        coreWord: "idea",
+        combinations: ["express an idea", "share an idea", "explain an idea", "clear idea", "simple idea", "main idea", "better idea", "idea in my mind"],
+        sentences: ["I want to express my ideas clearly.", "I have many ideas in my mind.", "Sometimes I cannot explain my idea in English.", "I can share one simple idea at a time."],
+        patterns: ["I think...", "I feel...", "I believe...", "In my opinion...", "The main idea is...", "What I mean is..."],
+        betterBase: "I have thoughts but I cannot say.",
+        better: ["I have thoughts, but I find it difficult to express them in English.", "I know what I want to say, but I get stuck while speaking.", "My ideas are clear in my mind, but they do not come out smoothly.", "I want to express my ideas clearly and naturally."],
+        mission: "Share one opinion about learning English.",
+        support: ["Why do people struggle with speaking?", "What kind of practice helps?", "What is your own experience?"],
+        reflection: "Did speaking one idea at a time feel easier than translating full sentences?",
+        completion: "Day 4 complete. Today you practised expressing ideas directly in English."
+      },
+      {
+        title: "Say Simple Things Better",
+        purpose: "Upgrade basic English into natural, expressive English.",
+        focus: "Today you will practise saying simple thoughts in a more natural and confident way.",
+        voice: ["I can say it better.", "I can say simple things better.", "I can express simple thoughts better.", "I can express simple thoughts better with natural English.", "I can express simple thoughts better with practice and confidence."],
+        voiceInstruction: "Say each line with calm confidence. Let the sentence sound like you.",
+        coreWord: "feel",
+        combinations: ["feel nervous", "feel confident", "feel comfortable", "feel stuck", "feel ready", "feel proud", "feel better", "feel natural"],
+        sentences: ["I feel nervous when I speak English.", "I feel more confident after practice.", "I want to feel comfortable in conversations.", "I feel proud when I complete my speaking practice."],
+        patterns: ["I feel nervous when...", "I feel confident when...", "I feel comfortable with...", "I feel stuck because...", "I feel proud when..."],
+        betterBase: "I am afraid to speak English.",
+        better: ["I feel nervous when I have to speak English.", "I hesitate because I worry about making mistakes.", "I want to become more comfortable speaking English.", "I am learning to speak with more confidence."],
+        mission: "How do you feel when you have to speak English, and how do you want to feel instead?",
+        support: ["Nervous?", "Stuck?", "Embarrassed?", "Confident?", "Natural?", "Free?"],
+        reflection: "Which better sentence sounded most natural to you?",
+        completion: "Day 5 complete. Today you practised expressing feelings more naturally."
+      },
+      {
+        title: "Speak In A Real Situation",
+        purpose: "Apply practice to a realistic speaking situation.",
+        focus: "Today you will practise speaking in a real-life situation so your English becomes useful, not theoretical.",
+        voice: ["I can handle a conversation.", "I can handle a simple conversation.", "I can handle a simple conversation in English.", "I can handle a simple conversation in English one sentence at a time.", "I can handle a simple conversation in English with calm confidence."],
+        voiceInstruction: "Imagine a real person listening. Speak one clear sentence at a time.",
+        coreWord: "work",
+        combinations: ["work on my English", "work on my confidence", "work with people", "work in a team", "work under pressure", "work experience", "workplace communication", "work-related conversation"],
+        sentences: ["I am working on my English fluency.", "I want to improve my workplace communication.", "I can work with people more confidently when I speak clearly.", "I am learning to handle work-related conversations in English."],
+        patterns: ["I am currently working on...", "I have experience in...", "I usually work with...", "At work, I need to...", "I want to become better at..."],
+        betterBase: "I need English for job.",
+        better: ["I need English for my career growth.", "I want to speak more confidently at work.", "I need English for interviews, meetings, and professional conversations.", "Better English will help me express myself more clearly at work."],
+        mission: "Choose one situation and record a 60-second response: introduce yourself professionally, explain your current work or study, or talk about why English is important for your career.",
+        support: ["Professional introduction", "Current work or study", "Career growth"],
+        reflection: "Which situation felt most useful for your real life?",
+        completion: "Day 6 complete. Today you practised English for a real situation, not just for learning."
+      },
+      {
+        title: "Review Your Progress",
+        purpose: "Record again, compare your progress, and see what continued practice can do.",
+        focus: "Today you will record again, compare your progress, and notice what changed in your speaking flow.",
+        voice: ["I have started.", "I have practised for seven days.", "I have trained my voice for seven days.", "I have trained my voice, words, patterns, and confidence.", "I can continue improving with daily speaking practice."],
+        voiceInstruction: "Say these lines with pride. This is your progress review.",
+        coreWord: "progress",
+        combinations: ["make progress", "see progress", "small progress", "steady progress", "real progress", "progress through practice", "progress every day", "continue my progress"],
+        sentences: ["I have made progress by speaking every day.", "Small progress matters when I practise consistently.", "I can see progress in my confidence.", "I want to continue my progress."],
+        patterns: ["In the last seven days, I have...", "I noticed that...", "I feel more comfortable with...", "I still want to improve...", "My next goal is..."],
+        betterBase: "I improved little.",
+        better: ["I have started making progress.", "I feel a little more comfortable speaking English.", "I can see that daily practice makes a difference.", "I want to continue building my fluency step by step."],
+        mission: "Why do you want to improve your English speaking?",
+        support: ["Did you start faster today?", "Did your voice feel easier?", "Did you use better word groups?", "Did your sentences feel more natural?", "Did you feel more confident?"],
+        reflection: "What changed the most for you in these 7 days?",
+        completion: "You completed your 7-Day Fluency Activation. This is only the beginning. Your voice improves when you continue practising the right way."
+      }
+    ];
+
+    const reminderCopy = dayContent.map((day, index) => ({
+      subject: `Your Day ${index + 1} Fluency Practice Is Ready`,
+      message: `Hi [First Name],\n\nYour Day ${index + 1} Fluency Activation is ready.\n\nToday's focus:\n${day.title}\n\n${day.focus}\n\nContinue here:\n[Personal Link]\n\nRemember: you do not become fluent by waiting. You become fluent by speaking.\n\nFluency Magic`
+    }));
 
     const colors = ["var(--green)", "var(--yellow)", "var(--blue)", "var(--green)", "var(--yellow)", "var(--blue)", "var(--green)"];
     const app = document.getElementById("app");
@@ -253,30 +401,76 @@
     let timer = null;
     let secondsLeft = 60;
 
-    function getProfile() {
-      const saved = JSON.parse(localStorage.getItem("fluencyMagicActivation") || "null");
-      if (saved) return saved;
+    function safeParse(key) {
+      try { return JSON.parse(localStorage.getItem(key) || "null"); }
+      catch { return null; }
+    }
 
-      const test = JSON.parse(localStorage.getItem("fluencyMagicTest") || "null");
+    function getProfile() {
+      const saved = safeParse("fluencyMagicActivation");
+      if (saved) return normaliseProfile(saved);
+
+      const test = safeParse("fluencyMagicTest");
       const planKey = localStorage.getItem("fluencyMagicPlanKey") || test?.result?.recommendedPlan || "wordAvailability";
       const token = crypto.randomUUID ? crypto.randomUUID() : `fm-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-      const profile = {
+      const profile = normaliseProfile({
+        userId: token,
         token,
         createdAt: new Date().toISOString(),
+        activationStartedAt: new Date().toISOString(),
         lead: test?.lead || {},
         result: test?.result || null,
         planKey,
         currentDay: 1,
         completedDays: [],
+        streakCount: 0,
+        lastCompletedAt: null,
+        isCompleted: false,
         recordings: {},
+        dailyReflections: {},
+        dayCompletionStatus: {},
+        paidChallengeClicked: false,
+        paidChallengeJoined: false,
         reminderPreference: {
           email: Boolean(test?.lead?.email),
           whatsapp: Boolean(test?.lead?.phone),
           time: "08:00"
         }
-      };
-      localStorage.setItem("fluencyMagicActivation", JSON.stringify(profile));
+      });
+      saveProfile(profile);
       return profile;
+    }
+
+    function normaliseProfile(profile) {
+      profile.userId ||= profile.token || `fm-${Date.now()}`;
+      profile.token ||= profile.userId;
+      profile.lead ||= {};
+      profile.currentDay ||= 1;
+      profile.completedDays ||= [];
+      profile.recordings ||= {};
+      profile.dailyReflections ||= {};
+      profile.dayCompletionStatus ||= {};
+      profile.streakCount ||= profile.completedDays.length || 0;
+      profile.activationStartedAt ||= profile.createdAt || new Date().toISOString();
+      profile.reminderPreference ||= { email: Boolean(profile.lead.email), whatsapp: Boolean(profile.lead.phone), time: "08:00" };
+      profile.planKey = normalisePlanKey(profile.planKey);
+      return profile;
+    }
+
+    function normalisePlanKey(key) {
+      const map = {
+        mouth: "mouthFlow",
+        mouthFlow: "mouthFlow",
+        word: "wordAvailability",
+        wordAvailability: "wordAvailability",
+        sentence: "sentenceFormation",
+        sentenceFormation: "sentenceFormation",
+        grammar: "grammarPattern",
+        grammarPattern: "grammarPattern",
+        expression: "expression",
+        confidence: "confidence"
+      };
+      return map[key] || "wordAvailability";
     }
 
     function saveProfile(profile) {
@@ -289,7 +483,16 @@
     }
 
     function activePlan(profile) {
-      return plans[profile.planKey] || plans.wordAvailability;
+      return planGuidance[normalisePlanKey(profile.planKey)] || planGuidance.wordAvailability;
+    }
+
+    function getCurrentDay(profile) {
+      const completed = profile.completedDays.length;
+      return Math.min(7, Math.max(profile.currentDay || 1, completed + 1));
+    }
+
+    function isUnlocked(profile, day) {
+      return day === 1 || profile.completedDays.includes(day - 1) || profile.completedDays.includes(day);
     }
 
     function render() {
@@ -304,20 +507,27 @@
     function renderDashboard(profile) {
       const plan = activePlan(profile);
       const completed = profile.completedDays.length;
-      const currentDay = Math.min(7, Math.max(profile.currentDay, completed + 1));
+      const currentDay = getCurrentDay(profile);
+      const level = profile.result?.fluencyLevel?.levelName || profile.result?.level?.name || "Your fluency level";
       const accessUrl = `${location.origin}/activation?access=${encodeURIComponent(profile.token)}`;
       app.innerHTML = `
         <section class="hero">
           <div class="hero-grid">
             <div>
-              <span class="pill">Lightweight profile created</span>
-              <h1>Your 7-Day Fluency Activation Dashboard</h1>
-              <p class="lead">${plan.name}: ${plan.focus}</p>
+              <span class="pill">Welcome back, ${escapeHtml(profile.lead?.firstName || "speaker")}.</span>
+              <h1>Your 7-Day Fluency Activation</h1>
+              <p class="lead">Each day gives you a short speaking practice session to train your voice, word flow, sentence patterns, and confidence.</p>
+              <div class="stats">
+                <span class="badge green">Your level: ${escapeHtml(level)}</span>
+                <span class="badge blue">Main focus: ${escapeHtml(plan.block)}</span>
+                <span class="badge yellow">Current streak: ${profile.streakCount || completed} day${(profile.streakCount || completed) === 1 ? "" : "s"}</span>
+              </div>
+              <p class="lead" style="margin-top:18px">${escapeHtml(plan.focus)}</p>
               <div class="actions">
-                <a class="button" href="/activation/day-${currentDay}">Continue Day ${currentDay}</a>
+                <a class="button" href="/activation/day-${currentDay}">Start Today's Practice</a>
                 <button class="button secondary" type="button" id="copyLink">Copy access link</button>
               </div>
-              <p class="note">MVP access uses a secure-style unique link stored in this browser. Production magic links need a small backend to work across devices.</p>
+              <p class="note">You do not become fluent by waiting. You become fluent by speaking, one day at a time.</p>
             </div>
             <div class="progress-ring" style="--progress-deg:${(completed / 7) * 360}deg">
               <div><strong>${completed}/7</strong><span>days complete</span></div>
@@ -326,14 +536,16 @@
         </section>
 
         <section class="days">
-          ${plan.days.map((title, index) => {
+          ${dayContent.map((item, index) => {
             const day = index + 1;
             const done = profile.completedDays.includes(day);
             const current = day === currentDay && !done;
-            return `<a class="day-card ${done ? "done" : ""} ${current ? "current" : ""}" href="/activation/day-${day}">
-              <strong style="--accent:${colors[index]}">${done ? "✓" : day}</strong>
+            const locked = !isUnlocked(profile, day);
+            const href = locked ? `/activation/day-${day}` : `/activation/day-${day}`;
+            return `<a class="day-card ${done ? "done" : ""} ${current ? "current" : ""} ${locked ? "locked" : ""}" href="${href}">
+              <strong style="--accent:${colors[index]}">${done ? "OK" : locked ? "Lock" : day}</strong>
               <h3>Day ${day}</h3>
-              <p>${title}</p>
+              <p>${escapeHtml(item.title)}</p>
             </a>`;
           }).join("")}
         </section>
@@ -345,15 +557,19 @@
             <form class="form" id="reminderForm">
               <label>Email reminders<select name="email"><option ${profile.reminderPreference.email ? "selected" : ""}>On</option><option ${!profile.reminderPreference.email ? "selected" : ""}>Off</option></select></label>
               <label>WhatsApp reminders<select name="whatsapp"><option ${profile.reminderPreference.whatsapp ? "selected" : ""}>On</option><option ${!profile.reminderPreference.whatsapp ? "selected" : ""}>Off</option></select></label>
-              <label>Preferred time<input name="time" value="${profile.reminderPreference.time || "08:00"}"></label>
+              <label>Preferred time<input name="time" value="${escapeAttr(profile.reminderPreference.time || "08:00")}"></label>
             </form>
             <div class="actions"><button class="button secondary" form="reminderForm" type="submit">Save reminder preference</button></div>
-            <p class="note">Preferences are saved locally in this MVP. Email/WhatsApp delivery requires backend messaging integration.</p>
+            <p class="note">Preferences are saved in this browser for the MVP. Real email and WhatsApp delivery will use the serverless account backend.</p>
           </article>
           <article class="panel accent">
             <h2>After Day 7</h2>
             <p class="lead">Compare your Day 1 and Day 7 recordings, review your progress, and continue into deeper guided practice.</p>
-            <div class="actions"><a class="button blue" href="/activation/day-7">Go to Day 7 Review</a></div>
+            <div class="actions">
+              <a class="button blue" href="/activation/day-7">Go to Day 7 Review</a>
+              <a class="button secondary" href="/fluency-test/result">View my fluency result</a>
+              <a class="button secondary" href="/fluency-test">Retake fluency test</a>
+            </div>
           </article>
         </section>
       `;
@@ -371,62 +587,138 @@
     }
 
     function renderDay(profile, day) {
+      if (!dayContent[day - 1]) return renderDashboard(profile);
+      if (!isUnlocked(profile, day)) return renderLockedDay(profile, day);
+
+      const content = dayContent[day - 1];
       const plan = activePlan(profile);
-      const title = plan.days[day - 1] || plan.days[0];
       const done = profile.completedDays.includes(day);
       const recording = profile.recordings[`day-${day}`];
-      const isReview = day === 7;
+      const reflection = profile.dailyReflections[`day-${day}`] || "";
       app.innerHTML = `
         <section class="hero">
           <div class="hero-grid">
             <div>
-              <span class="pill">${plan.name}</span>
-              <h1>Day ${day}: ${title}</h1>
-              <p class="lead">${getDayPrompt(day, profile.planKey)}</p>
+              <span class="pill">Day ${day} of 7</span>
+              <h1>${escapeHtml(content.title)}</h1>
+              <p class="lead">${escapeHtml(content.focus)}</p>
+              <div class="stats">
+                <span class="badge green">Estimated time: 7-12 minutes</span>
+                <span class="badge blue">${escapeHtml(plan.block)}</span>
+                <span class="badge yellow">${done ? "Completed" : "Unlocked"}</span>
+              </div>
               <div class="actions">
                 <a class="button secondary" href="/activation">Back to dashboard</a>
-                ${done ? `<a class="button" href="/activation/day-${Math.min(7, day + 1)}">Next day</a>` : ""}
+                ${done && day < 7 ? `<a class="button" href="/activation/day-${day + 1}">Continue Tomorrow</a>` : ""}
               </div>
             </div>
-            <div class="progress-ring" style="--progress-deg:${((day - 1) / 7) * 360}deg">
-              <div><strong>${day}</strong><span>of 7</span></div>
+            <div>
+              <div class="progress-ring" style="--progress-deg:${(day / 7) * 360}deg">
+                <div><strong>${day}</strong><span>of 7</span></div>
+              </div>
+              <div class="wave" aria-hidden="true" style="margin:24px auto 0; justify-content:center">
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
             </div>
           </div>
         </section>
 
-        <section class="task-list">
-          <article class="task-card">
-            <span class="task-number" style="--accent:${colors[day - 1]}">1</span>
-            <h2>Speak Aloud</h2>
-            <p>${getSpeakingTask(day, profile.planKey)}</p>
-          </article>
-          <article class="task-card">
-            <span class="task-number" style="--accent:${colors[day % colors.length]}">2</span>
-            <h2>Repeat and Improve</h2>
-            <p>Record once naturally. Listen once. Then record again with clearer rhythm, stronger word groups, or smoother sentence flow.</p>
-          </article>
+        <section class="practice-grid">
+          ${practiceCard(1, "Today's Focus", content.purpose, [content.focus])}
+          ${practiceCard(2, "Voice Flow Drill", content.voiceInstruction, content.voice)}
+          ${practiceCard(3, `Word Combination Drill: ${content.coreWord}`, "Practise these word groups aloud. Fluent speakers use ready groups, not isolated words.", [...content.combinations, ...content.sentences])}
+          ${practiceCard(4, "Sentence Pattern Drill", "Complete these starters with your own life. Speak each one aloud.", content.patterns)}
+          ${practiceCard(5, "Say It Better Drill", `Basic sentence: "${content.betterBase}"`, content.better)}
+          ${practiceCard(6, "Speaking Mission", content.mission, content.support)}
         </section>
 
         <section class="recorder">
-          <h2>Daily Recording</h2>
+          <h2>Record Your Speaking Mission</h2>
+          <p class="lead">Speak for 30-60 seconds. Do not chase perfection. Your voice practice is the most important part.</p>
           <div class="timer" id="timer">60</div>
           <div class="actions">
-            <button class="button" type="button" id="recordButton">Start Recording</button>
-            <button class="button secondary" type="button" id="completeButton">${done ? "Completed" : "Mark Day Complete"}</button>
+            <button class="button" type="button" id="recordButton">${recording ? "Re-record" : "Start Recording"}</button>
+            ${recording ? `<button class="button secondary" type="button" id="useRecording">Use this recording</button>` : ""}
           </div>
-          <p class="note" id="recordStatus">${recording ? "Recording saved for this day." : "Record your daily speaking task. Audio stays in this browser in the MVP."}</p>
+          <p class="note" id="recordStatus">${recording ? `Recording saved. Re-records used: ${recording.reRecordCount || 0}.` : "Audio is saved in this browser for the MVP."}</p>
           ${recording?.url ? `<audio controls src="${recording.url}"></audio>` : ""}
         </section>
 
-        ${isReview ? renderDaySevenReview(profile) : ""}
+        <section class="panel">
+          <h2>Reflection</h2>
+          <p class="lead">${escapeHtml(content.reflection)}</p>
+          <form id="reflectionForm">
+            <label>Your answer<textarea name="reflection" placeholder="Write one honest sentence.">${escapeHtml(reflection)}</textarea></label>
+          </form>
+          <div class="actions">
+            <button class="button" type="button" id="completeButton">${done ? "Day Completed" : "Mark Day Complete"}</button>
+            <a class="button secondary" href="/activation">Back to Dashboard</a>
+          </div>
+          <p class="note" id="completionStatus">${done ? escapeHtml(content.completion) : "Please record your speaking mission and write your reflection before marking today complete."}</p>
+        </section>
+
+        ${day === 3 ? milestonePanel("You have now practised voice flow, word groups, and sentence patterns. These are the foundations of real fluency.") : ""}
+        ${day === 5 ? milestonePanel("You are starting to see how simple English can become more natural with the right practice.") : ""}
+        ${day === 7 ? renderDaySevenReview(profile) : ""}
       `;
       document.getElementById("recordButton").addEventListener("click", () => toggleDayRecording(profile, day));
-      document.getElementById("completeButton").addEventListener("click", () => {
-        if (!profile.completedDays.includes(day)) profile.completedDays.push(day);
-        profile.currentDay = Math.min(7, day + 1);
-        saveProfile(profile);
-        renderDay(profile, day);
+      document.getElementById("useRecording")?.addEventListener("click", () => {
+        document.getElementById("recordStatus").textContent = "Recording selected for today. Add your reflection and mark the day complete.";
       });
+      document.getElementById("completeButton").addEventListener("click", () => completeDay(profile, day));
+    }
+
+    function practiceCard(number, title, intro, lines) {
+      return `
+        <article class="practice-card">
+          <span class="task-number" style="--accent:${colors[(number - 1) % colors.length]}">${number}</span>
+          <h2>${escapeHtml(title)}</h2>
+          <p>${escapeHtml(intro)}</p>
+          <div class="quote-lines">${lines.map((line) => `<span>${escapeHtml(line)}</span>`).join("")}</div>
+        </article>
+      `;
+    }
+
+    function milestonePanel(copy) {
+      return `<section class="panel"><h2>Your Practice Is Building</h2><p class="lead">${escapeHtml(copy)}</p></section>`;
+    }
+
+    function renderLockedDay(profile, day) {
+      const previous = Math.max(1, day - 1);
+      app.innerHTML = `
+        <section class="hero">
+          <span class="pill">Practice path</span>
+          <h1>Day ${day} is not unlocked yet.</h1>
+          <p class="lead">Complete Day ${previous} first so your practice builds step by step.</p>
+          <div class="actions">
+            <a class="button" href="/activation/day-${previous}">Go to Day ${previous}</a>
+            <a class="button secondary" href="/activation">Back to Dashboard</a>
+          </div>
+        </section>
+      `;
+    }
+
+    function completeDay(profile, day) {
+      const status = document.getElementById("completionStatus");
+      const reflection = new FormData(document.getElementById("reflectionForm")).get("reflection").trim();
+      if (!profile.recordings[`day-${day}`]) {
+        status.textContent = "Please complete your speaking mission before marking today complete. Your voice practice is the most important part.";
+        return;
+      }
+      if (!reflection) {
+        status.textContent = "Write one short reflection first. It helps you notice your progress.";
+        return;
+      }
+      profile.dailyReflections[`day-${day}`] = reflection;
+      if (!profile.completedDays.includes(day)) profile.completedDays.push(day);
+      profile.completedDays.sort((a, b) => a - b);
+      profile.currentDay = Math.min(7, day + 1);
+      profile.streakCount = Math.max(profile.streakCount || 0, profile.completedDays.length);
+      profile.lastCompletedAt = new Date().toISOString();
+      profile.dayCompletionStatus[`day-${day}`] = { status: "completed", completedAt: profile.lastCompletedAt };
+      profile.isCompleted = profile.completedDays.length >= 7;
+      saveProfile(profile);
+      renderDay(profile, day);
     }
 
     function renderDaySevenReview(profile) {
@@ -434,18 +726,33 @@
       const day7 = profile.recordings["day-7"];
       return `
         <section class="panel accent">
-          <h2>Day 7 Review</h2>
-          <p class="lead">Listen to Day 1 and Day 7. Notice your flow, confidence, and sentence control. Progress becomes real when you can hear it.</p>
+          <h2>Compare Your Day 1 and Day 7 Recordings</h2>
+          <p class="lead">Listen for faster starts, easier voice flow, better word groups, more natural sentences, and stronger confidence.</p>
           <div class="review-grid">
             <div><h3>Day 1 Recording</h3>${day1?.url ? `<audio controls src="${day1.url}"></audio>` : `<p class="note">No Day 1 recording found yet.</p>`}</div>
             <div><h3>Day 7 Recording</h3>${day7?.url ? `<audio controls src="${day7.url}"></audio>` : `<p class="note">Record Day 7 to compare your progress.</p>`}</div>
           </div>
-          <div class="actions"><a class="button blue" href="#challenge">Join the 30-Day Fluency Magic Challenge</a></div>
+          <div class="quote-lines">
+            <span>Did you start faster today?</span>
+            <span>Did your voice feel easier?</span>
+            <span>Did your sentences feel more natural?</span>
+            <span>Did you feel more confident?</span>
+          </div>
         </section>
         <section class="panel" id="challenge">
-          <h2>Ready for the 30-Day Fluency Magic Challenge?</h2>
-          <p class="lead">The 7-day plan starts your speaking habit. The 30-day challenge builds deeper fluency through guided daily voice practice, word-combination mastery, sentence-pattern training, and real-life expression missions.</p>
-          <div class="actions"><a class="button" href="/">Notify Me About the Challenge</a></div>
+          <h2>Ready to Continue Your Fluency Progress?</h2>
+          <p class="lead">In 7 days, you activated your voice and experienced the Fluency Magic method. But real fluency needs deeper repetition, real-life conversation practice, confidence training, and guided progression.</p>
+          <div class="quote-lines">
+            <span>Daily structured speaking practice</span>
+            <span>Deeper word combination mastery</span>
+            <span>Sentence pattern automation</span>
+            <span>Expression upgrade drills</span>
+            <span>Before-and-after progress tracking</span>
+          </div>
+          <div class="actions">
+            <button class="button blue" type="button" id="challengeButton">Join the 30-Day Fluency Magic Challenge</button>
+            <a class="button secondary" href="/activation">Remind Me Later</a>
+          </div>
         </section>
       `;
     }
@@ -456,6 +763,12 @@
       if (activeRecorder && activeRecorder.state === "recording") {
         activeRecorder.stop();
         button.textContent = "Start Recording";
+        return;
+      }
+
+      const previous = profile.recordings[`day-${day}`];
+      if (previous && (previous.reRecordCount || 0) >= 2) {
+        status.textContent = "You have used your re-records for today. Use this recording and keep moving. Fluency grows through practice, not perfect recordings.";
         return;
       }
 
@@ -471,7 +784,10 @@
           stream.getTracks().forEach((track) => track.stop());
           const blob = new Blob(activeChunks, { type: "audio/webm" });
           const url = URL.createObjectURL(blob);
-          profile.recordings[`day-${day}`] = { createdAt: new Date().toISOString(), size: blob.size, url };
+          const reRecordCount = previous ? (previous.reRecordCount || 0) + 1 : 0;
+          profile.recordings[`day-${day}`] = { createdAt: new Date().toISOString(), size: blob.size, url, reRecordCount };
+          if (day === 1) profile.day1RecordingUrl = url;
+          if (day === 7) profile.day7RecordingUrl = url;
           saveProfile(profile);
           status.textContent = "Recording saved for this day.";
           renderDay(profile, day);
@@ -485,7 +801,7 @@
           if (secondsLeft <= 0 && activeRecorder.state === "recording") activeRecorder.stop();
         }, 1000);
       } catch (error) {
-        status.textContent = "Microphone access is blocked. You can still mark the day complete after practising aloud.";
+        status.textContent = "Microphone access is blocked. Please allow microphone access to complete today's speaking mission.";
       }
     }
 
@@ -494,12 +810,12 @@
         <section class="hero">
           <span class="pill">Magic link access</span>
           <h1>Return to Your Fluency Activation</h1>
-          <p class="lead">Enter the email or WhatsApp number you used in the Free Fluency Test. In this static MVP, we restore the activation saved in this browser. Production will send a secure magic link.</p>
+          <p class="lead">Enter the email or WhatsApp number you used in the Free Fluency Test. In this MVP, we restore the activation saved in this browser. Production will send a secure magic link.</p>
           <form class="form" id="loginForm">
             <label>Email or WhatsApp<input required name="identifier" placeholder="you@example.com"></label>
           </form>
           <div class="actions"><button class="button" type="submit" form="loginForm">Send My Magic Link</button></div>
-          <p class="note">No password needed for the MVP flow.</p>
+          <p class="note">No password needed. The serverless backend will email a secure access link when connected.</p>
         </section>
       `;
       document.getElementById("loginForm").addEventListener("submit", (event) => {
@@ -509,23 +825,24 @@
       });
     }
 
-    function getDayPrompt(day, planKey) {
-      const prompts = {
-        mouthFlow: "Focus on mouth movement, breath, and rhythm. Do not chase perfect grammar today.",
-        wordAvailability: "Focus on making useful words ready in natural groups.",
-        sentenceFormation: "Focus on completing full spoken thoughts with simple sentence patterns.",
-        grammarPattern: "Focus on repeating natural patterns until grammar feels automatic.",
-        expression: "Focus on saying your idea more clearly, naturally, and personally.",
-        confidence: "Focus on safe, steady speaking. Your goal is to continue, not to be perfect."
-      };
-      return prompts[planKey] || prompts.wordAvailability;
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char]));
     }
 
-    function getSpeakingTask(day, planKey) {
-      const base = activePlan(getProfile()).days[day - 1];
-      return `Speak for 60 seconds using today's focus: ${base}. Keep your voice steady and continue even if you make small mistakes.`;
+    function escapeAttr(value) {
+      return escapeHtml(value).replace(/`/g, "&#096;");
     }
 
+    document.addEventListener("click", (event) => {
+      if (event.target?.id === "challengeButton") {
+        const profile = getProfile();
+        profile.paidChallengeClicked = true;
+        saveProfile(profile);
+        event.target.textContent = "Challenge interest saved";
+      }
+    });
+
+    window.fluencyMagicReminderCopy = reminderCopy;
     render();
   </script>
 </body>
