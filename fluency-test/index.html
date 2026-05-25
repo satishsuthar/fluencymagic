@@ -310,6 +310,50 @@
       color: var(--muted);
     }
 
+    .transcript-card {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid rgba(67, 135, 238, .18);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(67, 135, 238, .08), rgba(20, 159, 91, .06)), #fff;
+    }
+
+    .transcript-card strong {
+      color: var(--ink);
+    }
+
+    .transcript-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .transcript-text {
+      min-height: 74px;
+      padding: 14px;
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .8);
+      color: var(--ink);
+      font-weight: 720;
+    }
+
+    .analysis-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .analysis-pills span {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid rgba(16, 19, 24, .08);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
     .form-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -896,51 +940,6 @@
       if (score <= 82) return { levelNumber: 4, name: "Natural Speaker", levelName: "Natural Speaker", range: "66-82", scoreRange: "66-82", headline: "You are close to strong fluency.", description: "You can speak clearly in many situations, but you may still need more polish, smoother expression, professional fluency, and stronger confidence in important moments.", nextFocus: ["Advanced expression", "Professional speaking practice", "Storytelling", "Interview and meeting fluency"], encouragingLine: "Now the focus is polish, presence, and powerful expression." };
       return { levelNumber: 5, name: "Confident Communicator", levelName: "Confident Communicator", range: "83-100", scoreRange: "83-100", headline: "Your voice is already strong.", description: "You speak with clarity, flow, and confidence. You can express your ideas naturally and handle many real-life English situations well.", nextFocus: ["Leadership communication", "Advanced storytelling", "Persuasive speaking", "Presentation fluency"], encouragingLine: "Now we help you make your voice more powerful, precise, and memorable." };
     }
-
-    .transcript-card {
-      display: grid;
-      gap: 10px;
-      margin-top: 18px;
-      padding: 18px;
-      border: 1px solid rgba(67, 135, 238, .18);
-      border-radius: var(--radius);
-      background: linear-gradient(135deg, rgba(67, 135, 238, .08), rgba(20, 159, 91, .06)), #fff;
-    }
-
-    .transcript-card strong {
-      color: var(--ink);
-    }
-
-    .transcript-card p {
-      margin: 0;
-      color: var(--muted);
-    }
-
-    .transcript-text {
-      min-height: 74px;
-      padding: 14px;
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, .8);
-      color: var(--ink);
-      font-weight: 720;
-    }
-
-    .analysis-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .analysis-pills span {
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: #fff;
-      border: 1px solid rgba(16, 19, 24, .08);
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 850;
-    }
-
     function getBlock(problem, event, scores) {
       const blocks = {
         mouth: { name: "Mouth Flow Block", blockName: "Mouth Flow Block", planKey: "mouthFlow", meaning: "You may know what you want to say, but your mouth, tongue, breath, and voice are not yet comfortable producing English smoothly.", whyItHappens: "English has not been practised enough as a physical speaking skill.", practice: "Short phrase repetition, mouth movement drills, slow-clear-fast speaking practice, sentence expansion, and daily voice practice.", recommendedPractice: ["Short phrase repetition", "Mouth movement drills", "Slow-clear-fast speaking practice"] },
