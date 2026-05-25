@@ -409,7 +409,7 @@
 
   <script type="module">
     try {
-      const { pipeline, env } = await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.2.4");
+      const { pipeline, env } = await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.2.4/dist/transformers.min.js");
       env.allowLocalModels = false;
       env.useBrowserCache = true;
 
@@ -431,21 +431,53 @@
           }
 
           const transcriber = await transcriberPromise;
+          onStatus("Preparing your recording locally...");
+          const audio = await decodeAudioTo16k(blob);
           onStatus("Transcribing your recording locally...");
-          const audioUrl = URL.createObjectURL(blob);
-          try {
-            const output = await transcriber(audioUrl, {
-              chunk_length_s: 30,
-              stride_length_s: 5,
-              language: "english",
-              task: "transcribe"
-            });
-            return Array.isArray(output) ? output.map((item) => item.text || "").join(" ") : (output.text || "");
-          } finally {
-            URL.revokeObjectURL(audioUrl);
-          }
+          const output = await transcriber(audio, {
+            chunk_length_s: 30,
+            stride_length_s: 5,
+            language: "english",
+            task: "transcribe"
+          });
+          return Array.isArray(output) ? output.map((item) => item.text || "").join(" ") : (output.text || "");
         }
       };
+
+      async function decodeAudioTo16k(blob) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) {
+          throw new Error("Audio decoding is not supported in this browser.");
+        }
+
+        const arrayBuffer = await blob.arrayBuffer();
+        const audioContext = new AudioContextClass();
+        try {
+          const decoded = await audioContext.decodeAudioData(arrayBuffer.slice(0));
+          const source = decoded.getChannelData(0);
+          const targetRate = 16000;
+
+          if (decoded.sampleRate === targetRate) {
+            return source;
+          }
+
+          const ratio = decoded.sampleRate / targetRate;
+          const length = Math.max(1, Math.round(source.length / ratio));
+          const resampled = new Float32Array(length);
+
+          for (let i = 0; i < length; i += 1) {
+            const position = i * ratio;
+            const before = Math.floor(position);
+            const after = Math.min(before + 1, source.length - 1);
+            const weight = position - before;
+            resampled[i] = source[before] * (1 - weight) + source[after] * weight;
+          }
+
+          return resampled;
+        } finally {
+          audioContext.close?.();
+        }
+      }
     } catch (error) {
       window.FluencyTranscriber = null;
       console.warn("Browser-local transcription is unavailable.", error);
