@@ -34,6 +34,38 @@
       min-height: 100vh;
     }
 
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -24% auto auto -12%;
+      z-index: -1;
+      width: 42vw;
+      min-width: 280px;
+      aspect-ratio: 1;
+      border-radius: 48%;
+      background: radial-gradient(circle, rgba(20, 159, 91, .14), transparent 68%);
+      animation: floatGlow 12s ease-in-out infinite alternate;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      right: -16%;
+      bottom: -26%;
+      z-index: -1;
+      width: 48vw;
+      min-width: 320px;
+      aspect-ratio: 1;
+      border-radius: 45%;
+      background: radial-gradient(circle, rgba(67, 135, 238, .13), transparent 68%);
+      animation: floatGlow 14s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes floatGlow {
+      from { transform: translate3d(0, 0, 0) scale(1); }
+      to { transform: translate3d(5%, 4%, 0) scale(1.08); }
+    }
+
     a { color: inherit; text-decoration: none; }
     button, input, select { font: inherit; }
 
@@ -104,6 +136,12 @@
       min-height: 620px;
       display: grid;
       align-content: center;
+      animation: cardIn .45s ease both;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: none; }
     }
 
     .card::before {
@@ -325,6 +363,51 @@
     <main class="card" id="app" tabindex="-1"></main>
   </div>
 
+  <script type="module">
+    try {
+      const { pipeline, env } = await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.2.4");
+      env.allowLocalModels = false;
+      env.useBrowserCache = true;
+
+      let transcriberPromise;
+
+      window.FluencyTranscriber = {
+        async transcribe(blob, onStatus = () => {}) {
+          onStatus("Loading private browser transcription model...");
+          if (!transcriberPromise) {
+            transcriberPromise = pipeline("automatic-speech-recognition", "onnx-community/whisper-tiny.en", {
+              progress_callback: (progress) => {
+                if (progress.status === "progress" && progress.progress) {
+                  onStatus(`Loading speech model ${Math.round(progress.progress)}%...`);
+                } else if (progress.status) {
+                  onStatus("Preparing speech model...");
+                }
+              }
+            });
+          }
+
+          const transcriber = await transcriberPromise;
+          onStatus("Transcribing your recording locally...");
+          const audioUrl = URL.createObjectURL(blob);
+          try {
+            const output = await transcriber(audioUrl, {
+              chunk_length_s: 30,
+              stride_length_s: 5,
+              language: "english",
+              task: "transcribe"
+            });
+            return Array.isArray(output) ? output.map((item) => item.text || "").join(" ") : (output.text || "");
+          } finally {
+            URL.revokeObjectURL(audioUrl);
+          }
+        }
+      };
+    } catch (error) {
+      window.FluencyTranscriber = null;
+      console.warn("Browser-local transcription is unavailable.", error);
+    }
+  </script>
+
   <script>
     const questions = [
       {
@@ -444,12 +527,12 @@
             <li>Discover your current fluency level</li>
             <li>Identify your biggest speaking block</li>
             <li>Understand whether your issue is word flow, sentence formation, grammar patterns, confidence, or expression</li>
-            <li>Get your personalised 7-day practice direction</li>
+            <li>See your browser-generated transcript and personalised 7-day practice direction</li>
           </ul>
           <div class="actions">
             <button class="button button-primary" type="button" id="start">Start My Free Test</button>
           </div>
-          <p class="microcopy">Takes around 3-5 minutes. No grammar exam. No judgement. Just a simple speaking diagnosis.</p>
+          <p class="microcopy">Takes around 3-5 minutes. No grammar exam. No judgement. Audio transcription runs in your browser when supported.</p>
         </section>
       `;
       document.getElementById("start").addEventListener("click", () => {
@@ -526,6 +609,12 @@
               <button class="button button-secondary" type="button" id="complete">${existing ? "Continue" : "Use Practice Mode"}</button>
             </div>
             <p class="microcopy" id="recordStatus">${existing ? "Recording saved for this task. You can continue or re-record once." : activeTask.microcopy}</p>
+            <div class="transcript-card ${existing?.transcript ? "" : "hidden"}" id="transcriptCard">
+              <strong>Your transcript</strong>
+              <div class="transcript-text" id="transcriptText">${existing?.transcript || ""}</div>
+              <div class="analysis-pills" id="analysisPills">${existing?.analysis ? renderAnalysisPills(existing.analysis) : ""}</div>
+              <p id="transcriptNote">${existing?.transcript ? "This transcript was created in your browser and is used only to generate your fluency snapshot." : ""}</p>
+            </div>
           </div>
         </section>
       `;
@@ -553,10 +642,13 @@
             recorded: true,
             duration: activeTask.seconds - remaining,
             size: blob.size,
-            note: "Audio captured in browser. Production storage should upload this blob securely."
+            transcript: "",
+            analysis: null,
+            note: "Audio captured and transcribed in browser when supported."
           };
-          document.getElementById("recordStatus").textContent = "Recording saved. You can continue to the next step.";
+          document.getElementById("recordStatus").textContent = "Recording saved. Creating your transcript in this browser...";
           document.getElementById("complete").textContent = "Continue";
+          transcribeRecording(blob, activeTask.id);
         };
         mediaRecorder.start();
         document.getElementById("record").textContent = "Stop Recording";
@@ -602,6 +694,77 @@
       } else {
         renderLead();
       }
+    }
+
+    async function transcribeRecording(blob, taskId) {
+      const card = document.getElementById("transcriptCard");
+      const text = document.getElementById("transcriptText");
+      const note = document.getElementById("transcriptNote");
+      const pills = document.getElementById("analysisPills");
+      card.classList.remove("hidden");
+      text.textContent = "Loading private browser transcription...";
+      note.textContent = "The first transcription can take a little longer while the model loads.";
+
+      if (!window.FluencyTranscriber) {
+        text.textContent = "Transcription is still loading. You can continue, and your score will use your answers for now.";
+        note.textContent = "No audio is uploaded to a Fluency Magic server in this prototype.";
+        state.recordings[taskId].transcriptionStatus = "transcriber-loading";
+        return;
+      }
+
+      try {
+        const transcript = await window.FluencyTranscriber.transcribe(blob, (status) => {
+          note.textContent = status;
+        });
+        const cleanTranscript = transcript.trim();
+        const analysis = analyzeTranscript(cleanTranscript, taskId, state.recordings[taskId].duration);
+        state.recordings[taskId].transcript = cleanTranscript;
+        state.recordings[taskId].analysis = analysis;
+        state.recordings[taskId].transcriptionStatus = "complete";
+        text.textContent = cleanTranscript || "We could not detect enough speech. Try again in a quiet place and speak naturally.";
+        pills.innerHTML = renderAnalysisPills(analysis);
+        note.textContent = "Transcript generated locally in this browser. Use re-record if it does not reflect what you said.";
+      } catch (error) {
+        state.recordings[taskId].transcriptionStatus = "failed";
+        state.recordings[taskId].transcriptionError = error.message;
+        text.textContent = "This is a preliminary fluency snapshot based on your answers. Your detailed voice-based transcript could not be generated right now.";
+        note.textContent = "You can continue. Your audio has not been uploaded to a Fluency Magic server.";
+      }
+    }
+
+    function analyzeTranscript(transcript, taskId, duration) {
+      const words = transcript.toLowerCase().match(/[a-z']+/g) || [];
+      const fillerWords = ["um", "umm", "uh", "actually", "like", "you", "know"];
+      const fillerCount = words.filter((word, index) => {
+        if (word === "you" && words[index + 1] === "know") return true;
+        return fillerWords.includes(word);
+      }).length;
+      const uniqueWords = new Set(words).size;
+      const sentenceCount = Math.max(0, (transcript.match(/[.!?]/g) || []).length);
+      const wordCombos = ["build confidence", "express an idea", "handle pressure", "make progress", "share an update", "speak naturally", "find words", "improve speaking"];
+      const comboCount = wordCombos.filter((combo) => transcript.toLowerCase().includes(combo)).length;
+      const confidenceForms = ["confidence", "confident", "confidently"].filter((form) => transcript.toLowerCase().includes(form)).length;
+      const patternHits = ["i want to", "i have been trying to", "one challenge i face is", "i feel more confident when"].filter((pattern) => transcript.toLowerCase().includes(pattern)).length;
+      return {
+        wordCount: words.length,
+        uniqueWords,
+        fillerCount,
+        sentenceCount,
+        wordsPerMinute: duration ? Math.round((words.length / Math.max(duration, 1)) * 60) : 0,
+        comboCount,
+        confidenceForms,
+        patternHits,
+        taskId
+      };
+    }
+
+    function renderAnalysisPills(analysis) {
+      return `
+        <span>${analysis.wordCount} words</span>
+        <span>${analysis.wordsPerMinute} wpm</span>
+        <span>${analysis.fillerCount} fillers</span>
+        <span>${analysis.sentenceCount} sentence markers</span>
+      `;
     }
 
     function renderLead() {
@@ -660,14 +823,15 @@
       const event = a.whenSpeaking || "";
       const practiceBonus = practiceMap[a.practice] || 0;
       const recordingBonus = Object.values(state.recordings).filter((item) => item.recorded).length * 3;
+      const transcriptScore = getTranscriptScore();
       const base = 24 + confidence * 8 + practiceBonus + recordingBonus;
       const scores = {
-        speechFlow: clamp(base + (event.includes("pauses") ? -12 : 0) + (event.includes("stop") ? -14 : 0)),
-        wordAvailability: clamp(base + (problem.includes("right words") || event.includes("forget") ? -16 : 0)),
-        sentencePatternComfort: clamp(base + (problem.includes("grammar") || event.includes("simple") ? -12 : 0)),
-        expressionClarity: clamp(base + (a.goal === "Express thoughts clearly" ? -8 : 2)),
-        naturalness: clamp(base + (problem.includes("natural") ? -14 : 0)),
-        speakingConfidence: clamp(base + (problem.includes("nervous") || event.includes("avoid") ? -18 : 0) + confidence * 2)
+        speechFlow: clamp(base + transcriptScore.speechFlow + (event.includes("pauses") ? -12 : 0) + (event.includes("stop") ? -14 : 0)),
+        wordAvailability: clamp(base + transcriptScore.wordAvailability + (problem.includes("right words") || event.includes("forget") ? -16 : 0)),
+        sentencePatternComfort: clamp(base + transcriptScore.sentencePatternComfort + (problem.includes("grammar") || event.includes("simple") ? -12 : 0)),
+        expressionClarity: clamp(base + transcriptScore.expressionClarity + (a.goal === "Express thoughts clearly" ? -8 : 2)),
+        naturalness: clamp(base + transcriptScore.naturalness + (problem.includes("natural") ? -14 : 0)),
+        speakingConfidence: clamp(base + transcriptScore.speakingConfidence + (problem.includes("nervous") || event.includes("avoid") ? -18 : 0) + confidence * 2)
       };
       const overall = Math.round(
         scores.speechFlow * .2 +
@@ -694,6 +858,33 @@
       };
     }
 
+    function getTranscriptScore() {
+      const analyses = Object.values(state.recordings).map((item) => item.analysis).filter(Boolean);
+      if (!analyses.length) {
+        return { speechFlow: 0, wordAvailability: 0, sentencePatternComfort: 0, expressionClarity: 0, naturalness: 0, speakingConfidence: 0 };
+      }
+      const totalWords = analyses.reduce((sum, item) => sum + item.wordCount, 0);
+      const totalFillers = analyses.reduce((sum, item) => sum + item.fillerCount, 0);
+      const totalSentences = analyses.reduce((sum, item) => sum + item.sentenceCount, 0);
+      const totalCombos = analyses.reduce((sum, item) => sum + item.comboCount + item.confidenceForms, 0);
+      const patternHits = analyses.reduce((sum, item) => sum + item.patternHits, 0);
+      const avgWpm = Math.round(analyses.reduce((sum, item) => sum + item.wordsPerMinute, 0) / analyses.length);
+      const fillerPenalty = Math.min(14, totalFillers * 2);
+      const shortPenalty = totalWords < 55 ? -12 : totalWords < 90 ? -5 : 4;
+      return {
+        speechFlow: clampDelta((avgWpm >= 70 && avgWpm <= 150 ? 8 : -4) + shortPenalty - fillerPenalty),
+        wordAvailability: clampDelta(totalCombos * 5 + (totalWords > 90 ? 5 : -5)),
+        sentencePatternComfort: clampDelta(totalSentences * 2 + patternHits * 6 + (totalWords > 80 ? 3 : -6)),
+        expressionClarity: clampDelta(totalWords > 100 ? 9 : totalWords > 65 ? 3 : -8),
+        naturalness: clampDelta(totalCombos * 3 + patternHits * 3 - Math.min(10, totalFillers)),
+        speakingConfidence: clampDelta(totalWords > 80 ? 6 : -6)
+      };
+    }
+
+    function clampDelta(value) {
+      return Math.max(-18, Math.min(18, Math.round(value)));
+    }
+
     function clamp(value) {
       return Math.max(8, Math.min(96, Math.round(value)));
     }
@@ -704,6 +895,50 @@
       if (score <= 65) return { levelNumber: 3, name: "Functional Speaker", levelName: "Functional Speaker", range: "46-65", scoreRange: "46-65", headline: "Your foundation is there. Now your expression needs more range.", description: "You can communicate basic ideas in English, but your speech may feel slow, simple, repetitive, or not fully natural.", nextFocus: ["Natural word groups", "Sentence expansion", "Expression upgrade drills", "Real-life conversation practice"], encouragingLine: "Your foundation is already there. Now Fluency Magic will help you sound more natural, clear, and confident." };
       if (score <= 82) return { levelNumber: 4, name: "Natural Speaker", levelName: "Natural Speaker", range: "66-82", scoreRange: "66-82", headline: "You are close to strong fluency.", description: "You can speak clearly in many situations, but you may still need more polish, smoother expression, professional fluency, and stronger confidence in important moments.", nextFocus: ["Advanced expression", "Professional speaking practice", "Storytelling", "Interview and meeting fluency"], encouragingLine: "Now the focus is polish, presence, and powerful expression." };
       return { levelNumber: 5, name: "Confident Communicator", levelName: "Confident Communicator", range: "83-100", scoreRange: "83-100", headline: "Your voice is already strong.", description: "You speak with clarity, flow, and confidence. You can express your ideas naturally and handle many real-life English situations well.", nextFocus: ["Leadership communication", "Advanced storytelling", "Persuasive speaking", "Presentation fluency"], encouragingLine: "Now we help you make your voice more powerful, precise, and memorable." };
+    }
+
+    .transcript-card {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid rgba(67, 135, 238, .18);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(67, 135, 238, .08), rgba(20, 159, 91, .06)), #fff;
+    }
+
+    .transcript-card strong {
+      color: var(--ink);
+    }
+
+    .transcript-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .transcript-text {
+      min-height: 74px;
+      padding: 14px;
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .8);
+      color: var(--ink);
+      font-weight: 720;
+    }
+
+    .analysis-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .analysis-pills span {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid rgba(16, 19, 24, .08);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
     }
 
     function getBlock(problem, event, scores) {

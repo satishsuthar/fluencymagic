@@ -160,13 +160,13 @@ The experience should be mobile-first, premium, calm, motivational, and non-exam
 
 ## Technical Notes
 
-Current implementation is static and stores test state in `localStorage`. Browser recording uses `MediaRecorder` when microphone permission is available. If not, users can continue in practice mode and still receive a heuristic result.
+Current implementation is static and stores test state in `localStorage`. Browser recording uses `MediaRecorder` when microphone permission is available. When supported, transcription runs in the visitor's browser with Transformers.js and a small Whisper model. The transcript is shown to the user and transcript heuristics improve the scoring. If microphone access, model loading, or transcription fails, users can continue in practice mode and still receive a preliminary self-assessment-based result.
 
 Production implementation should add:
-- Secure API endpoint for lead capture and consent.
-- Secure object storage upload for audio files.
-- Transcription job for each recording.
-- Transcript-based scoring for hesitation markers, sentence completeness, word choice, word-combination quality, clarity, naturalness, and ability to continue.
+- Secure API endpoint for lead capture and consent if leads should be saved.
+- Optional secure object storage upload for audio files only if users consent to server-side analysis.
+- Server-side transcription job only if browser-local transcription is not enough for production quality.
+- Stronger transcript-based scoring for hesitation markers, sentence completeness, word choice, word-combination quality, clarity, naturalness, and ability to continue.
 - Optional tone/confidence scoring only if reliable and consented.
 - Analytics events for route view, question answered, recording completed, lead submitted, result viewed, and plan CTA clicked.
 

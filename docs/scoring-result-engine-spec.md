@@ -503,12 +503,20 @@ Secondary CTA: Retake Fluency Test
 
 ## Developer Notes
 
-Current MVP uses a local browser scoring heuristic based on self-assessment answers, confidence rating, practice frequency, and whether recording was completed.
+Current MVP uses a local browser scoring heuristic based on self-assessment answers, confidence rating, practice frequency, whether recording was completed, and browser-generated transcripts when available.
+
+Browser-local transcription:
+
+- Uses `MediaRecorder` for audio capture.
+- Uses Transformers.js with a small Whisper model in the visitor's browser when supported.
+- Shows the transcript on the recording screen.
+- Uses transcript signals such as word count, speaking rate, filler words, sentence markers, target word usage, and sentence-pattern hits.
+- Does not upload audio to a Fluency Magic server in the static prototype.
 
 Production scoring should add:
 
-- Secure upload for audio recordings.
-- Transcription for all speaking tasks.
+- Optional secure upload for audio recordings if the user consents to server-side analysis.
+- More robust transcription for all speaking tasks if browser-local transcription is not enough.
 - Transcript-based scoring for pauses, fillers, word search, sentence completeness, word-combination quality, clarity, naturalness, and ability to continue.
 - Optional voice-signal scoring only when technically reliable and consented.
 - Fallback preliminary result when transcription fails.
