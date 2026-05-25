@@ -409,7 +409,7 @@
 
   <script type="module">
     try {
-      const { pipeline, env } = await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.2.4/dist/transformers.min.js");
+      const { pipeline, env } = await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1");
       env.allowLocalModels = false;
       env.useBrowserCache = true;
 
@@ -579,6 +579,8 @@
     let timerId = null;
     let remaining = 0;
     let activeTask = null;
+    let speechRecognition = null;
+    let liveTranscript = "";
 
     function totalSteps() {
       return 1 + questions.length + tasks.length + 1;
@@ -713,6 +715,7 @@
         mediaRecorder.ondataavailable = (event) => chunks.push(event.data);
         mediaRecorder.onstop = () => {
           stream.getTracks().forEach((track) => track.stop());
+          stopLiveRecognition();
           const blob = new Blob(chunks, { type: "audio/webm" });
           state.recordings[activeTask.id] = {
             recorded: true,
@@ -722,11 +725,22 @@
             analysis: null,
             note: "Audio captured and transcribed in browser when supported."
           };
-          document.getElementById("recordStatus").textContent = "Recording saved. Creating your transcript in this browser...";
+          const browserTranscript = liveTranscript.trim();
+          if (browserTranscript) {
+            const analysis = analyzeTranscript(browserTranscript, activeTask.id, state.recordings[activeTask.id].duration);
+            state.recordings[activeTask.id].transcript = browserTranscript;
+            state.recordings[activeTask.id].analysis = analysis;
+            state.recordings[activeTask.id].transcriptionStatus = "browser-speech-complete";
+            showTranscript(browserTranscript, analysis, "Transcript captured by your browser during recording.");
+            document.getElementById("recordStatus").textContent = "Recording saved. Your transcript is ready.";
+          } else {
+            document.getElementById("recordStatus").textContent = "Recording saved. Creating your transcript in this browser...";
+            transcribeRecording(blob, activeTask.id);
+          }
           document.getElementById("complete").textContent = "Continue";
-          transcribeRecording(blob, activeTask.id);
         };
         mediaRecorder.start();
+        startLiveRecognition();
         document.getElementById("record").textContent = "Stop Recording";
         document.getElementById("recordStatus").textContent = "Recording... speak naturally. This is not an exam.";
         timerId = window.setInterval(() => {
@@ -772,6 +786,50 @@
       }
     }
 
+    function startLiveRecognition() {
+      liveTranscript = "";
+      const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!Recognition) return;
+
+      try {
+        speechRecognition = new Recognition();
+        speechRecognition.lang = "en-US";
+        speechRecognition.continuous = true;
+        speechRecognition.interimResults = true;
+        speechRecognition.onresult = (event) => {
+          let transcript = "";
+          for (let i = 0; i < event.results.length; i += 1) {
+            transcript += event.results[i][0].transcript + " ";
+          }
+          liveTranscript = transcript;
+          const card = document.getElementById("transcriptCard");
+          const text = document.getElementById("transcriptText");
+          const note = document.getElementById("transcriptNote");
+          if (card && text && transcript.trim()) {
+            card.classList.remove("hidden");
+            text.textContent = transcript.trim();
+            note.textContent = "Live browser transcript is being captured while you speak.";
+          }
+        };
+        speechRecognition.onerror = () => {
+          speechRecognition = null;
+        };
+        speechRecognition.start();
+      } catch (error) {
+        speechRecognition = null;
+      }
+    }
+
+    function stopLiveRecognition() {
+      if (!speechRecognition) return;
+      try {
+        speechRecognition.stop();
+      } catch (error) {
+        // The browser may already have stopped recognition.
+      }
+      speechRecognition = null;
+    }
+
     async function transcribeRecording(blob, taskId) {
       const card = document.getElementById("transcriptCard");
       const text = document.getElementById("transcriptText");
@@ -797,15 +855,30 @@
         state.recordings[taskId].transcript = cleanTranscript;
         state.recordings[taskId].analysis = analysis;
         state.recordings[taskId].transcriptionStatus = "complete";
-        text.textContent = cleanTranscript || "We could not detect enough speech. Try again in a quiet place and speak naturally.";
-        pills.innerHTML = renderAnalysisPills(analysis);
-        note.textContent = "Transcript generated locally in this browser. Use re-record if it does not reflect what you said.";
+        showTranscript(
+          cleanTranscript || "We could not detect enough speech. Try again in a quiet place and speak naturally.",
+          analysis,
+          "Transcript generated locally in this browser. Use re-record if it does not reflect what you said."
+        );
       } catch (error) {
+        console.warn("Browser transcription failed", error);
         state.recordings[taskId].transcriptionStatus = "failed";
         state.recordings[taskId].transcriptionError = error.message;
         text.textContent = "This is a preliminary fluency snapshot based on your answers. Your detailed voice-based transcript could not be generated right now.";
         note.textContent = "You can continue. Your audio has not been uploaded to a Fluency Magic server.";
       }
+    }
+
+    function showTranscript(transcript, analysis, message) {
+      const card = document.getElementById("transcriptCard");
+      const text = document.getElementById("transcriptText");
+      const note = document.getElementById("transcriptNote");
+      const pills = document.getElementById("analysisPills");
+      if (!card || !text || !note || !pills) return;
+      card.classList.remove("hidden");
+      text.textContent = transcript;
+      pills.innerHTML = analysis ? renderAnalysisPills(analysis) : "";
+      note.textContent = message;
     }
 
     function analyzeTranscript(transcript, taskId, duration) {

@@ -508,7 +508,8 @@ Current MVP uses a local browser scoring heuristic based on self-assessment answ
 Browser-local transcription:
 
 - Uses `MediaRecorder` for audio capture.
-- Uses Transformers.js with a small Whisper model in the visitor's browser when supported.
+- First attempts live browser speech recognition during recording when supported.
+- Uses Transformers.js with a small Whisper model as a local decoded-audio fallback when supported.
 - Shows the transcript on the recording screen.
 - Uses transcript signals such as word count, speaking rate, filler words, sentence markers, target word usage, and sentence-pattern hits.
 - Does not upload audio to a Fluency Magic server in the static prototype.

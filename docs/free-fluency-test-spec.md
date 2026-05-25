@@ -160,7 +160,7 @@ The experience should be mobile-first, premium, calm, motivational, and non-exam
 
 ## Technical Notes
 
-Current implementation is static and stores test state in `localStorage`. Browser recording uses `MediaRecorder` when microphone permission is available. When supported, transcription runs in the visitor's browser with Transformers.js and a small Whisper model. The transcript is shown to the user and transcript heuristics improve the scoring. If microphone access, model loading, or transcription fails, users can continue in practice mode and still receive a preliminary self-assessment-based result.
+Current implementation is static and stores test state in `localStorage`. Browser recording uses `MediaRecorder` when microphone permission is available. The app first attempts live browser speech recognition during recording, then falls back to Transformers.js with a small Whisper model that decodes the recording locally. The transcript is shown to the user and transcript heuristics improve the scoring. If microphone access, model loading, or transcription fails, users can continue in practice mode and still receive a preliminary self-assessment-based result.
 
 Production implementation should add:
 - Secure API endpoint for lead capture and consent if leads should be saved.
