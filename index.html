@@ -437,6 +437,238 @@
       50% { transform: scaleY(.45); opacity: .62; }
     }
 
+    .story-orbit {
+      position: absolute;
+      right: 18px;
+      bottom: 162px;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      border: 1px solid rgba(16, 19, 24, .1);
+      background: rgba(255, 255, 255, .42);
+      animation: softSpin 18s linear infinite;
+    }
+
+    .story-orbit span {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      color: #fff;
+      font-size: 23px;
+      font-weight: 950;
+      box-shadow: 0 16px 32px rgba(16, 19, 24, .14);
+      animation: counterSpin 18s linear infinite;
+    }
+
+    .story-orbit span:nth-child(1) { top: -18px; left: 78px; background: var(--green); }
+    .story-orbit span:nth-child(2) { right: -18px; top: 78px; background: var(--yellow); }
+    .story-orbit span:nth-child(3) { bottom: -18px; left: 78px; background: var(--blue); }
+    .story-orbit span:nth-child(4) { left: -18px; top: 78px; background: var(--green-dark); }
+
+    @keyframes softSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes counterSpin {
+      to { transform: rotate(-360deg); }
+    }
+
+    .speech-bubble {
+      position: absolute;
+      right: 0;
+      top: 48px;
+      max-width: 260px;
+      padding: 16px 18px;
+      border: 1px solid rgba(16, 19, 24, .1);
+      border-radius: 22px 22px 6px 22px;
+      background: #fff;
+      box-shadow: 0 18px 44px rgba(16, 19, 24, .12);
+      font-weight: 850;
+      animation: bubbleFloat 4s ease-in-out infinite;
+    }
+
+    .speech-bubble small {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-weight: 760;
+    }
+
+    @keyframes bubbleFloat {
+      50% { transform: translateY(-10px); }
+    }
+
+    .story-stage {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(16, 19, 24, .1);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 78% 18%, rgba(247, 184, 1, .18), transparent 26%),
+        linear-gradient(135deg, #fff, #f4f8f6);
+      box-shadow: var(--shadow);
+      padding: clamp(24px, 4vw, 46px);
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: .86fr 1.14fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .character-scene {
+      position: relative;
+      min-height: 430px;
+      display: grid;
+      place-items: center;
+    }
+
+    .character {
+      position: relative;
+      width: 210px;
+      height: 300px;
+      animation: characterBreathe 3s ease-in-out infinite;
+    }
+
+    .character::before {
+      content: "";
+      position: absolute;
+      left: 70px;
+      top: 6px;
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 32% 38%, #101318 0 4px, transparent 5px),
+        radial-gradient(circle at 62% 38%, #101318 0 4px, transparent 5px),
+        radial-gradient(circle at 50% 62%, #101318 0 8px, transparent 9px),
+        #f7d7b6;
+      box-shadow: 0 18px 0 -4px #101318;
+    }
+
+    .character::after {
+      content: "";
+      position: absolute;
+      left: 48px;
+      top: 98px;
+      width: 116px;
+      height: 138px;
+      border-radius: 34px 34px 14px 14px;
+      background: linear-gradient(135deg, var(--green), var(--blue));
+      box-shadow: -34px 22px 0 -18px var(--yellow), 48px 34px 0 -22px var(--yellow);
+    }
+
+    .character-shadow {
+      position: absolute;
+      bottom: 48px;
+      width: 230px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(16, 19, 24, .12);
+      filter: blur(2px);
+      animation: shadowPulse 3s ease-in-out infinite;
+    }
+
+    .voice-rings {
+      position: absolute;
+      right: 50px;
+      top: 74px;
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      border: 2px solid rgba(20, 159, 91, .22);
+      animation: ringPulse 2.4s ease-out infinite;
+    }
+
+    .voice-rings::before,
+    .voice-rings::after {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-radius: inherit;
+      border: inherit;
+      animation: ringPulse 2.4s ease-out infinite;
+      animation-delay: .28s;
+    }
+
+    .voice-rings::after {
+      inset: 36px;
+      animation-delay: .56s;
+    }
+
+    @keyframes ringPulse {
+      70%, 100% { transform: scale(1.12); opacity: .22; }
+    }
+
+    @keyframes characterBreathe {
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes shadowPulse {
+      50% { transform: scaleX(.84); opacity: .08; }
+    }
+
+    .story-tabs {
+      display: grid;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .story-tab {
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 16px;
+      border: 1px solid rgba(16, 19, 24, .1);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .78);
+      cursor: pointer;
+      text-align: left;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+
+    .story-tab:hover,
+    .story-tab.active {
+      transform: translateX(6px);
+      border-color: rgba(20, 159, 91, .34);
+      background: #fff;
+    }
+
+    .story-tab b {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius);
+      color: #fff;
+      background: var(--accent);
+    }
+
+    .story-tab strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 18px;
+    }
+
+    .story-tab span {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .animated-card {
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .animated-card:hover {
+      transform: translateY(-8px) rotate(-.4deg);
+      box-shadow: 0 28px 70px rgba(16, 19, 24, .14);
+    }
+
     .section {
       padding: 98px 0;
       background: #fff;
@@ -1013,12 +1245,28 @@
       .problem-layout,
       .ai-layout,
       .closing-grid,
-      .app-preview-grid {
+      .app-preview-grid,
+      .story-grid {
         grid-template-columns: 1fr;
       }
 
       .brand-visual {
         min-height: 460px;
+      }
+
+      .speech-bubble {
+        right: auto;
+        left: 0;
+      }
+
+      .story-orbit {
+        right: 6px;
+        bottom: 118px;
+        transform: scale(.82);
+      }
+
+      .character-scene {
+        min-height: 360px;
       }
 
       .logo-stack {
@@ -1079,6 +1327,22 @@
 
       .brand-visual {
         min-height: 430px;
+      }
+
+      .story-orbit {
+        display: none;
+      }
+
+      .speech-bubble {
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+        margin-top: 18px;
+      }
+
+      .character {
+        transform: scale(.86);
       }
 
       .logo-stack {
@@ -1201,11 +1465,48 @@
               <span style="--h:42px; --c:var(--blue); --d:.64s"></span>
             </div>
           </aside>
+          <div class="speech-bubble">I know English... but I freeze.<small>Then Fluency Magic gives me a sentence path.</small></div>
+          <div class="story-orbit" aria-hidden="true">
+            <span>V</span>
+            <span>W</span>
+            <span>P</span>
+            <span>F</span>
+          </div>
         </div>
       </div>
     </header>
 
     <main>
+      <section class="section">
+        <div class="container">
+          <div class="story-stage reveal">
+            <div class="story-grid">
+              <div class="character-scene" aria-label="Learner moving from hesitation to confident speaking">
+                <div class="voice-rings" aria-hidden="true"></div>
+                <div class="character" aria-hidden="true"></div>
+                <div class="character-shadow" aria-hidden="true"></div>
+              </div>
+              <div>
+                <div class="kicker">The story inside the app</div>
+                <h2>From Frozen Thought to Spoken Flow.</h2>
+                <p class="lead" id="storyCopy">First, the app helps you notice the exact moment where English gets stuck. Then it gives you a small speaking path: see it, say it, repeat it, extend it, and record it.</p>
+                <div class="story-tabs" aria-label="Fluency story stages">
+                  <button class="story-tab active" type="button" data-story="You understand the idea, but your mouth pauses. The app starts with simple voice-flow drills so speaking feels physically easier." style="--accent:var(--green)">
+                    <b>1</b><span><strong>The Freeze</strong>Words are in your mind, but not ready on your tongue.</span>
+                  </button>
+                  <button class="story-tab" type="button" data-story="You practise useful word groups, prepositions, phrasal verbs, and sentence patterns until your brain has ready pieces to speak with." style="--accent:var(--yellow)">
+                    <b>2</b><span><strong>The Training</strong>Short daily drills turn loose English into ready speaking material.</span>
+                  </button>
+                  <button class="story-tab" type="button" data-story="You record real speaking missions, compare progress, and build a daily streak. Confidence grows because you can hear your own voice improving." style="--accent:var(--blue)">
+                    <b>3</b><span><strong>The Flow</strong>Sentence after sentence starts coming out with more calm and control.</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="section" id="problem">
         <div class="container">
           <div class="section-head reveal">
@@ -1270,39 +1571,39 @@
           </div>
 
           <div class="principles">
-            <article class="principle reveal" style="--accent:var(--green)">
+            <article class="principle reveal animated-card" style="--accent:var(--green)">
               <h3>Voice Flow Practice</h3>
               <p>Train your mouth, breath, rhythm, and voice so English becomes easier to speak aloud.</p>
             </article>
-            <article class="principle reveal" style="--accent:var(--yellow)">
+            <article class="principle reveal animated-card" style="--accent:var(--yellow)">
               <h3>Core Word Command</h3>
               <p>Build strong control over useful words instead of chasing difficult vocabulary first.</p>
             </article>
-            <article class="principle reveal" style="--accent:var(--blue)">
+            <article class="principle reveal animated-card" style="--accent:var(--blue)">
               <h3>Word Combination Mastery</h3>
               <p>Practise natural groups like "build confidence," "work on my English," and "deal with pressure."</p>
             </article>
-            <article class="principle reveal" style="--accent:var(--green)">
+            <article class="principle reveal animated-card" style="--accent:var(--green)">
               <h3>Preposition Practice</h3>
               <p>Repeat small but powerful patterns like "in a meeting," "on a call," and "at work."</p>
             </article>
-            <article class="principle reveal" style="--accent:var(--yellow)">
+            <article class="principle reveal animated-card" style="--accent:var(--yellow)">
               <h3>Phrasal Verb Practice</h3>
               <p>Use everyday speaking phrases naturally through repetition and real situations.</p>
             </article>
-            <article class="principle reveal" style="--accent:var(--blue)">
+            <article class="principle reveal animated-card" style="--accent:var(--blue)">
               <h3>Sentence Pattern Automation</h3>
               <p>Practise natural sentence starters until grammar stops interrupting your speaking flow.</p>
             </article>
-            <article class="principle reveal" style="--accent:var(--green)">
+            <article class="principle reveal animated-card" style="--accent:var(--green)">
               <h3>Flow Builder</h3>
               <p>Learn to connect sentence after sentence so your ideas do not stop after one line.</p>
             </article>
-            <article class="principle reveal" style="--accent:var(--yellow)">
+            <article class="principle reveal animated-card" style="--accent:var(--yellow)">
               <h3>Visual Action Practice</h3>
               <p>See an action, speak the sentence, and build longer connected English from what you see.</p>
             </article>
-            <article class="principle reveal" style="--accent:var(--blue)">
+            <article class="principle reveal animated-card" style="--accent:var(--blue)">
               <h3>Real Speaking Missions</h3>
               <p>Practise introductions, opinions, meetings, interviews, updates, and daily conversations.</p>
             </article>
@@ -1549,6 +1850,15 @@
         toast.classList.add("show");
         window.clearTimeout(window.fluencyToast);
         window.fluencyToast = window.setTimeout(() => toast.classList.remove("show"), 2600);
+      });
+    });
+
+    const storyCopy = document.getElementById("storyCopy");
+    document.querySelectorAll(".story-tab").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".story-tab").forEach((item) => item.classList.remove("active"));
+        tab.classList.add("active");
+        storyCopy.textContent = tab.dataset.story;
       });
     });
   </script>
