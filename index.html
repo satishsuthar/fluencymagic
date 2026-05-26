@@ -887,20 +887,66 @@
     }
 
     .story-copy-card {
+      position: relative;
+      overflow: hidden;
       padding: clamp(24px, 4vw, 42px);
+      border: 1px solid rgba(16, 19, 24, .1);
       border-radius: var(--radius);
-      background: #101318;
-      color: #fff;
+      background:
+        radial-gradient(circle at 82% 8%, rgba(247, 184, 1, .18), transparent 28%),
+        radial-gradient(circle at 14% 92%, rgba(67, 135, 238, .12), transparent 30%),
+        linear-gradient(135deg, #fffefa, #f6fbf8);
+      color: var(--ink);
       box-shadow: var(--shadow);
     }
 
+    .story-copy-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 10px;
+      background: linear-gradient(90deg, var(--green), var(--yellow), var(--blue));
+    }
+
     .story-copy-card .lead {
-      color: rgba(255, 255, 255, .76);
+      color: var(--muted);
     }
 
     .story-copy-card .not-download {
-      color: #101318;
-      background: #fff;
+      color: var(--green-dark);
+      background: rgba(20, 159, 91, .1);
+      border-color: rgba(20, 159, 91, .2);
+    }
+
+    .training-system-visual {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .training-system-visual span {
+      min-height: 92px;
+      display: grid;
+      place-items: center;
+      padding: 14px;
+      border-radius: var(--radius);
+      color: #fff;
+      font-weight: 950;
+      text-align: center;
+      box-shadow: 0 16px 34px rgba(16, 19, 24, .12);
+      animation: systemFloat 4s ease-in-out infinite;
+    }
+
+    .training-system-visual span:nth-child(1) { background: var(--green); }
+    .training-system-visual span:nth-child(2) { background: var(--yellow); animation-delay: .16s; }
+    .training-system-visual span:nth-child(3) { background: var(--blue); animation-delay: .32s; }
+    .training-system-visual span:nth-child(4) { background: var(--green-dark); animation-delay: .48s; }
+    .training-system-visual span:nth-child(5) { background: #101318; animation-delay: .64s; }
+    .training-system-visual span:nth-child(6) { background: var(--blue-dark); animation-delay: .8s; }
+    
+    @keyframes systemFloat {
+      50% { transform: translateY(-7px); }
     }
 
     .section {
@@ -1609,7 +1655,8 @@
       .steps,
       .feature-grid,
       .waitlist-form,
-      .storyline {
+      .storyline,
+      .training-system-visual {
         grid-template-columns: 1fr;
       }
 
@@ -1839,8 +1886,16 @@
 
             <div class="story-copy-card reveal">
               <div class="kicker">The Fluency Magic shift</div>
-              <h2>Stop Preparing Only Your Mind. Start Training Your Speaking System.</h2>
-              <p class="lead">Fluency Magic does not ask learners to become grammar machines or vocabulary collectors. It gives them small daily speaking missions that train the mouth, useful word groups, prepositions, phrasal verbs, sentence patterns, and connected thought flow.</p>
+              <h2>Train the Parts That Actually Speak.</h2>
+              <p class="lead">Fluency Magic turns practice into a daily speaking system. The app trains the parts that need to work together when a real conversation begins.</p>
+              <div class="training-system-visual" aria-label="Fluency Magic speaking system">
+                <span>Mouth rhythm</span>
+                <span>Useful word groups</span>
+                <span>Prepositions</span>
+                <span>Phrasal verbs</span>
+                <span>Sentence patterns</span>
+                <span>Connected flow</span>
+              </div>
               <p class="lead">That is why the app starts with a fluency check, finds the speaking block, and then gives a 7-day activation path. The user does not just learn about English. They practise producing English.</p>
               <div class="not-download">Understanding is not the finish line. Speaking flow is the training goal.</div>
               <div class="actions">
