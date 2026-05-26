@@ -669,6 +669,240 @@
       box-shadow: 0 28px 70px rgba(16, 19, 24, .14);
     }
 
+    .storyline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 34px;
+    }
+
+    .story-moment {
+      position: relative;
+      min-height: 320px;
+      padding: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(16, 19, 24, .1);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .92);
+      box-shadow: 0 20px 54px rgba(16, 19, 24, .08);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .story-moment:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 28px 70px rgba(16, 19, 24, .13);
+    }
+
+    .story-moment h3 {
+      position: relative;
+      z-index: 2;
+      margin-top: 178px;
+    }
+
+    .story-moment p {
+      position: relative;
+      z-index: 2;
+      color: var(--muted);
+      font-weight: 720;
+    }
+
+    .mini-person {
+      position: absolute;
+      left: 50%;
+      top: 54px;
+      width: 84px;
+      height: 124px;
+      transform: translateX(-50%);
+    }
+
+    .mini-person::before {
+      content: "";
+      position: absolute;
+      left: 24px;
+      top: 0;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #f7d7b6;
+      box-shadow: 0 10px 0 -4px #101318;
+    }
+
+    .mini-person::after {
+      content: "";
+      position: absolute;
+      left: 12px;
+      top: 48px;
+      width: 60px;
+      height: 70px;
+      border-radius: 24px 24px 10px 10px;
+      background: linear-gradient(135deg, var(--green), var(--blue));
+    }
+
+    .thought-cloud,
+    .word-rain,
+    .rule-grid,
+    .flow-stream {
+      position: absolute;
+      inset: 18px;
+      pointer-events: none;
+    }
+
+    .thought-cloud span,
+    .word-rain span,
+    .rule-grid span,
+    .flow-stream span {
+      position: absolute;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 46px;
+      min-height: 28px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid rgba(16, 19, 24, .1);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+      box-shadow: 0 10px 24px rgba(16, 19, 24, .08);
+    }
+
+    .thought-cloud span:nth-child(1) { left: 8%; top: 18%; animation: drift 4s ease-in-out infinite; }
+    .thought-cloud span:nth-child(2) { right: 9%; top: 8%; animation: drift 4.4s ease-in-out infinite .2s; }
+    .thought-cloud span:nth-child(3) { left: 28%; top: 36%; animation: drift 4.8s ease-in-out infinite .4s; }
+
+    .word-rain span:nth-child(1) { left: 12%; top: 8%; animation: fallWord 3.8s linear infinite; }
+    .word-rain span:nth-child(2) { left: 42%; top: 0; animation: fallWord 4.2s linear infinite .5s; }
+    .word-rain span:nth-child(3) { right: 10%; top: 16%; animation: fallWord 3.6s linear infinite .9s; }
+    .word-rain span:nth-child(4) { left: 26%; top: 24%; animation: fallWord 4.6s linear infinite 1.2s; }
+
+    .rule-grid span {
+      border-radius: var(--radius);
+      color: var(--ink);
+      background: rgba(247, 184, 1, .14);
+    }
+    .rule-grid span:nth-child(1) { left: 8%; top: 10%; animation: shakeRule 3s ease-in-out infinite; }
+    .rule-grid span:nth-child(2) { right: 8%; top: 18%; animation: shakeRule 3.2s ease-in-out infinite .2s; }
+    .rule-grid span:nth-child(3) { left: 32%; top: 34%; animation: shakeRule 3.4s ease-in-out infinite .4s; }
+
+    .flow-stream span {
+      border-radius: var(--radius);
+      color: #fff;
+      background: var(--green);
+      animation: flowForward 3.4s ease-in-out infinite;
+    }
+    .flow-stream span:nth-child(1) { left: 2%; top: 18%; }
+    .flow-stream span:nth-child(2) { left: 24%; top: 34%; animation-delay: .18s; background: var(--yellow); }
+    .flow-stream span:nth-child(3) { left: 52%; top: 28%; animation-delay: .36s; background: var(--blue); }
+
+    @keyframes drift {
+      50% { transform: translateY(-10px) scale(1.04); }
+    }
+
+    @keyframes fallWord {
+      0% { transform: translateY(-20px); opacity: 0; }
+      18%, 72% { opacity: 1; }
+      100% { transform: translateY(116px); opacity: 0; }
+    }
+
+    @keyframes shakeRule {
+      20%, 60% { transform: rotate(-2deg); }
+      40%, 80% { transform: rotate(2deg); }
+    }
+
+    @keyframes flowForward {
+      50% { transform: translateX(16px); }
+    }
+
+    .wrong-methods {
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      gap: 28px;
+      align-items: stretch;
+      margin-top: 34px;
+    }
+
+    .method-path {
+      position: relative;
+      min-height: 520px;
+      padding: 24px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(16, 19, 24, .1);
+      background:
+        linear-gradient(180deg, rgba(16, 19, 24, .03), transparent),
+        #fff;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .method-path::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 46px;
+      bottom: 46px;
+      width: 4px;
+      border-radius: 99px;
+      background: linear-gradient(180deg, rgba(16, 19, 24, .14), var(--green));
+      transform: translateX(-50%);
+    }
+
+    .path-node {
+      position: relative;
+      z-index: 2;
+      width: min(86%, 360px);
+      padding: 16px;
+      margin: 0 0 18px;
+      border-radius: var(--radius);
+      background: #fff;
+      border: 1px solid rgba(16, 19, 24, .1);
+      box-shadow: 0 14px 34px rgba(16, 19, 24, .08);
+      animation: pathPulse 5s ease-in-out infinite;
+    }
+
+    .path-node:nth-child(even) {
+      margin-left: auto;
+      animation-delay: .25s;
+    }
+
+    .path-node strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 18px;
+    }
+
+    .path-node p {
+      margin: 0;
+      color: var(--muted);
+      font-weight: 720;
+    }
+
+    .path-node.good {
+      border-color: rgba(20, 159, 91, .34);
+      background: linear-gradient(135deg, rgba(20, 159, 91, .1), rgba(67, 135, 238, .08)), #fff;
+    }
+
+    @keyframes pathPulse {
+      50% { transform: translateY(-5px); }
+    }
+
+    .story-copy-card {
+      padding: clamp(24px, 4vw, 42px);
+      border-radius: var(--radius);
+      background: #101318;
+      color: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .story-copy-card .lead {
+      color: rgba(255, 255, 255, .76);
+    }
+
+    .story-copy-card .not-download {
+      color: #101318;
+      background: #fff;
+    }
+
     .section {
       padding: 98px 0;
       background: #fff;
@@ -1246,7 +1480,8 @@
       .ai-layout,
       .closing-grid,
       .app-preview-grid,
-      .story-grid {
+      .story-grid,
+      .wrong-methods {
         grid-template-columns: 1fr;
       }
 
@@ -1373,7 +1608,8 @@
       .compare,
       .steps,
       .feature-grid,
-      .waitlist-form {
+      .waitlist-form,
+      .storyline {
         grid-template-columns: 1fr;
       }
 
@@ -1530,6 +1766,88 @@
               <li>You avoid speaking even when you have good ideas.</li>
               <li>Your real personality does not fully come out in English.</li>
             </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section soft">
+        <div class="container">
+          <div class="section-head center reveal">
+            <h2>The Real Story Most Learners Live Through.</h2>
+            <p class="lead">The problem usually does not begin with laziness. It begins with learning English in a way that fills the mind, but never trains the speaking system.</p>
+          </div>
+
+          <div class="storyline">
+            <article class="story-moment reveal">
+              <div class="thought-cloud" aria-hidden="true"><span>idea</span><span>fear</span><span>grammar?</span></div>
+              <div class="mini-person" aria-hidden="true"></div>
+              <h3>The Real Moment Arrives</h3>
+              <p>An interview, meeting, class, call, or conversation starts. You know what you want to say, but your voice waits.</p>
+            </article>
+            <article class="story-moment reveal">
+              <div class="word-rain" aria-hidden="true"><span>utilize</span><span>however</span><span>achieve</span><span>confident</span></div>
+              <div class="mini-person" aria-hidden="true"></div>
+              <h3>The Words Are Not Ready</h3>
+              <p>You remember many English words, but useful speaking groups do not arrive fast enough when pressure is real.</p>
+            </article>
+            <article class="story-moment reveal">
+              <div class="rule-grid" aria-hidden="true"><span>tense</span><span>rule</span><span>correct?</span></div>
+              <div class="mini-person" aria-hidden="true"></div>
+              <h3>The Mind Starts Checking</h3>
+              <p>You think about grammar while the conversation moves forward. That checking breaks your rhythm.</p>
+            </article>
+            <article class="story-moment reveal">
+              <div class="flow-stream" aria-hidden="true"><span>I think...</span><span>because...</span><span>so...</span></div>
+              <div class="mini-person" aria-hidden="true"></div>
+              <h3>The Right Practice Changes It</h3>
+              <p>When you repeat word groups, patterns, and connected flows aloud, English starts becoming a speaking habit.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head center reveal">
+            <h2>The Wrong Methods Make Speaking Feel Harder.</h2>
+            <p class="lead">Most learners work hard. They just practise in a way that prepares them to understand, write, or remember English, not speak it naturally.</p>
+          </div>
+
+          <div class="wrong-methods">
+            <div class="method-path reveal" aria-label="Wrong methods and better speaking path">
+              <div class="path-node">
+                <strong>Write First, Speak Later</strong>
+                <p>Writing helps, but speaking needs mouth movement, rhythm, and instant response.</p>
+              </div>
+              <div class="path-node">
+                <strong>Collect Huge Vocabulary</strong>
+                <p>Difficult words do not create fluency if useful word groups are not ready.</p>
+              </div>
+              <div class="path-node">
+                <strong>Memorise Grammar Rules</strong>
+                <p>Rules can explain English, but they often slow you down during real speech.</p>
+              </div>
+              <div class="path-node">
+                <strong>Watch More Videos</strong>
+                <p>Listening is useful, but passive learning does not train your voice to respond.</p>
+              </div>
+              <div class="path-node good">
+                <strong>Train Spoken Flow Daily</strong>
+                <p>Speak, repeat, extend, record, and build sentence after sentence until English moves.</p>
+              </div>
+            </div>
+
+            <div class="story-copy-card reveal">
+              <div class="kicker">The Fluency Magic shift</div>
+              <h2>Stop Preparing Only Your Mind. Start Training Your Speaking System.</h2>
+              <p class="lead">Fluency Magic does not ask learners to become grammar machines or vocabulary collectors. It gives them small daily speaking missions that train the mouth, useful word groups, prepositions, phrasal verbs, sentence patterns, and connected thought flow.</p>
+              <p class="lead">That is why the app starts with a fluency check, finds the speaking block, and then gives a 7-day activation path. The user does not just learn about English. They practise producing English.</p>
+              <div class="not-download">Understanding is not the finish line. Speaking flow is the training goal.</div>
+              <div class="actions">
+                <!-- TODO: Replace placeholder app CTA with real app store / PWA link. -->
+                <a class="button button-blue" href="/app">Start the Speaking Path in the App</a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1859,6 +2177,18 @@
         document.querySelectorAll(".story-tab").forEach((item) => item.classList.remove("active"));
         tab.classList.add("active");
         storyCopy.textContent = tab.dataset.story;
+      });
+    });
+
+    document.querySelectorAll(".story-moment, .path-node").forEach((item) => {
+      item.addEventListener("pointermove", (event) => {
+        const box = item.getBoundingClientRect();
+        const x = ((event.clientX - box.left) / box.width - .5) * 8;
+        const y = ((event.clientY - box.top) / box.height - .5) * -8;
+        item.style.transform = `translateY(-8px) rotateX(${y}deg) rotateY(${x}deg)`;
+      });
+      item.addEventListener("pointerleave", () => {
+        item.style.transform = "";
       });
     });
   </script>
