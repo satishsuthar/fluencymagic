@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Fluency Magic | Daily English Speaking Practice App</title>
-  <meta name="description" content="Fluency Magic is a daily English speaking practice app for people who understand English but freeze when they try to speak.">
+  <title>Fluency Magic | Speak English Naturally</title>
+  <meta name="description" content="Fluency Magic is a daily speaking training system for people who understand English but cannot speak fluently.">
   <style>
     :root {
       --ink: #101318;
@@ -12,106 +12,51 @@
       --muted: #667085;
       --line: #e5e7eb;
       --paper: #fffefa;
-      --soft: #f4f8f6;
+      --soft: #f5faf7;
       --green: #149f5b;
       --green-dark: #0c6d3e;
       --yellow: #f7b801;
-      --yellow-soft: #fff4c2;
       --blue: #4387ee;
       --blue-dark: #1f66cc;
       --shadow: 0 24px 80px rgba(16, 19, 24, .1);
-      --radius: 8px;
-      --max: 1180px;
+      --radius: 14px;
+      --max: 1160px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       color: var(--ink);
       background:
-        linear-gradient(90deg, rgba(20, 159, 91, .035) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(67, 135, 238, .035) 1px, transparent 1px),
+        radial-gradient(circle at 10% 10%, rgba(20, 159, 91, .08), transparent 28%),
+        radial-gradient(circle at 90% 18%, rgba(247, 184, 1, .18), transparent 28%),
         var(--paper);
-      background-size: 42px 42px;
       font-family: "Segoe UI Variable", "Aptos", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.55;
     }
 
-    body::before,
-    body::after {
-      content: "";
-      position: fixed;
-      z-index: -1;
-      width: 42vw;
-      min-width: 280px;
-      aspect-ratio: 1;
-      border-radius: 48%;
-      pointer-events: none;
-      filter: blur(2px);
-    }
-
-    body::before {
-      left: -16%;
-      top: 10%;
-      background: radial-gradient(circle, rgba(20, 159, 91, .1), transparent 68%);
-      animation: ambientMove 14s ease-in-out infinite alternate;
-    }
-
-    body::after {
-      right: -18%;
-      bottom: 4%;
-      background: radial-gradient(circle, rgba(67, 135, 238, .1), transparent 68%);
-      animation: ambientMove 16s ease-in-out infinite alternate-reverse;
-    }
-
-    @keyframes ambientMove {
-      from { transform: translate3d(0, 0, 0) scale(1); }
-      to { transform: translate3d(5%, -3%, 0) scale(1.08); }
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button,
-    a.button {
-      font: inherit;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    .page {
-      overflow: hidden;
-    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button, input, select { font: inherit; }
 
     .nav {
-      position: fixed;
-      inset: 0 0 auto;
-      z-index: 30;
-      background: rgba(255, 254, 250, .9);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255, 254, 250, .86);
       border-bottom: 1px solid rgba(16, 19, 24, .08);
       backdrop-filter: blur(18px);
     }
 
     .nav-inner {
       width: min(var(--max), calc(100% - 32px));
-      margin: 0 auto;
       min-height: 74px;
+      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 22px;
+      gap: 18px;
     }
 
     .brand {
@@ -119,1468 +64,417 @@
       align-items: center;
       gap: 12px;
       font-size: 20px;
-      font-weight: 900;
-      letter-spacing: 0;
+      font-weight: 950;
     }
 
-    .brand img {
-      width: 42px;
-      height: 42px;
-      object-fit: contain;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 26px;
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 750;
-    }
-
-    .nav-links a:hover {
-      color: var(--green);
-    }
+    .brand img { width: 42px; height: 42px; object-fit: contain; }
+    .nav-links { display: flex; gap: 24px; color: var(--muted); font-size: 14px; font-weight: 800; }
+    .nav-links a:hover { color: var(--green); }
 
     .button {
-      min-height: 50px;
+      min-height: 52px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
       padding: 0 22px;
-      border-radius: var(--radius);
       border: 1px solid transparent;
-      font-weight: 900;
+      border-radius: 999px;
+      font-weight: 950;
       cursor: pointer;
-      white-space: nowrap;
       transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+      white-space: nowrap;
     }
 
-    .button:hover {
-      transform: translateY(-2px);
-    }
-
-    .button-primary,
-    .button-blue {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .button-primary::after,
-    .button-blue::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(110deg, transparent, rgba(255, 255, 255, .28), transparent);
-      transform: translateX(-120%);
-      animation: buttonSheen 4.8s ease-in-out infinite;
-    }
-
-    @keyframes buttonSheen {
-      0%, 62% { transform: translateX(-120%); }
-      82%, 100% { transform: translateX(120%); }
-    }
-
+    .button:hover { transform: translateY(-2px); }
     .button-primary {
       color: #fff;
       background: var(--green);
       box-shadow: 0 18px 38px rgba(20, 159, 91, .26);
     }
 
-    .button-primary:hover {
-      background: var(--green-dark);
-    }
+    .button-primary:hover { background: var(--green-dark); }
+    .button-outline { color: var(--ink); background: #fff; border-color: rgba(16, 19, 24, .14); }
+    .button-blue { color: #fff; background: var(--blue); box-shadow: 0 18px 38px rgba(67, 135, 238, .24); }
 
-    .button-blue {
-      color: #fff;
-      background: var(--blue);
-      box-shadow: 0 18px 38px rgba(67, 135, 238, .24);
-    }
-
-    .button-outline {
-      color: var(--ink);
-      background: #fff;
-      border-color: rgba(16, 19, 24, .14);
-      box-shadow: 0 12px 30px rgba(16, 19, 24, .07);
-    }
-
-    .hero {
-      position: relative;
-      padding: 136px 0 84px;
-      background:
-        radial-gradient(circle at 74% 14%, rgba(247, 184, 1, .24), transparent 26%),
-        radial-gradient(circle at 90% 54%, rgba(67, 135, 238, .18), transparent 28%),
-        linear-gradient(180deg, #fffefa 0%, #f6fbf8 100%);
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -1px;
-      height: 78px;
-      background: #fff;
-      clip-path: polygon(0 54%, 100% 0, 100% 100%, 0 100%);
-    }
-
-    .hero-inner,
-    .container {
+    .container, .hero-inner {
       width: min(var(--max), calc(100% - 32px));
       margin: 0 auto;
     }
 
-    .hero-inner {
+    .hero {
       position: relative;
-      z-index: 2;
+      padding: 96px 0 74px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, #fffefa 0%, #f6fbf8 100%);
+    }
+
+    .hero-inner {
       display: grid;
-      grid-template-columns: minmax(0, 1.02fr) minmax(360px, .98fr);
-      gap: 58px;
+      grid-template-columns: 1.02fr .98fr;
+      gap: 52px;
       align-items: center;
     }
 
     .kicker {
+      width: max-content;
+      max-width: 100%;
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 22px;
+      gap: 8px;
+      margin-bottom: 18px;
       padding: 9px 12px;
       border: 1px solid rgba(20, 159, 91, .18);
       border-radius: 999px;
-      background: #fff;
       color: var(--green-dark);
+      background: rgba(20, 159, 91, .09);
       font-size: 13px;
       font-weight: 900;
-      box-shadow: 0 12px 30px rgba(20, 159, 91, .08);
     }
 
-    .kicker::before {
-      content: "";
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: var(--yellow);
-      box-shadow: 0 0 0 6px rgba(247, 184, 1, .18);
-    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { line-height: 1.04; letter-spacing: 0; }
+    h1 { margin-bottom: 20px; font-size: clamp(44px, 7vw, 76px); font-weight: 950; }
+    h2 { margin-bottom: 16px; font-size: clamp(32px, 5vw, 56px); font-weight: 950; }
+    h3 { margin-bottom: 10px; font-size: 22px; font-weight: 930; }
+    .lead { margin-bottom: 0; color: var(--muted); font-size: 19px; line-height: 1.65; }
+    .hero-copy { max-width: 680px; color: var(--ink-2); font-size: clamp(19px, 2.2vw, 24px); line-height: 1.48; }
+    .support-line { margin-top: 18px; color: var(--muted); font-size: 17px; font-weight: 760; }
+    .actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
 
-    h1,
-    h2,
-    h3,
-    p {
-      margin-top: 0;
-    }
-
-    h1,
-    h2,
-    h3 {
-      letter-spacing: 0;
-      line-height: 1.02;
-    }
-
-    h1 {
-      max-width: 790px;
-      margin-bottom: 26px;
-      font-size: clamp(48px, 7.7vw, 96px);
-      font-weight: 950;
-    }
-
-    h2 {
-      margin-bottom: 18px;
-      font-size: clamp(34px, 5vw, 62px);
-      font-weight: 950;
-    }
-
-    h3 {
-      margin-bottom: 12px;
-      font-size: 22px;
-      font-weight: 920;
-    }
-
-    .hero-copy {
-      max-width: 680px;
-      margin-bottom: 0;
-      color: var(--ink-2);
-      font-size: clamp(18px, 2vw, 22px);
-      line-height: 1.5;
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 34px;
-    }
-
-    .hero-proof {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 24px;
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 750;
-    }
-
-    .hero-proof span {
-      padding: 8px 11px;
-      border: 1px solid rgba(16, 19, 24, .09);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, .76);
-    }
-
-    .brand-visual {
+    .hero-visual {
       position: relative;
-      min-height: 540px;
+      min-height: 640px;
     }
 
-    .logo-stack {
+    .photo-card {
       position: absolute;
-      inset: 22px 24px auto auto;
-      width: min(88%, 430px);
-      display: grid;
-      gap: 10px;
-      filter: drop-shadow(0 30px 44px rgba(16, 19, 24, .16));
+      inset: 0 0 auto auto;
+      width: min(100%, 500px);
+      height: 560px;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(16, 19, 24, .1);
+      background: #ddd;
     }
 
-    .slab {
-      height: 128px;
-      border-radius: 0 8px 48px 0;
-      clip-path: polygon(0 0, 100% 0, 86% 100%, 0 100%);
-      transform-origin: left center;
-      animation: arrive .8s ease both;
-    }
-
-    .slab.green {
+    .photo-card img {
       width: 100%;
-      background: var(--green);
+      height: 100%;
+      object-fit: cover;
     }
 
-    .slab.yellow {
-      width: 82%;
-      background: var(--yellow);
-      animation-delay: .08s;
+    .photo-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 45%, rgba(16, 19, 24, .62));
     }
 
-    .slab.blue {
-      width: 40%;
-      background: var(--blue);
-      animation-delay: .16s;
-    }
-
-    @keyframes arrive {
-      from { opacity: 0; transform: translateX(42px) scaleX(.92); }
-      to { opacity: 1; transform: none; }
-    }
-
-    .speaker-card {
+    .app-phone {
       position: absolute;
       left: 0;
-      bottom: 24px;
-      width: min(92%, 390px);
-      padding: 24px;
+      bottom: 0;
+      width: 286px;
+      padding: 12px;
+      border-radius: 34px;
+      background: #111827;
+      box-shadow: 0 34px 90px rgba(16, 19, 24, .24);
+      transform: rotate(-3deg);
+    }
+
+    .phone-screen {
+      min-height: 500px;
+      padding: 20px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, #fffefa, #f6fbf8);
+    }
+
+    .mini-card {
+      padding: 14px;
+      margin-top: 12px;
       border: 1px solid rgba(16, 19, 24, .1);
       border-radius: var(--radius);
-      background: rgba(255, 255, 255, .9);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(18px);
-    }
-
-    .speaker-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      margin-bottom: 24px;
-    }
-
-    .speaker-face {
-      width: 72px;
-      height: 72px;
-      flex: 0 0 auto;
-      border-radius: 50%;
-      background:
-        radial-gradient(circle at 50% 36%, #fff 0 4px, transparent 5px),
-        radial-gradient(circle at 50% 55%, rgba(255, 255, 255, .9) 0 14px, transparent 15px),
-        linear-gradient(135deg, var(--yellow), var(--green) 58%, var(--blue));
-      box-shadow: 0 18px 40px rgba(20, 159, 91, .22);
-    }
-
-    .speaker-card strong {
-      display: block;
-      font-size: 18px;
-      line-height: 1.2;
-    }
-
-    .speaker-card small {
-      color: var(--muted);
-      font-weight: 750;
-    }
-
-    .wave {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      height: 74px;
-    }
-
-    .wave span {
-      width: 10px;
-      height: var(--h);
-      border-radius: 999px;
-      background: var(--c);
-      animation: wave 1.5s ease-in-out infinite;
-      animation-delay: var(--d);
-    }
-
-    @keyframes wave {
-      50% { transform: scaleY(.45); opacity: .62; }
-    }
-
-    .story-orbit {
-      position: absolute;
-      right: 18px;
-      bottom: 162px;
-      width: 210px;
-      height: 210px;
-      border-radius: 50%;
-      border: 1px solid rgba(16, 19, 24, .1);
-      background: rgba(255, 255, 255, .42);
-      animation: softSpin 18s linear infinite;
-    }
-
-    .story-orbit span {
-      position: absolute;
-      display: grid;
-      place-items: center;
-      width: 54px;
-      height: 54px;
-      border-radius: 18px;
-      color: #fff;
-      font-size: 23px;
-      font-weight: 950;
-      box-shadow: 0 16px 32px rgba(16, 19, 24, .14);
-      animation: counterSpin 18s linear infinite;
-    }
-
-    .story-orbit span:nth-child(1) { top: -18px; left: 78px; background: var(--green); }
-    .story-orbit span:nth-child(2) { right: -18px; top: 78px; background: var(--yellow); }
-    .story-orbit span:nth-child(3) { bottom: -18px; left: 78px; background: var(--blue); }
-    .story-orbit span:nth-child(4) { left: -18px; top: 78px; background: var(--green-dark); }
-
-    @keyframes softSpin {
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes counterSpin {
-      to { transform: rotate(-360deg); }
-    }
-
-    .speech-bubble {
-      position: absolute;
-      right: 0;
-      top: 48px;
-      max-width: 260px;
-      padding: 16px 18px;
-      border: 1px solid rgba(16, 19, 24, .1);
-      border-radius: 22px 22px 6px 22px;
       background: #fff;
-      box-shadow: 0 18px 44px rgba(16, 19, 24, .12);
-      font-weight: 850;
-      animation: bubbleFloat 4s ease-in-out infinite;
+      box-shadow: 0 12px 28px rgba(16, 19, 24, .08);
+      color: var(--ink-2);
+      font-weight: 800;
     }
 
-    .speech-bubble small {
-      display: block;
-      margin-top: 6px;
-      color: var(--muted);
-      font-weight: 760;
+    .floating-chip {
+      position: absolute;
+      z-index: 4;
+      padding: 10px 13px;
+      border: 1px solid rgba(16, 19, 24, .1);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .92);
+      box-shadow: 0 16px 34px rgba(16, 19, 24, .12);
+      font-size: 14px;
+      font-weight: 900;
+      animation: floatChip 4s ease-in-out infinite;
     }
 
-    @keyframes bubbleFloat {
+    .chip-1 { top: 36px; left: 10px; color: var(--green-dark); }
+    .chip-2 { top: 118px; right: 0; color: #8a5d00; animation-delay: .3s; }
+    .chip-3 { right: 32px; bottom: 126px; color: var(--blue-dark); animation-delay: .6s; }
+    .chip-4 { left: 30px; top: 260px; color: var(--green-dark); animation-delay: .9s; }
+
+    @keyframes floatChip {
       50% { transform: translateY(-10px); }
     }
 
-    .story-stage {
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(16, 19, 24, .1);
-      border-radius: var(--radius);
-      background:
-        radial-gradient(circle at 78% 18%, rgba(247, 184, 1, .18), transparent 26%),
-        linear-gradient(135deg, #fff, #f4f8f6);
-      box-shadow: var(--shadow);
-      padding: clamp(24px, 4vw, 46px);
-    }
-
-    .story-grid {
-      display: grid;
-      grid-template-columns: .86fr 1.14fr;
-      gap: 34px;
-      align-items: center;
-    }
-
-    .character-scene {
-      position: relative;
-      min-height: 430px;
-      display: grid;
-      place-items: center;
-    }
-
-    .character {
-      position: relative;
-      width: 210px;
-      height: 300px;
-      animation: characterBreathe 3s ease-in-out infinite;
-    }
-
-    .character::before {
-      content: "";
-      position: absolute;
-      left: 70px;
-      top: 6px;
-      width: 78px;
-      height: 78px;
-      border-radius: 50%;
-      background:
-        radial-gradient(circle at 32% 38%, #101318 0 4px, transparent 5px),
-        radial-gradient(circle at 62% 38%, #101318 0 4px, transparent 5px),
-        radial-gradient(circle at 50% 62%, #101318 0 8px, transparent 9px),
-        #f7d7b6;
-      box-shadow: 0 18px 0 -4px #101318;
-    }
-
-    .character::after {
-      content: "";
-      position: absolute;
-      left: 48px;
-      top: 98px;
-      width: 116px;
-      height: 138px;
-      border-radius: 34px 34px 14px 14px;
-      background: linear-gradient(135deg, var(--green), var(--blue));
-      box-shadow: -34px 22px 0 -18px var(--yellow), 48px 34px 0 -22px var(--yellow);
-    }
-
-    .character-shadow {
-      position: absolute;
-      bottom: 48px;
-      width: 230px;
-      height: 24px;
-      border-radius: 50%;
-      background: rgba(16, 19, 24, .12);
-      filter: blur(2px);
-      animation: shadowPulse 3s ease-in-out infinite;
-    }
-
-    .voice-rings {
-      position: absolute;
-      right: 50px;
-      top: 74px;
-      width: 170px;
-      height: 170px;
-      border-radius: 50%;
-      border: 2px solid rgba(20, 159, 91, .22);
-      animation: ringPulse 2.4s ease-out infinite;
-    }
-
-    .voice-rings::before,
-    .voice-rings::after {
-      content: "";
-      position: absolute;
-      inset: 18px;
-      border-radius: inherit;
-      border: inherit;
-      animation: ringPulse 2.4s ease-out infinite;
-      animation-delay: .28s;
-    }
-
-    .voice-rings::after {
-      inset: 36px;
-      animation-delay: .56s;
-    }
-
-    @keyframes ringPulse {
-      70%, 100% { transform: scale(1.12); opacity: .22; }
-    }
-
-    @keyframes characterBreathe {
-      50% { transform: translateY(-8px); }
-    }
-
-    @keyframes shadowPulse {
-      50% { transform: scaleX(.84); opacity: .08; }
-    }
-
-    .story-tabs {
-      display: grid;
-      gap: 14px;
-      margin-top: 24px;
-    }
-
-    .story-tab {
-      display: grid;
-      grid-template-columns: 46px 1fr;
-      gap: 14px;
-      align-items: start;
-      padding: 16px;
-      border: 1px solid rgba(16, 19, 24, .1);
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, .78);
-      cursor: pointer;
-      text-align: left;
-      transition: transform .2s ease, border-color .2s ease, background .2s ease;
-    }
-
-    .story-tab:hover,
-    .story-tab.active {
-      transform: translateX(6px);
-      border-color: rgba(20, 159, 91, .34);
-      background: #fff;
-    }
-
-    .story-tab b {
-      display: grid;
-      place-items: center;
-      width: 42px;
-      height: 42px;
-      border-radius: var(--radius);
+    .section { padding: 88px 0; background: #fff; }
+    .section.soft { background: var(--soft); }
+    .section.dark {
       color: #fff;
-      background: var(--accent);
-    }
-
-    .story-tab strong {
-      display: block;
-      margin-bottom: 4px;
-      font-size: 18px;
-    }
-
-    .story-tab span {
-      color: var(--muted);
-      font-weight: 700;
-    }
-
-    .animated-card {
-      transition: transform .25s ease, box-shadow .25s ease;
-    }
-
-    .animated-card:hover {
-      transform: translateY(-8px) rotate(-.4deg);
-      box-shadow: 0 28px 70px rgba(16, 19, 24, .14);
-    }
-
-    .storyline {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-top: 34px;
-    }
-
-    .story-moment {
-      position: relative;
-      min-height: 320px;
-      padding: 20px;
-      overflow: hidden;
-      border: 1px solid rgba(16, 19, 24, .1);
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, .92);
-      box-shadow: 0 20px 54px rgba(16, 19, 24, .08);
-      transition: transform .25s ease, box-shadow .25s ease;
-    }
-
-    .story-moment:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 28px 70px rgba(16, 19, 24, .13);
-    }
-
-    .story-moment h3 {
-      position: relative;
-      z-index: 2;
-      margin-top: 178px;
-    }
-
-    .story-moment p {
-      position: relative;
-      z-index: 2;
-      color: var(--muted);
-      font-weight: 720;
-    }
-
-    .mini-person {
-      position: absolute;
-      left: 50%;
-      top: 54px;
-      width: 84px;
-      height: 124px;
-      transform: translateX(-50%);
-    }
-
-    .mini-person::before {
-      content: "";
-      position: absolute;
-      left: 24px;
-      top: 0;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: #f7d7b6;
-      box-shadow: 0 10px 0 -4px #101318;
-    }
-
-    .mini-person::after {
-      content: "";
-      position: absolute;
-      left: 12px;
-      top: 48px;
-      width: 60px;
-      height: 70px;
-      border-radius: 24px 24px 10px 10px;
-      background: linear-gradient(135deg, var(--green), var(--blue));
-    }
-
-    .thought-cloud,
-    .word-rain,
-    .rule-grid,
-    .flow-stream {
-      position: absolute;
-      inset: 18px;
-      pointer-events: none;
-    }
-
-    .thought-cloud span,
-    .word-rain span,
-    .rule-grid span,
-    .flow-stream span {
-      position: absolute;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 46px;
-      min-height: 28px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: #fff;
-      border: 1px solid rgba(16, 19, 24, .1);
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 850;
-      box-shadow: 0 10px 24px rgba(16, 19, 24, .08);
-    }
-
-    .thought-cloud span:nth-child(1) { left: 8%; top: 18%; animation: drift 4s ease-in-out infinite; }
-    .thought-cloud span:nth-child(2) { right: 9%; top: 8%; animation: drift 4.4s ease-in-out infinite .2s; }
-    .thought-cloud span:nth-child(3) { left: 28%; top: 36%; animation: drift 4.8s ease-in-out infinite .4s; }
-
-    .word-rain span:nth-child(1) { left: 12%; top: 8%; animation: fallWord 3.8s linear infinite; }
-    .word-rain span:nth-child(2) { left: 42%; top: 0; animation: fallWord 4.2s linear infinite .5s; }
-    .word-rain span:nth-child(3) { right: 10%; top: 16%; animation: fallWord 3.6s linear infinite .9s; }
-    .word-rain span:nth-child(4) { left: 26%; top: 24%; animation: fallWord 4.6s linear infinite 1.2s; }
-
-    .rule-grid span {
-      border-radius: var(--radius);
-      color: var(--ink);
-      background: rgba(247, 184, 1, .14);
-    }
-    .rule-grid span:nth-child(1) { left: 8%; top: 10%; animation: shakeRule 3s ease-in-out infinite; }
-    .rule-grid span:nth-child(2) { right: 8%; top: 18%; animation: shakeRule 3.2s ease-in-out infinite .2s; }
-    .rule-grid span:nth-child(3) { left: 32%; top: 34%; animation: shakeRule 3.4s ease-in-out infinite .4s; }
-
-    .flow-stream span {
-      border-radius: var(--radius);
-      color: #fff;
-      background: var(--green);
-      animation: flowForward 3.4s ease-in-out infinite;
-    }
-    .flow-stream span:nth-child(1) { left: 2%; top: 18%; }
-    .flow-stream span:nth-child(2) { left: 24%; top: 34%; animation-delay: .18s; background: var(--yellow); }
-    .flow-stream span:nth-child(3) { left: 52%; top: 28%; animation-delay: .36s; background: var(--blue); }
-
-    @keyframes drift {
-      50% { transform: translateY(-10px) scale(1.04); }
-    }
-
-    @keyframes fallWord {
-      0% { transform: translateY(-20px); opacity: 0; }
-      18%, 72% { opacity: 1; }
-      100% { transform: translateY(116px); opacity: 0; }
-    }
-
-    @keyframes shakeRule {
-      20%, 60% { transform: rotate(-2deg); }
-      40%, 80% { transform: rotate(2deg); }
-    }
-
-    @keyframes flowForward {
-      50% { transform: translateX(16px); }
-    }
-
-    .wrong-methods {
-      display: grid;
-      grid-template-columns: .8fr 1.2fr;
-      gap: 28px;
-      align-items: stretch;
-      margin-top: 34px;
-    }
-
-    .method-path {
-      position: relative;
-      min-height: 520px;
-      padding: 24px;
-      border-radius: var(--radius);
-      border: 1px solid rgba(16, 19, 24, .1);
       background:
-        linear-gradient(180deg, rgba(16, 19, 24, .03), transparent),
-        #fff;
-      overflow: hidden;
-      box-shadow: var(--shadow);
+        radial-gradient(circle at 88% 20%, rgba(247, 184, 1, .26), transparent 24%),
+        linear-gradient(135deg, #101318, #0c6d3e 58%, #1f66cc);
     }
+    .section.dark .lead, .section.dark p { color: rgba(255, 255, 255, .78); }
+    .section-head { max-width: 840px; margin-bottom: 36px; }
+    .center { margin-left: auto; margin-right: auto; text-align: center; }
 
-    .method-path::before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: 46px;
-      bottom: 46px;
-      width: 4px;
-      border-radius: 99px;
-      background: linear-gradient(180deg, rgba(16, 19, 24, .14), var(--green));
-      transform: translateX(-50%);
-    }
-
-    .path-node {
-      position: relative;
-      z-index: 2;
-      width: min(86%, 360px);
-      padding: 16px;
-      margin: 0 0 18px;
-      border-radius: var(--radius);
-      background: #fff;
-      border: 1px solid rgba(16, 19, 24, .1);
-      box-shadow: 0 14px 34px rgba(16, 19, 24, .08);
-      animation: pathPulse 5s ease-in-out infinite;
-    }
-
-    .path-node:nth-child(even) {
-      margin-left: auto;
-      animation-delay: .25s;
-    }
-
-    .path-node strong {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 18px;
-    }
-
-    .path-node p {
-      margin: 0;
-      color: var(--muted);
-      font-weight: 720;
-    }
-
-    .path-node.good {
-      border-color: rgba(20, 159, 91, .34);
-      background: linear-gradient(135deg, rgba(20, 159, 91, .1), rgba(67, 135, 238, .08)), #fff;
-    }
-
-    @keyframes pathPulse {
-      50% { transform: translateY(-5px); }
-    }
-
-    .story-copy-card {
-      position: relative;
-      overflow: hidden;
-      padding: clamp(24px, 4vw, 42px);
-      border: 1px solid rgba(16, 19, 24, .1);
-      border-radius: var(--radius);
-      background:
-        radial-gradient(circle at 82% 8%, rgba(247, 184, 1, .18), transparent 28%),
-        radial-gradient(circle at 14% 92%, rgba(67, 135, 238, .12), transparent 30%),
-        linear-gradient(135deg, #fffefa, #f6fbf8);
-      color: var(--ink);
-      box-shadow: var(--shadow);
-    }
-
-    .story-copy-card::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto;
-      height: 10px;
-      background: linear-gradient(90deg, var(--green), var(--yellow), var(--blue));
-    }
-
-    .story-copy-card .lead {
-      color: var(--muted);
-    }
-
-    .story-copy-card .not-download {
-      color: var(--green-dark);
-      background: rgba(20, 159, 91, .1);
-      border-color: rgba(20, 159, 91, .2);
-    }
-
-    .training-system-visual {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin: 24px 0;
-    }
-
-    .training-system-visual span {
-      min-height: 92px;
-      display: grid;
-      place-items: center;
-      padding: 14px;
-      border-radius: var(--radius);
-      color: #fff;
-      font-weight: 950;
-      text-align: center;
-      box-shadow: 0 16px 34px rgba(16, 19, 24, .12);
-      animation: systemFloat 4s ease-in-out infinite;
-    }
-
-    .training-system-visual span:nth-child(1) { background: var(--green); }
-    .training-system-visual span:nth-child(2) { background: var(--yellow); animation-delay: .16s; }
-    .training-system-visual span:nth-child(3) { background: var(--blue); animation-delay: .32s; }
-    .training-system-visual span:nth-child(4) { background: var(--green-dark); animation-delay: .48s; }
-    .training-system-visual span:nth-child(5) { background: #101318; animation-delay: .64s; }
-    .training-system-visual span:nth-child(6) { background: var(--blue-dark); animation-delay: .8s; }
-    
-    @keyframes systemFloat {
-      50% { transform: translateY(-7px); }
-    }
-
-    .proof-band {
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(16, 19, 24, .1);
-      border-radius: var(--radius);
-      background:
-        radial-gradient(circle at 12% 16%, rgba(20, 159, 91, .14), transparent 30%),
-        radial-gradient(circle at 90% 8%, rgba(247, 184, 1, .2), transparent 28%),
-        #fff;
-      box-shadow: var(--shadow);
-      padding: clamp(24px, 4vw, 44px);
-    }
-
-    .proof-band::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto;
-      height: 10px;
-      background: linear-gradient(90deg, var(--green), var(--yellow), var(--blue));
-    }
-
-    .proof-metrics {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-top: 28px;
-    }
-
-    .proof-metric {
-      min-height: 150px;
-      padding: 18px;
-      border: 1px solid rgba(16, 19, 24, .09);
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, .86);
-      box-shadow: 0 14px 34px rgba(16, 19, 24, .07);
-    }
-
-    .proof-metric strong {
-      display: block;
-      margin-bottom: 8px;
-      font-size: clamp(30px, 4vw, 46px);
-      line-height: 1;
-      color: var(--green-dark);
-    }
-
-    .proof-metric span {
-      display: block;
-      color: var(--muted);
-      font-weight: 760;
-    }
-
-    .testimonial-grid {
+    .problem-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 16px;
-      margin-top: 24px;
     }
 
-    .testimonial-card {
+    .problem-card, .system-card, .practice-card, .proof-card, .screen-card {
       position: relative;
-      min-height: 260px;
-      padding: 22px;
+      overflow: hidden;
       border: 1px solid rgba(16, 19, 24, .1);
       border-radius: var(--radius);
       background: #fff;
       box-shadow: 0 18px 44px rgba(16, 19, 24, .08);
-      overflow: hidden;
       transition: transform .25s ease, box-shadow .25s ease;
     }
 
-    .testimonial-card:hover {
-      transform: translateY(-8px);
+    .problem-card:hover, .system-card:hover, .practice-card:hover, .proof-card:hover, .screen-card:hover {
+      transform: translateY(-7px);
       box-shadow: 0 28px 70px rgba(16, 19, 24, .13);
     }
 
-    .testimonial-card::before {
+    .problem-card {
+      min-height: 170px;
+      display: grid;
+      align-items: end;
+      padding: 22px;
+      font-size: 22px;
+      font-weight: 950;
+      line-height: 1.18;
+    }
+
+    .problem-card::before {
       content: "";
       position: absolute;
-      inset: 0 0 auto;
-      height: 7px;
+      top: 18px;
+      left: 18px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
       background: var(--accent);
+      opacity: .92;
     }
 
-    .avatar-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
+    .problem-photo, .final-photo {
+      min-height: 420px;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(16, 19, 24, .1);
     }
 
-    .avatar {
-      width: 52px;
-      height: 52px;
+    .problem-photo img, .final-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .split { display: grid; grid-template-columns: .96fr 1.04fr; gap: 38px; align-items: center; }
+    .truth-line {
+      margin-top: 28px;
+      padding: 22px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(20, 159, 91, .18);
+      color: var(--green-dark);
+      background: rgba(20, 159, 91, .08);
+      font-size: 21px;
+      font-weight: 950;
+      text-align: center;
+    }
+
+    .system-visual {
+      position: relative;
+      min-height: 460px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 55% 42%, rgba(247, 184, 1, .18), transparent 24%),
+        linear-gradient(180deg, #fff, #f4f8f6);
+      border: 1px solid rgba(16, 19, 24, .1);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .human-profile {
+      position: absolute;
+      left: 50%;
+      top: 56%;
+      width: 180px;
+      height: 260px;
+      transform: translate(-50%, -50%);
+    }
+
+    .human-profile::before {
+      content: "";
+      position: absolute;
+      left: 48px;
+      top: 0;
+      width: 96px;
+      height: 96px;
       border-radius: 50%;
       background:
-        radial-gradient(circle at 35% 38%, #101318 0 3px, transparent 4px),
-        radial-gradient(circle at 63% 38%, #101318 0 3px, transparent 4px),
-        radial-gradient(circle at 50% 62%, rgba(16, 19, 24, .75) 0 7px, transparent 8px),
-        linear-gradient(135deg, var(--yellow), var(--green) 60%, var(--blue));
-      box-shadow: 0 14px 30px rgba(16, 19, 24, .13);
+        radial-gradient(circle at 34% 38%, #101318 0 4px, transparent 5px),
+        radial-gradient(circle at 62% 38%, #101318 0 4px, transparent 5px),
+        radial-gradient(circle at 52% 64%, #101318 0 8px, transparent 9px),
+        #f7d7b6;
+      box-shadow: 0 24px 0 -8px #101318;
     }
 
-    .avatar-row b {
-      display: block;
-      line-height: 1.2;
-    }
-
-    .avatar-row small {
-      color: var(--muted);
-      font-weight: 760;
-    }
-
-    .testimonial-card p {
-      color: var(--ink-2);
-      font-size: 17px;
-      font-weight: 760;
-    }
-
-    .proof-note {
-      margin-top: 18px;
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 760;
-      text-align: center;
-    }
-
-    .section {
-      padding: 98px 0;
-      background: #fff;
-    }
-
-    .section.soft {
-      background: var(--soft);
-    }
-
-    .section.dark {
-      color: #fff;
-      background:
-        linear-gradient(135deg, rgba(16, 19, 24, .96), rgba(12, 109, 62, .94)),
-        var(--green-dark);
-    }
-
-    .section.dark .lead,
-    .section.dark p {
-      color: rgba(255, 255, 255, .75);
-    }
-
-    .section-head {
-      max-width: 850px;
-      margin-bottom: 42px;
-    }
-
-    .section-head.center {
-      margin-left: auto;
-      margin-right: auto;
-      text-align: center;
-    }
-
-    .lead {
-      margin-bottom: 0;
-      color: var(--muted);
-      font-size: 19px;
-      line-height: 1.65;
-    }
-
-    .problem-layout {
-      display: grid;
-      grid-template-columns: .96fr 1.04fr;
-      gap: 34px;
-      align-items: start;
-    }
-
-    .statement {
-      padding: 34px;
-      border: 1px solid rgba(16, 19, 24, .1);
-      border-radius: var(--radius);
-      background: #fff;
-      box-shadow: var(--shadow);
-    }
-
-    .statement p {
-      color: var(--muted);
-      font-size: 18px;
-    }
-
-    .statement .truth {
-      margin: 24px 0;
-      padding: 20px;
-      border-left: 6px solid var(--yellow);
-      background: var(--yellow-soft);
-      color: var(--ink);
-      font-size: 26px;
-      font-weight: 950;
-      line-height: 1.16;
-    }
-
-    .pain-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .pain-grid li,
-    .step,
-    .compare li {
-      border: 1px solid rgba(16, 19, 24, .1);
-      border-radius: var(--radius);
-      background: #fff;
-    }
-
-    .pain-grid li {
-      min-height: 116px;
-      padding: 20px;
-      font-weight: 780;
-    }
-
-    .pain-grid li::before {
+    .human-profile::after {
       content: "";
-      display: block;
-      width: 34px;
-      height: 7px;
-      margin-bottom: 18px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--green), var(--yellow), var(--blue));
+      position: absolute;
+      left: 28px;
+      top: 122px;
+      width: 130px;
+      height: 118px;
+      border-radius: 42px 42px 16px 16px;
+      background: linear-gradient(135deg, var(--green), var(--blue));
     }
 
-    .ai-layout {
-      display: grid;
-      grid-template-columns: .9fr 1.1fr;
-      gap: 50px;
+    .label-chip {
+      position: absolute;
+      display: inline-flex;
       align-items: center;
-    }
-
-    .not-download {
-      margin-top: 28px;
-      font-size: clamp(32px, 4.2vw, 54px);
-      font-weight: 950;
-      line-height: 1.02;
-    }
-
-    .voice-board {
-      display: grid;
-      gap: 14px;
-      padding: 18px;
-      border: 1px solid rgba(255, 255, 255, .18);
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, .08);
-    }
-
-    .voice-row {
-      display: grid;
-      grid-template-columns: 118px 1fr;
-      gap: 14px;
-      align-items: center;
-      padding: 18px;
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, .08);
-    }
-
-    .voice-row b {
-      color: #fff;
-      font-size: 14px;
-    }
-
-    .voice-row span {
-      color: rgba(255, 255, 255, .74);
-    }
-
-    .voice-line {
-      height: 14px;
+      gap: 8px;
+      padding: 9px 12px;
       border-radius: 999px;
-      background: linear-gradient(90deg, var(--green), var(--yellow), var(--blue));
-      transform-origin: left center;
-      animation: voiceGrow 2.1s ease-in-out infinite;
+      background: #fff;
+      border: 1px solid rgba(16, 19, 24, .1);
+      box-shadow: 0 14px 34px rgba(16, 19, 24, .1);
+      color: var(--muted);
+      font-weight: 900;
+      animation: floatChip 4.4s ease-in-out infinite;
     }
 
-    .voice-row:nth-child(2) .voice-line {
-      width: 72%;
-      animation-delay: .2s;
-    }
+    .label-chip::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
+    .mind { top: 54px; left: 52px; --accent: var(--green); }
+    .ears { top: 96px; right: 52px; --accent: var(--yellow); animation-delay: .2s; }
+    .mouth { left: 46px; bottom: 120px; --accent: var(--blue); animation-delay: .4s; }
+    .breath { right: 52px; bottom: 86px; --accent: var(--green); animation-delay: .6s; }
+    .rhythm { left: 50%; bottom: 32px; transform: translateX(-50%); --accent: var(--yellow); animation-delay: .8s; }
 
-    .voice-row:nth-child(3) .voice-line {
-      width: 86%;
-      animation-delay: .35s;
-    }
-
-    @keyframes voiceGrow {
-      50% { transform: scaleX(.64); opacity: .72; }
-    }
-
-    .principles {
+    .system-grid, .practice-grid, .steps, .screens, .proof-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
       gap: 16px;
     }
 
-    .principle {
-      position: relative;
-      min-height: 310px;
-      padding: 26px;
-      border: 1px solid rgba(16, 19, 24, .1);
-      border-radius: var(--radius);
-      background: #fff;
-      box-shadow: 0 18px 48px rgba(16, 19, 24, .07);
-      overflow: hidden;
-      transition: transform .2s ease, box-shadow .2s ease;
-    }
-
-    .principle:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow);
-    }
-
-    .principle::before {
+    .system-grid { grid-template-columns: repeat(4, 1fr); margin-top: 22px; }
+    .system-card, .practice-card { padding: 22px; }
+    .system-card::before, .practice-card::before, .screen-card::before {
       content: "";
       display: block;
-      width: 86px;
-      height: 28px;
-      margin-bottom: 26px;
-      border-radius: 0 8px 16px 0;
-      clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%);
+      width: 42px;
+      height: 8px;
+      margin-bottom: 22px;
+      border-radius: 999px;
       background: var(--accent);
     }
+    .system-card p, .practice-card p, .screen-card p { margin-bottom: 0; color: var(--muted); font-weight: 730; }
 
-    .principle p {
-      margin: 0;
-      color: var(--muted);
-    }
-
-    .compare {
+    .method-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 18px;
     }
 
-    .compare-card {
-      padding: 28px;
-      border-radius: var(--radius);
+    .method-card {
+      min-height: 430px;
+      padding: 24px;
+      border-radius: 28px;
       border: 1px solid rgba(16, 19, 24, .1);
       background: #fff;
-      box-shadow: 0 18px 50px rgba(16, 19, 24, .06);
-    }
-
-    .compare-card.after {
-      border-color: rgba(20, 159, 91, .24);
-      background:
-        linear-gradient(135deg, rgba(20, 159, 91, .09), rgba(67, 135, 238, .07)),
-        #fff;
-    }
-
-    .compare ul {
-      display: grid;
-      gap: 10px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .compare li {
-      padding: 14px 16px;
-      color: var(--ink-2);
-    }
-
-    .compare-card.before li {
-      border-left: 5px solid #d0d5dd;
-    }
-
-    .compare-card.after li {
-      border-left: 5px solid var(--green);
-    }
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      counter-reset: steps;
-    }
-
-    .step {
-      min-height: 210px;
-      padding: 24px;
-      counter-increment: steps;
-      box-shadow: 0 18px 48px rgba(16, 19, 24, .06);
-    }
-
-    .step::before {
-      content: counter(steps);
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      margin-bottom: 22px;
-      border-radius: var(--radius);
-      background: var(--accent);
-      color: #fff;
-      font-weight: 950;
-    }
-
-    .step p {
-      margin-bottom: 0;
-      color: var(--muted);
-    }
-
-    .offer {
-      position: relative;
-      isolation: isolate;
-      background:
-        linear-gradient(120deg, rgba(20, 159, 91, .12), rgba(247, 184, 1, .2) 48%, rgba(67, 135, 238, .1)),
-        #fffefa;
-    }
-
-    .offer-card {
-      position: relative;
-      max-width: 910px;
-      margin: 0 auto;
-      padding: 52px;
-      text-align: center;
-      border: 1px solid rgba(16, 19, 24, .1);
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, .88);
       box-shadow: var(--shadow);
       overflow: hidden;
     }
 
-    .offer-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 10px;
-      background: linear-gradient(90deg, var(--green), var(--yellow), var(--blue));
-    }
-
-    .test-pill {
-      width: max-content;
-      max-width: 100%;
-      margin: 0 auto 24px;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 14px;
-      border: 1px solid rgba(16, 19, 24, .1);
-      border-radius: 999px;
-      background: #fff;
-      font-weight: 900;
-    }
-
-    .test-pill span {
-      padding: 6px 10px;
-      border-radius: 999px;
-      color: #fff;
-      background: var(--blue);
-      font-size: 13px;
-    }
-
-    .closing {
-      padding: 104px 0;
-      color: #fff;
-      background:
-        radial-gradient(circle at 80% 24%, rgba(247, 184, 1, .32), transparent 26%),
-        linear-gradient(135deg, #101318 0%, #0c6d3e 58%, #1f66cc 100%);
-    }
-
-    .closing-grid {
-      display: grid;
-      grid-template-columns: 1fr 360px;
-      gap: 54px;
-      align-items: center;
-    }
-
-    .closing .lead {
-      color: rgba(255, 255, 255, .78);
-    }
-
-    .closing-mark {
-      width: min(100%, 330px);
-      margin-left: auto;
-      padding: 34px;
-      border: 1px solid rgba(255, 255, 255, .18);
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, .08);
-      backdrop-filter: blur(12px);
-    }
-
-    .closing-mark img {
-      width: 210px;
-      margin: 0 auto;
-      filter: drop-shadow(0 22px 30px rgba(0, 0, 0, .18));
-    }
-
-    .app-preview-grid {
-      display: grid;
-      grid-template-columns: minmax(280px, .8fr) 1.2fr;
-      gap: 34px;
-      align-items: center;
-      margin-top: 34px;
-    }
-
-    .phone-frame {
-      width: min(100%, 330px);
-      margin: 0 auto;
-      padding: 14px;
-      border: 1px solid rgba(16, 19, 24, .14);
-      border-radius: 34px;
-      background: #111827;
-      box-shadow: 0 34px 90px rgba(16, 19, 24, .22);
-    }
-
-    .phone-screen {
-      min-height: 560px;
-      padding: 22px;
-      border-radius: 24px;
-      background: linear-gradient(180deg, #fffefa, #f6fbf8);
-      overflow: hidden;
-    }
-
-    .app-card {
-      padding: 18px;
-      margin-top: 14px;
-      border: 1px solid rgba(16, 19, 24, .1);
-      border-radius: var(--radius);
-      background: #fff;
-      box-shadow: 0 16px 34px rgba(16, 19, 24, .08);
-    }
-
-    .mini-progress {
-      height: 10px;
-      border-radius: 99px;
-      background: rgba(20, 159, 91, .12);
-      overflow: hidden;
-    }
-
-    .mini-progress span {
-      display: block;
-      width: 46%;
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--green), var(--yellow), var(--blue));
-    }
-
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-
-    .sentence-ladder {
-      display: grid;
+    .phrase-cloud {
+      min-height: 170px;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: center;
       gap: 10px;
-      margin-top: 18px;
+      margin-bottom: 24px;
     }
 
-    .sentence-ladder span {
-      display: block;
-      padding: 12px 14px;
-      border: 1px solid rgba(16, 19, 24, .09);
-      border-radius: var(--radius);
-      background: #fff;
-      font-weight: 760;
+    .phrase-cloud span {
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(20, 159, 91, .1);
+      color: var(--green-dark);
+      font-size: 13px;
+      font-weight: 900;
+      animation: floatChip 4s ease-in-out infinite;
     }
+    .phrase-cloud span:nth-child(even) { color: #8a5d00; background: rgba(247, 184, 1, .15); animation-delay: .2s; }
+    .phrase-cloud span:nth-child(3n) { color: var(--blue-dark); background: rgba(67, 135, 238, .1); animation-delay: .4s; }
 
-    .visual-scene {
-      min-height: 310px;
-      display: grid;
-      place-items: end center;
-      padding: 26px;
-      border-radius: var(--radius);
-      background:
-        linear-gradient(180deg, rgba(67, 135, 238, .14), transparent 48%),
-        linear-gradient(180deg, #fff, #f4f8f6);
-      border: 1px solid rgba(16, 19, 24, .1);
-      overflow: hidden;
-    }
+    .steps { grid-template-columns: repeat(3, 1fr); margin-top: 28px; }
+    .step { padding: 22px; border-radius: var(--radius); background: rgba(255,255,255,.9); border: 1px solid rgba(16,19,24,.1); }
+    .step b { display: grid; place-items: center; width: 42px; height: 42px; margin-bottom: 16px; border-radius: 50%; color: #fff; background: var(--accent); }
 
-    .runner {
-      position: relative;
-      width: 160px;
-      height: 130px;
-    }
+    .practice-grid { grid-template-columns: repeat(3, 1fr); }
 
-    .runner::before {
-      content: "";
-      position: absolute;
-      left: 58px;
-      top: 8px;
-      width: 42px;
-      height: 42px;
+    .proof-grid { grid-template-columns: repeat(4, 1fr); }
+    .proof-card { padding: 22px; }
+    .proof-card img {
+      width: 72px;
+      height: 72px;
+      margin-bottom: 18px;
       border-radius: 50%;
-      background: var(--yellow);
-      box-shadow: 0 46px 0 12px var(--blue);
+      object-fit: cover;
+      box-shadow: 0 14px 28px rgba(16, 19, 24, .12);
     }
+    .proof-card blockquote { margin: 0 0 18px; color: var(--ink-2); font-size: 17px; font-weight: 800; line-height: 1.45; }
+    .proof-card strong { display: block; }
+    .proof-card small { color: var(--muted); font-weight: 760; }
 
-    .runner::after {
-      content: "";
-      position: absolute;
-      left: 18px;
-      bottom: 6px;
-      width: 124px;
-      height: 8px;
-      border-radius: 99px;
-      background: var(--green);
-      box-shadow: 18px -36px 0 -2px var(--green), 62px -20px 0 -2px var(--green), 18px -10px 0 -2px var(--green), 84px 6px 0 -2px var(--green);
-      animation: runnerMove 1.4s ease-in-out infinite alternate;
+    .screens { grid-template-columns: repeat(3, 1fr); }
+    .screen-card {
+      min-height: 250px;
+      padding: 20px;
+      background:
+        linear-gradient(180deg, #fffefa, #f6fbf8);
     }
+    .screen-card .mini-card { box-shadow: none; }
 
-    @keyframes runnerMove {
-      from { transform: translateX(-6px); }
-      to { transform: translateX(8px); }
+    .final {
+      padding: 96px 0;
+      color: #fff;
+      background:
+        radial-gradient(circle at 82% 18%, rgba(247, 184, 1, .3), transparent 28%),
+        linear-gradient(135deg, #101318, #0c6d3e 58%, #1f66cc);
     }
+    .final .lead { color: rgba(255,255,255,.78); }
+    .final-grid { display: grid; grid-template-columns: 1fr 390px; gap: 48px; align-items: center; }
+    .final-photo { min-height: 430px; }
 
-    .waitlist-form {
+    .waitlist {
+      margin-top: 24px;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 14px;
-      margin-top: 24px;
     }
-
-    .waitlist-form label {
-      display: grid;
-      gap: 8px;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 800;
-      text-align: left;
-    }
-
-    .waitlist-form input,
-    .waitlist-form select {
+    .waitlist label { display: grid; gap: 8px; color: var(--muted); font-size: 13px; font-weight: 850; }
+    .waitlist input, .waitlist select {
       min-height: 52px;
       width: 100%;
       padding: 0 14px;
@@ -1589,46 +483,22 @@
       background: #fff;
       color: var(--ink);
     }
+    .waitlist .full { grid-column: 1 / -1; }
 
-    .waitlist-form .full {
-      grid-column: 1 / -1;
-    }
+    .footer { padding: 30px 0; color: rgba(255,255,255,.62); background: #101318; }
+    .footer-inner { width: min(var(--max), calc(100% - 32px)); margin: 0 auto; display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; font-size: 14px; }
 
-    .footer {
-      padding: 30px 0;
-      background: #101318;
-      color: rgba(255, 255, 255, .62);
-      font-size: 14px;
-    }
-
-    .footer-inner {
-      width: min(var(--max), calc(100% - 32px));
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(22px);
-      transition: opacity .65s ease, transform .65s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: none;
-    }
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
 
     .toast {
       position: fixed;
       left: 50%;
       bottom: 24px;
-      z-index: 50;
+      z-index: 40;
       max-width: calc(100% - 32px);
       padding: 14px 18px;
-      border-radius: var(--radius);
+      border-radius: 999px;
       color: #fff;
       background: rgba(16, 19, 24, .95);
       box-shadow: var(--shadow);
@@ -1637,748 +507,258 @@
       font-weight: 850;
       text-align: center;
     }
-
-    .toast.show {
-      transform: translate(-50%, 0);
-    }
+    .toast.show { transform: translate(-50%, 0); }
 
     @media (max-width: 1000px) {
-      .nav-links {
-        display: none;
-      }
-
-      .hero-inner,
-      .problem-layout,
-      .ai-layout,
-      .closing-grid,
-      .app-preview-grid,
-      .story-grid,
-      .wrong-methods {
-        grid-template-columns: 1fr;
-      }
-
-      .brand-visual {
-        min-height: 460px;
-      }
-
-      .speech-bubble {
-        right: auto;
-        left: 0;
-      }
-
-      .story-orbit {
-        right: 6px;
-        bottom: 118px;
-        transform: scale(.82);
-      }
-
-      .character-scene {
-        min-height: 360px;
-      }
-
-      .logo-stack {
-        right: 0;
-        width: min(100%, 390px);
-      }
-
-      .principles,
-      .steps {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .closing-mark {
-        margin-left: 0;
-      }
+      .nav-links { display: none; }
+      .hero-inner, .split, .method-grid, .final-grid { grid-template-columns: 1fr; }
+      .hero-visual { min-height: 600px; }
+      .system-grid, .practice-grid, .proof-grid, .screens, .steps { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (max-width: 680px) {
-      .nav-inner {
-        min-height: 66px;
-      }
-
-      .brand {
-        font-size: 17px;
-      }
-
-      .brand img {
-        width: 36px;
-        height: 36px;
-      }
-
-      .nav .button {
-        width: auto;
-        min-height: 42px;
-        padding: 0 12px;
-        font-size: 13px;
-      }
-
-      .brand span {
-        white-space: nowrap;
-      }
-
-      .hero {
-        padding-top: 108px;
-      }
-
-      h1 {
-        font-size: clamp(42px, 14vw, 58px);
-      }
-
-      .button {
-        width: 100%;
-      }
-
-      .actions {
-        align-items: stretch;
-      }
-
-      .brand-visual {
-        min-height: 430px;
-      }
-
-      .story-orbit {
-        display: none;
-      }
-
-      .speech-bubble {
-        position: relative;
-        top: auto;
-        left: auto;
-        right: auto;
-        margin-top: 18px;
-      }
-
-      .character {
-        transform: scale(.86);
-      }
-
-      .logo-stack {
-        width: 96%;
-      }
-
-      .slab {
-        height: 102px;
-      }
-
-      .speaker-card {
-        width: 100%;
-      }
-
-      .section,
-      .closing {
-        padding: 74px 0;
-      }
-
-      .statement,
-      .offer-card,
-      .compare-card {
-        padding: 24px;
-      }
-
-      .pain-grid,
-      .principles,
-      .compare,
-      .steps,
-      .feature-grid,
-      .waitlist-form,
-      .storyline,
-      .training-system-visual,
-      .proof-metrics,
-      .testimonial-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .waitlist-form .full {
-        grid-column: auto;
-      }
-
-      .voice-row {
-        grid-template-columns: 1fr;
-      }
-
-      .footer-inner {
-        display: grid;
-      }
+      .nav .button { min-height: 42px; padding: 0 14px; font-size: 13px; }
+      .hero { padding-top: 58px; }
+      .actions, .button { width: 100%; }
+      .hero-visual { min-height: 680px; }
+      .photo-card { height: 440px; }
+      .app-phone { width: min(92%, 286px); }
+      .problem-grid, .system-grid, .practice-grid, .proof-grid, .screens, .steps, .waitlist { grid-template-columns: 1fr; }
+      .waitlist .full { grid-column: auto; }
+      .section { padding: 68px 0; }
+      .final { padding: 74px 0; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
+      *, *::before, *::after {
         animation-duration: .001ms !important;
         animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
         transition-duration: .001ms !important;
+        scroll-behavior: auto !important;
       }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <nav class="nav" aria-label="Main navigation">
-      <div class="nav-inner">
-        <a class="brand" href="#top" aria-label="Fluency Magic home">
-          <img src="logo_1.png" alt="" aria-hidden="true">
-          <span>Fluency Magic</span>
-        </a>
-        <div class="nav-links">
-          <a href="#problem">Problem</a>
-          <a href="#method">Method</a>
-          <a href="#app-preview">App</a>
-        </div>
-        <!-- TODO: Replace placeholder app CTA with real app store / PWA link. -->
-        <a class="button button-primary" href="/app">Get the App</a>
+  <nav class="nav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a class="brand" href="#top">
+        <img src="/logo_1.png" alt="" aria-hidden="true">
+        <span>Fluency Magic</span>
+      </a>
+      <div class="nav-links">
+        <a href="#problem">Problem</a>
+        <a href="#works">How it works</a>
+        <a href="#stories">Stories</a>
       </div>
-    </nav>
+      <!-- TODO: Replace placeholder app CTA with real app store / PWA link. -->
+      <a class="button button-primary" href="/app">Join Early Access</a>
+    </div>
+  </nav>
 
-    <header class="hero" id="top">
-      <div class="hero-inner">
-        <div class="hero-copy-block reveal">
-          <div class="kicker">Daily English speaking practice app</div>
-          <h1>Speak English Naturally, Without Freezing.</h1>
-          <p class="hero-copy">Fluency Magic is a daily speaking practice app that trains your voice, word flow, sentence patterns, prepositions, phrasal verbs, and connected sentence flow - so English starts coming out naturally.</p>
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <div class="reveal">
+        <div class="kicker">Daily speaking training system</div>
+        <h1>“I Understand English… But I Can’t Speak Fluently.”</h1>
+        <p class="hero-copy">Fluency Magic helps you move from basic, broken, translated English to natural speaking flow through simple daily speaking practice.</p>
+        <p class="support-line">Train your mind, mouth, ears, breath, rhythm, and speech organs to become familiar with real spoken English.</p>
+        <div class="actions">
+          <!-- TODO: Replace placeholder app CTA with real app store / PWA link. -->
+          <a class="button button-primary" href="/app">Join Early Access</a>
+          <a class="button button-outline" href="#works">See How It Works</a>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal" aria-label="Learner practising speaking with Fluency Magic app">
+        <div class="photo-card">
+          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80" alt="Learner practising English with a laptop and phone">
+        </div>
+        <div class="floating-chip chip-1">Speak aloud</div>
+        <div class="floating-chip chip-2">Repeat</div>
+        <div class="floating-chip chip-3">Build flow</div>
+        <div class="floating-chip chip-4">Stop translating</div>
+        <div class="app-phone" aria-label="Fluency Magic app mockup">
+          <div class="phone-screen">
+            <div class="kicker">Today’s practice</div>
+            <h3>Continue the idea</h3>
+            <div class="mini-card">I understand English, but...</div>
+            <div class="mini-card">I get stuck when...</div>
+            <div class="mini-card">What I want to say is...</div>
+            <div class="mini-card">Record your answer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" id="problem">
+      <div class="container">
+        <div class="section-head center reveal">
+          <h2>Does This Sound Like You?</h2>
+          <p class="lead">These are the real problems learners feel when English stays stuck in the mind.</p>
+        </div>
+        <div class="problem-grid">
+          <article class="problem-card reveal" style="--accent:var(--green)">“I understand English, but I cannot speak it.”</article>
+          <article class="problem-card reveal" style="--accent:var(--yellow)">“I can speak one or two lines, but I cannot continue.”</article>
+          <article class="problem-card reveal" style="--accent:var(--blue)">“I speak very basic English.”</article>
+          <article class="problem-card reveal" style="--accent:var(--green)">“I translate in my mind before speaking.”</article>
+          <article class="problem-card reveal" style="--accent:var(--yellow)">“I worry about grammar while talking.”</article>
+          <article class="problem-card reveal" style="--accent:var(--blue)">“I want to speak more naturally, like a native speaker.”</article>
+        </div>
+        <div class="truth-line reveal">You do not need more random grammar lessons. You need daily speaking training that helps English come out naturally, continuously, and confidently.</div>
+      </div>
+    </section>
+
+    <section class="section soft">
+      <div class="container split">
+        <div class="problem-photo reveal">
+          <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=80" alt="Learner in a meeting trying to speak English">
+        </div>
+        <div class="reveal">
+          <div class="kicker">The real reason</div>
+          <h2>Your Mind Knows English. Your Speech System Needs Training.</h2>
+          <p class="lead">You may understand English when you read it or hear it. But speaking is different. Speaking needs fast recall, natural sentence patterns, rhythm, breath, tongue movement, listening, and the ability to continue an idea without stopping.</p>
+          <div class="truth-line">Fluency happens when English becomes familiar to your whole speaking system.</div>
+          <p class="lead">Your mind may know the words, but your mouth, ears, breath, rhythm, and sentence flow may not be trained yet. Fluency Magic helps train that missing connection.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="system-visual reveal" aria-label="Human speaking system illustration">
+          <div class="human-profile" aria-hidden="true"></div>
+          <span class="label-chip mind">Mind</span>
+          <span class="label-chip ears">Ears</span>
+          <span class="label-chip mouth">Mouth</span>
+          <span class="label-chip breath">Breath</span>
+          <span class="label-chip rhythm">Rhythm</span>
+        </div>
+        <div class="system-grid">
+          <article class="system-card reveal" style="--accent:var(--green)"><h3>Words</h3><p>Recall useful words quickly.</p></article>
+          <article class="system-card reveal" style="--accent:var(--yellow)"><h3>Word Groups</h3><p>Use ready-made blocks of speech.</p></article>
+          <article class="system-card reveal" style="--accent:var(--blue)"><h3>Sentence Flow</h3><p>Continue ideas beyond one or two lines.</p></article>
+          <article class="system-card reveal" style="--accent:var(--green)"><h3>Speech Rhythm</h3><p>Speak with smoother natural movement.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark" id="works">
+      <div class="container">
+        <div class="section-head center reveal">
+          <h2>How Fluency Magic Works</h2>
+          <p class="lead">Fluency Magic does not teach English like a normal grammar course. It trains you through repeated exposure, speaking practice, listening, rhythm, word groups, sentence patterns, and natural combinations used in everyday English.</p>
+        </div>
+        <div class="method-grid">
+          <article class="method-card reveal">
+            <div class="phrase-cloud">
+              <span>I think...</span><span>because of...</span><span>at the same time...</span><span>what I mean is...</span><span>in my opinion...</span><span>one reason is...</span>
+            </div>
+            <h3>Massive Exposure to Real Spoken English</h3>
+            <p>You practise words, word groups, phrases, sentence starters, short sentences, longer sentences, and common combinations used again and again in daily speech.</p>
+          </article>
+          <article class="method-card reveal">
+            <div class="phrase-cloud">
+              <span>Breath</span><span>Tongue</span><span>Throat</span><span>Ears</span><span>Mind</span><span>Rhythm</span>
+            </div>
+            <h3>Training the Whole Speaking System</h3>
+            <p>Speaking is not only about the mouth. Fluency Magic trains your tongue, breath, throat, ears, rhythm, memory, attention, and mind so English starts becoming familiar at a deeper level.</p>
+          </article>
+          <article class="method-card reveal">
+            <div class="phrase-cloud">
+              <span>Listen</span><span>Repeat</span><span>Recognise</span><span>Imitate</span><span>Try</span><span>Internalise</span>
+            </div>
+            <h3>Internalising English Naturally</h3>
+            <p>Fluency Magic is inspired by the natural qualities of first-language learning: repeated exposure, listening, imitation, sound familiarity, pattern recognition, repetition, speaking practice, and gradual internalisation.</p>
+          </article>
+        </div>
+        <div class="truth-line" style="background:rgba(255,255,255,.12); color:#fff; border-color:rgba(255,255,255,.2)">English becomes fluent when it becomes familiar — not only to your mind, but also to your ears, mouth, breath, and speech rhythm.</div>
+        <div class="steps">
+          <article class="step reveal" style="--accent:var(--green)"><b>1</b><h3>Get exposed to real spoken patterns</h3><p>Practise useful words, word groups, and sentence combinations used in everyday English.</p></article>
+          <article class="step reveal" style="--accent:var(--yellow)"><b>2</b><h3>Speak, repeat, listen, and feel the language</h3><p>Train your mouth, ears, breath, rhythm, and mind through guided speaking practice.</p></article>
+          <article class="step reveal" style="--accent:var(--blue)"><b>3</b><h3>Internalise English until it starts coming naturally</h3><p>Build familiarity so you can speak longer, smoother, and more naturally without translating every sentence.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head center reveal">
+          <h2>What You Practise Inside Fluency Magic</h2>
+          <p class="lead">Short, focused exercises that train English to come out naturally.</p>
+        </div>
+        <div class="practice-grid">
+          <article class="practice-card reveal" style="--accent:var(--green)"><h3>Speak Beyond One Line</h3><p>Practise extending short answers into fuller spoken responses.</p></article>
+          <article class="practice-card reveal" style="--accent:var(--yellow)"><h3>Stop Translating</h3><p>Use ready-to-speak word groups so your mind does not build every sentence from scratch.</p></article>
+          <article class="practice-card reveal" style="--accent:var(--blue)"><h3>Go Beyond Basic English</h3><p>Train natural sentence patterns that make your answers sound richer and smoother.</p></article>
+          <article class="practice-card reveal" style="--accent:var(--green)"><h3>Speak With Less Grammar Fear</h3><p>Repeat common structures until they feel natural in your speech.</p></article>
+          <article class="practice-card reveal" style="--accent:var(--yellow)"><h3>Build Native-Like Flow</h3><p>Practise rhythm, linking, sentence starters, and everyday expressions used in real conversations.</p></article>
+          <article class="practice-card reveal" style="--accent:var(--blue)"><h3>Continue Your Ideas</h3><p>Learn how to connect thoughts, add details, explain reasons, and keep speaking without going blank.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section soft" id="stories">
+      <div class="container">
+        <div class="section-head center reveal">
+          <h2>Built for Learners Who Are Tired of Freezing</h2>
+          <p class="lead">Different people. Same problem. English is inside, but it does not come out smoothly.</p>
+        </div>
+        <div class="proof-grid">
+          <!-- Placeholder learner stories — replace with real testimonials after beta. -->
+          <article class="proof-card reveal"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=220&q=80" alt="Aarav Mehta"><blockquote>“I could say one or two sentences in meetings, but then I would stop. I needed practice that helped me continue my ideas.”</blockquote><strong>Aarav Mehta</strong><small>Software Engineer</small></article>
+          <article class="proof-card reveal"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=220&q=80" alt="Priya Sharma"><blockquote>“My English was too basic. I wanted to sound more natural, not just correct. Fluency Magic makes speaking practice feel simple.”</blockquote><strong>Priya Sharma</strong><small>MBA Student</small></article>
+          <article class="proof-card reveal"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=220&q=80" alt="Neha Kapoor"><blockquote>“I used to translate in my mind before speaking. Practising ready-to-use patterns helped me speak faster.”</blockquote><strong>Neha Kapoor</strong><small>Customer Support Executive</small></article>
+          <article class="proof-card reveal"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=220&q=80" alt="Rohit Verma"><blockquote>“I needed better English for interviews. I did not want another grammar course. I wanted to practise speaking full answers.”</blockquote><strong>Rohit Verma</strong><small>Job Seeker</small></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head center reveal">
+          <h2>One Screen. One Practice. One Step Forward.</h2>
+          <p class="lead">Fluency Magic is designed for focused daily speaking practice. You do not scroll endlessly. You complete one small speaking activity, speak aloud, repeat, and move to the next.</p>
+        </div>
+        <div class="screens">
+          <article class="screen-card reveal" style="--accent:var(--green)"><h3>Today’s Practice</h3><div class="mini-card">One practice at a time.</div><p>Open the app and know exactly what to speak today.</p></article>
+          <article class="screen-card reveal" style="--accent:var(--yellow)"><h3>Word Group Practice</h3><div class="mini-card">work on my English</div><p>Train useful groups until they become ready.</p></article>
+          <article class="screen-card reveal" style="--accent:var(--blue)"><h3>Speak and Repeat</h3><div class="mini-card">Listen. Repeat. Feel it.</div><p>Train your ears and mouth together.</p></article>
+          <article class="screen-card reveal" style="--accent:var(--green)"><h3>Continue the Idea</h3><div class="mini-card">The reason is...</div><p>Learn to speak sentence after sentence.</p></article>
+          <article class="screen-card reveal" style="--accent:var(--yellow)"><h3>Record Your Answer</h3><div class="mini-card">Speak aloud</div><p>Become comfortable with your own English voice.</p></article>
+          <article class="screen-card reveal" style="--accent:var(--blue)"><h3>Progress / Streak</h3><div class="mini-card">Build flow</div><p>See the daily habit grow.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="final">
+      <div class="container final-grid">
+        <div class="reveal">
+          <h2>Your Ideas Deserve a Stronger Voice.</h2>
+          <p class="lead">If English gets stuck when you speak, do not wait for confidence to appear. Train your speech system every day with the words, patterns, rhythm, and sentence flow of real spoken English.</p>
+          <p class="lead">Start training the English you already know — until it starts coming out naturally.</p>
           <div class="actions">
             <!-- TODO: Replace placeholder app CTA with real app store / PWA link. -->
-            <a class="button button-primary" href="/app">Get Your Free Fluency Level in the App</a>
-            <a class="button button-outline" href="#app-preview">See How the App Works</a>
+            <a class="button button-blue" href="/app">Join Early Access</a>
           </div>
-          <div class="hero-proof">
-            <span>Free fluency check inside the app</span>
-            <span>7-day activation</span>
-            <span>Progress and recordings in one place</span>
-          </div>
-          <p class="lead">The fluency check and 7-day activation happen inside the app, so your practice, progress, and recordings stay in one place.</p>
         </div>
-
-        <div class="brand-visual reveal" aria-label="Speaking confidence visual">
-          <div class="logo-stack" aria-hidden="true">
-            <div class="slab green"></div>
-            <div class="slab yellow"></div>
-            <div class="slab blue"></div>
-          </div>
-          <aside class="speaker-card">
-            <div class="speaker-top">
-              <div>
-                <strong>Your daily fluency app</strong>
-                <small>Check your level, practise today, track your streak.</small>
-              </div>
-              <div class="speaker-face" aria-hidden="true"></div>
-            </div>
-            <div class="wave" aria-hidden="true">
-              <span style="--h:28px; --c:var(--green); --d:0s"></span>
-              <span style="--h:52px; --c:var(--yellow); --d:.08s"></span>
-              <span style="--h:38px; --c:var(--blue); --d:.16s"></span>
-              <span style="--h:66px; --c:var(--green); --d:.24s"></span>
-              <span style="--h:44px; --c:var(--yellow); --d:.32s"></span>
-              <span style="--h:60px; --c:var(--blue); --d:.4s"></span>
-              <span style="--h:34px; --c:var(--green); --d:.48s"></span>
-              <span style="--h:56px; --c:var(--yellow); --d:.56s"></span>
-              <span style="--h:42px; --c:var(--blue); --d:.64s"></span>
-            </div>
-          </aside>
-          <div class="speech-bubble">I know English... but I freeze.<small>Then Fluency Magic gives me a sentence path.</small></div>
-          <div class="story-orbit" aria-hidden="true">
-            <span>V</span>
-            <span>W</span>
-            <span>P</span>
-            <span>F</span>
-          </div>
+        <div class="final-photo reveal">
+          <img src="https://images.unsplash.com/photo-1521790797524-b2497295b8a0?auto=format&fit=crop&w=800&q=80" alt="Confident learner smiling after completing speaking practice">
         </div>
       </div>
-    </header>
+    </section>
+  </main>
 
-    <main>
-      <section class="section">
-        <div class="container">
-          <div class="story-stage reveal">
-            <div class="story-grid">
-              <div class="character-scene" aria-label="Learner moving from hesitation to confident speaking">
-                <div class="voice-rings" aria-hidden="true"></div>
-                <div class="character" aria-hidden="true"></div>
-                <div class="character-shadow" aria-hidden="true"></div>
-              </div>
-              <div>
-                <div class="kicker">The story inside the app</div>
-                <h2>From Frozen Thought to Spoken Flow.</h2>
-                <p class="lead" id="storyCopy">First, the app helps you notice the exact moment where English gets stuck. Then it gives you a small speaking path: see it, say it, repeat it, extend it, and record it.</p>
-                <div class="story-tabs" aria-label="Fluency story stages">
-                  <button class="story-tab active" type="button" data-story="You understand the idea, but your mouth pauses. The app starts with simple voice-flow drills so speaking feels physically easier." style="--accent:var(--green)">
-                    <b>1</b><span><strong>The Freeze</strong>Words are in your mind, but not ready on your tongue.</span>
-                  </button>
-                  <button class="story-tab" type="button" data-story="You practise useful word groups, prepositions, phrasal verbs, and sentence patterns until your brain has ready pieces to speak with." style="--accent:var(--yellow)">
-                    <b>2</b><span><strong>The Training</strong>Short daily drills turn loose English into ready speaking material.</span>
-                  </button>
-                  <button class="story-tab" type="button" data-story="You record real speaking missions, compare progress, and build a daily streak. Confidence grows because you can hear your own voice improving." style="--accent:var(--blue)">
-                    <b>3</b><span><strong>The Flow</strong>Sentence after sentence starts coming out with more calm and control.</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+  <footer class="footer">
+    <div class="footer-inner">
+      <strong>Fluency Magic</strong>
+      <span>Daily speaking training for English that comes out naturally.</span>
+    </div>
+  </footer>
 
-      <section class="section" id="problem">
-        <div class="container">
-          <div class="section-head reveal">
-            <h2>You Understand English. But Speaking Still Gets Stuck.</h2>
-            <p class="lead">Many people understand English, read English, and watch English content. But when the moment comes to speak, the words do not move fast enough.</p>
-          </div>
-
-          <div class="problem-layout">
-            <div class="statement reveal">
-              <p>You may know the word. You may understand the sentence. You may even know the grammar.</p>
-              <p>But when someone asks you to speak, your mind becomes busy. Your mouth feels slow. The conversation keeps moving, and your confidence drops.</p>
-              <div class="truth">This is not an intelligence problem. This is a speaking-training problem.</div>
-              <p>English has not become automatic in your speaking system yet. Fluency Magic trains the system that turns thoughts into spoken English.</p>
-            </div>
-
-            <ul class="pain-grid reveal">
-              <li>You know the word, but it does not come out.</li>
-              <li>You understand English, but sentences break when you speak.</li>
-              <li>You translate in your head and lose your flow.</li>
-              <li>You worry about grammar while the conversation moves on.</li>
-              <li>You avoid speaking even when you have good ideas.</li>
-              <li>Your real personality does not fully come out in English.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section class="section soft">
-        <div class="container">
-          <div class="section-head center reveal">
-            <h2>The Real Story Most Learners Live Through.</h2>
-            <p class="lead">The problem usually does not begin with laziness. It begins with learning English in a way that fills the mind, but never trains the speaking system.</p>
-          </div>
-
-          <div class="storyline">
-            <article class="story-moment reveal">
-              <div class="thought-cloud" aria-hidden="true"><span>idea</span><span>fear</span><span>grammar?</span></div>
-              <div class="mini-person" aria-hidden="true"></div>
-              <h3>The Real Moment Arrives</h3>
-              <p>An interview, meeting, class, call, or conversation starts. You know what you want to say, but your voice waits.</p>
-            </article>
-            <article class="story-moment reveal">
-              <div class="word-rain" aria-hidden="true"><span>utilize</span><span>however</span><span>achieve</span><span>confident</span></div>
-              <div class="mini-person" aria-hidden="true"></div>
-              <h3>The Words Are Not Ready</h3>
-              <p>You remember many English words, but useful speaking groups do not arrive fast enough when pressure is real.</p>
-            </article>
-            <article class="story-moment reveal">
-              <div class="rule-grid" aria-hidden="true"><span>tense</span><span>rule</span><span>correct?</span></div>
-              <div class="mini-person" aria-hidden="true"></div>
-              <h3>The Mind Starts Checking</h3>
-              <p>You think about grammar while the conversation moves forward. That checking breaks your rhythm.</p>
-            </article>
-            <article class="story-moment reveal">
-              <div class="flow-stream" aria-hidden="true"><span>I think...</span><span>because...</span><span>so...</span></div>
-              <div class="mini-person" aria-hidden="true"></div>
-              <h3>The Right Practice Changes It</h3>
-              <p>When you repeat word groups, patterns, and connected flows aloud, English starts becoming a speaking habit.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container">
-          <div class="section-head center reveal">
-            <h2>The Wrong Methods Make Speaking Feel Harder.</h2>
-            <p class="lead">Most learners work hard. They just practise in a way that prepares them to understand, write, or remember English, not speak it naturally.</p>
-          </div>
-
-          <div class="wrong-methods">
-            <div class="method-path reveal" aria-label="Wrong methods and better speaking path">
-              <div class="path-node">
-                <strong>Write First, Speak Later</strong>
-                <p>Writing helps, but speaking needs mouth movement, rhythm, and instant response.</p>
-              </div>
-              <div class="path-node">
-                <strong>Collect Huge Vocabulary</strong>
-                <p>Difficult words do not create fluency if useful word groups are not ready.</p>
-              </div>
-              <div class="path-node">
-                <strong>Memorise Grammar Rules</strong>
-                <p>Rules can explain English, but they often slow you down during real speech.</p>
-              </div>
-              <div class="path-node">
-                <strong>Watch More Videos</strong>
-                <p>Listening is useful, but passive learning does not train your voice to respond.</p>
-              </div>
-              <div class="path-node good">
-                <strong>Train Spoken Flow Daily</strong>
-                <p>Speak, repeat, extend, record, and build sentence after sentence until English moves.</p>
-              </div>
-            </div>
-
-            <div class="story-copy-card reveal">
-              <div class="kicker">The Fluency Magic shift</div>
-              <h2>Train the Parts That Actually Speak.</h2>
-              <p class="lead">Fluency Magic turns practice into a daily speaking system. The app trains the parts that need to work together when a real conversation begins.</p>
-              <div class="training-system-visual" aria-label="Fluency Magic speaking system">
-                <span>Mouth rhythm</span>
-                <span>Useful word groups</span>
-                <span>Prepositions</span>
-                <span>Phrasal verbs</span>
-                <span>Sentence patterns</span>
-                <span>Connected flow</span>
-              </div>
-              <p class="lead">That is why the app starts with a fluency check, finds the speaking block, and then gives a 7-day activation path. The user does not just learn about English. They practise producing English.</p>
-              <div class="not-download">Understanding is not the finish line. Speaking flow is the training goal.</div>
-              <div class="actions">
-                <!-- TODO: Replace placeholder app CTA with real app store / PWA link. -->
-                <a class="button button-blue" href="/app">Start the Speaking Path in the App</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section dark">
-        <div class="container ai-layout">
-          <div class="reveal">
-            <h2>Why English Gets Stuck in Your Mouth</h2>
-            <p class="lead">Understanding English is not the same as being ready to speak it. Speaking needs speed, rhythm, word groups, sentence patterns, and the physical habit of saying things out loud.</p>
-            <p class="lead">If you mostly read, listen, memorise, or translate, English stays in your mind. Fluency Magic moves it into your mouth through guided daily speaking practice.</p>
-            <div class="not-download">Your voice becomes ready when speaking becomes trained.</div>
-            <div class="actions">
-              <a class="button button-blue" href="#method">Show Me the Method</a>
-            </div>
-          </div>
-
-          <div class="voice-board reveal" aria-label="Speaking system training preview">
-            <div class="voice-row">
-              <b>Mind</b>
-              <div><span>Your idea becomes clear before panic takes over.</span><div class="voice-line" style="width:64%"></div></div>
-            </div>
-            <div class="voice-row">
-              <b>Mouth</b>
-              <div><span>Your mouth practises the rhythm until words move with less friction.</span><div class="voice-line"></div></div>
-            </div>
-            <div class="voice-row">
-              <b>Flow</b>
-              <div><span>Useful patterns become easier to use in real conversations.</span><div class="voice-line"></div></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section soft" id="method">
-        <div class="container">
-          <div class="section-head center reveal">
-            <h2>Fluency Is Trained Through Repetition.</h2>
-            <p class="lead">Fluency Magic is built on repeated speaking practice, not passive learning. The app brings back useful words, patterns, and speaking flows until they become automatic.</p>
-          </div>
-
-          <div class="principles">
-            <article class="principle reveal animated-card" style="--accent:var(--green)">
-              <h3>Voice Flow Practice</h3>
-              <p>Train your mouth, breath, rhythm, and voice so English becomes easier to speak aloud.</p>
-            </article>
-            <article class="principle reveal animated-card" style="--accent:var(--yellow)">
-              <h3>Core Word Command</h3>
-              <p>Build strong control over useful words instead of chasing difficult vocabulary first.</p>
-            </article>
-            <article class="principle reveal animated-card" style="--accent:var(--blue)">
-              <h3>Word Combination Mastery</h3>
-              <p>Practise natural groups like "build confidence," "work on my English," and "deal with pressure."</p>
-            </article>
-            <article class="principle reveal animated-card" style="--accent:var(--green)">
-              <h3>Preposition Practice</h3>
-              <p>Repeat small but powerful patterns like "in a meeting," "on a call," and "at work."</p>
-            </article>
-            <article class="principle reveal animated-card" style="--accent:var(--yellow)">
-              <h3>Phrasal Verb Practice</h3>
-              <p>Use everyday speaking phrases naturally through repetition and real situations.</p>
-            </article>
-            <article class="principle reveal animated-card" style="--accent:var(--blue)">
-              <h3>Sentence Pattern Automation</h3>
-              <p>Practise natural sentence starters until grammar stops interrupting your speaking flow.</p>
-            </article>
-            <article class="principle reveal animated-card" style="--accent:var(--green)">
-              <h3>Flow Builder</h3>
-              <p>Learn to connect sentence after sentence so your ideas do not stop after one line.</p>
-            </article>
-            <article class="principle reveal animated-card" style="--accent:var(--yellow)">
-              <h3>Visual Action Practice</h3>
-              <p>See an action, speak the sentence, and build longer connected English from what you see.</p>
-            </article>
-            <article class="principle reveal animated-card" style="--accent:var(--blue)">
-              <h3>Real Speaking Missions</h3>
-              <p>Practise introductions, opinions, meetings, interviews, updates, and daily conversations.</p>
-            </article>
-          </div>
-
-          <div class="actions" style="justify-content:center">
-            <!-- TODO: Replace placeholder app CTA with real app store / PWA link. -->
-            <a class="button button-primary" href="/app">Start in the App</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container">
-          <div class="section-head center reveal">
-            <h2>From Hesitation to Natural Expression</h2>
-            <p class="lead">Move from knowing English silently to expressing yourself clearly. Not by memorising more. By training your speaking response.</p>
-          </div>
-
-          <div class="compare">
-            <div class="compare-card before reveal">
-              <h3>Before</h3>
-              <ul>
-                <li>I understand English, but I get stuck.</li>
-                <li>I translate before speaking.</li>
-                <li>I worry about grammar.</li>
-                <li>I cannot find the right words quickly.</li>
-                <li>I avoid interviews, meetings, and conversations.</li>
-                <li>My ideas sound weaker than they really are.</li>
-              </ul>
-            </div>
-            <div class="compare-card after reveal">
-              <h3>After</h3>
-              <ul>
-                <li>Words come faster.</li>
-                <li>Sentences form more naturally.</li>
-                <li>Common patterns become automatic.</li>
-                <li>I express ideas clearly.</li>
-                <li>I speak with more confidence.</li>
-                <li>I feel more like myself in English conversations.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section soft">
-        <div class="container">
-          <div class="proof-band reveal">
-            <div class="section-head center" style="margin-bottom:0">
-              <div class="kicker">Transformation proof</div>
-              <h2>Built for the Shift Learners Want to Feel.</h2>
-              <p class="lead">Fluency Magic is being shaped around the transformation learners keep asking for: less freezing, faster words, clearer sentences, and a voice that feels more like their real personality.</p>
-            </div>
-
-            <div class="proof-metrics">
-              <article class="proof-metric">
-                <strong>7 days</strong>
-                <span>to experience the first guided Fluency Activation inside the app.</span>
-              </article>
-              <article class="proof-metric">
-                <strong>6 blocks</strong>
-                <span>diagnosed after the fluency check: flow, words, patterns, grammar fear, expression, and confidence.</span>
-              </article>
-              <article class="proof-metric">
-                <strong>Daily</strong>
-                <span>voice practice, visual action drills, recording, streaks, and speaking missions.</span>
-              </article>
-              <article class="proof-metric">
-                <strong>1 goal</strong>
-                <span>help learners speak English naturally without freezing when it matters.</span>
-              </article>
-            </div>
-
-            <div class="testimonial-grid">
-              <article class="testimonial-card" style="--accent:var(--green)">
-                <div class="avatar-row"><div class="avatar" aria-hidden="true"></div><div><b>Job seeker story</b><small>Common learner transformation</small></div></div>
-                <p>"I do not need more random grammar. I need to answer clearly when someone asks me a question."</p>
-              </article>
-              <article class="testimonial-card" style="--accent:var(--yellow)">
-                <div class="avatar-row"><div class="avatar" aria-hidden="true"></div><div><b>Professional story</b><small>Meetings and client calls</small></div></div>
-                <p>"I understand the meeting, but when I have to explain my point, my words become too slow."</p>
-              </article>
-              <article class="testimonial-card" style="--accent:var(--blue)">
-                <div class="avatar-row"><div class="avatar" aria-hidden="true"></div><div><b>Student story</b><small>Confidence and expression</small></div></div>
-                <p>"My ideas are better than my English sounds. I want my real personality to come out."</p>
-              </article>
-            </div>
-
-            <p class="proof-note">Early access note: replace these transformation stories with real user testimonials and beta numbers after launch. No fake user counts are shown here.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section soft" id="app-preview">
-        <div class="container">
-          <div class="section-head center reveal">
-            <h2>Your Daily Fluency Practice App</h2>
-            <p class="lead">The website explains the promise. The app is where the fluency check, result, 7-day activation, daily practice, progress, and subscription journey happen.</p>
-          </div>
-
-          <div class="app-preview-grid">
-            <div class="phone-frame reveal" aria-label="Fluency Magic app preview">
-              <div class="phone-screen">
-                <div class="test-pill">Day 2 <span>Streak 1</span></div>
-                <h3>Make Words Come Faster</h3>
-                <p>Practise useful word groups so English starts coming faster when you speak.</p>
-                <div class="app-card">
-                  <strong>Today's flow</strong>
-                  <div class="mini-progress"><span></span></div>
-                </div>
-                <div class="app-card"><strong>Voice Flow</strong><p>Speak slowly, clearly, and without judging yourself.</p></div>
-                <div class="app-card"><strong>Word Groups</strong><p>face a problem, solve a problem, main problem</p></div>
-                <div class="app-card"><strong>Speaking Mission</strong><p>Record for 60 seconds and save your progress.</p></div>
-              </div>
-            </div>
-
-            <div class="feature-grid">
-              <article class="step reveal" style="--accent:var(--green)"><h3>Free fluency check inside the app</h3><p>Start by discovering your fluency level and where speaking gets stuck.</p></article>
-              <article class="step reveal" style="--accent:var(--yellow)"><h3>Speaking block diagnosis</h3><p>Find whether your first focus is voice flow, words, patterns, expression, or confidence.</p></article>
-              <article class="step reveal" style="--accent:var(--blue)"><h3>7-Day Fluency Activation</h3><p>Begin with a short daily practice path that makes you speak every day.</p></article>
-              <article class="step reveal" style="--accent:var(--green)"><h3>Today's practice</h3><p>Open the app, complete the daily drills, record your mission, and save progress.</p></article>
-              <article class="step reveal" style="--accent:var(--yellow)"><h3>See & Speak visual practice</h3><p>Build sentences directly from pictures, actions, and visual scenes.</p></article>
-              <article class="step reveal" style="--accent:var(--blue)"><h3>Progress and streaks</h3><p>Keep your recordings, streak, progress, and next steps in one place.</p></article>
-            </div>
-          </div>
-
-          <div class="actions" style="justify-content:center">
-            <!-- TODO: Replace placeholder app CTA with real app store / PWA link. -->
-            <a class="button button-primary" href="/app">Start in the App</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container app-preview-grid">
-          <div class="visual-scene reveal" aria-label="Visual action practice example">
-            <div class="runner" aria-hidden="true"></div>
-          </div>
-          <div class="reveal">
-            <h2>See the Action. Speak the Sentence. Build the Flow.</h2>
-            <p class="lead">For basic verbs and actions, Fluency Magic uses pictures, animations, or visual scenes to help learners practise sentence building.</p>
-            <div class="sentence-ladder">
-              <span>Run.</span>
-              <span>He is running.</span>
-              <span>The boy is running.</span>
-              <span>The boy in the blue shirt is running.</span>
-              <span>The boy in the blue shirt is running on the road.</span>
-              <span>The boy in the blue shirt is running at a steady pace.</span>
-            </div>
-            <p class="lead">This helps learners speak directly from what they see instead of translating from their mother tongue.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section soft">
-        <div class="container">
-          <div class="section-head center reveal">
-            <h2>Repeat Until English Becomes Automatic.</h2>
-            <p class="lead">The app brings back important words, word groups, prepositions, phrasal verbs, and sentence patterns again and again until they become natural.</p>
-          </div>
-          <div class="principles">
-            <article class="principle reveal" style="--accent:var(--green)"><h3>Word groups</h3><p>build confidence, work on my English, speak with clarity, deal with pressure</p></article>
-            <article class="principle reveal" style="--accent:var(--yellow)"><h3>Sentence starters</h3><p>I have been trying to... The main reason is... What I mean is...</p></article>
-            <article class="principle reveal" style="--accent:var(--blue)"><h3>Natural speaking flow</h3><p>Practise the same useful patterns in new situations until they come faster.</p></article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container">
-          <div class="section-head center reveal">
-            <h2>Learn to Speak Sentence After Sentence in a Natural Flow.</h2>
-            <p class="lead">Natural speaking is not just single correct sentences. It is the ability to connect thoughts clearly.</p>
-          </div>
-          <div class="compare">
-            <div class="compare-card before reveal"><h3>Basic</h3><ul><li>I want English for job.</li></ul></div>
-            <div class="compare-card after reveal"><h3>Fluent flow</h3><ul><li>I want to improve my English because I need it for my career.</li><li>Right now, I understand English, but I sometimes get stuck when I have to speak suddenly.</li><li>That is why I want to practise every day and build real speaking confidence.</li></ul></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section dark">
-        <div class="container ai-layout">
-          <div class="reveal">
-            <h2>Helpful Tools Are Not Enough. Your Voice Needs Training.</h2>
-            <p class="lead">AI can translate, suggest, and correct sentences. But real fluency comes when your own mouth, mind, and confidence can express ideas naturally.</p>
-            <p class="lead">Fluency Magic uses smart practice to train you - not make you dependent on tools.</p>
-            <div class="not-download">Fluency is not downloaded. Fluency is trained.</div>
-            <div class="actions">
-              <!-- TODO: Replace placeholder app CTA with real app store / PWA link. -->
-              <a class="button button-blue" href="/app">Train My Own Voice in the App</a>
-            </div>
-          </div>
-
-          <div class="voice-board reveal" aria-label="Smart practice contrast">
-            <div class="voice-row">
-              <b>Tools</b>
-              <div><span>Helpful for correction, ideas, and guided feedback.</span><div class="voice-line" style="width:58%"></div></div>
-            </div>
-            <div class="voice-row">
-              <b>Training</b>
-              <div><span>Builds speaking speed, rhythm, and automatic patterns.</span><div class="voice-line"></div></div>
-            </div>
-            <div class="voice-row">
-              <b>Your Voice</b>
-              <div><span>Ready for interviews, meetings, presentations, and real conversations.</span><div class="voice-line"></div></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section soft" id="journey">
-        <div class="container">
-          <div class="section-head center reveal">
-            <h2>How Fluency Magic Works</h2>
-            <p class="lead">A simple app-first journey from checking your fluency to building a daily speaking habit.</p>
-          </div>
-          <div class="steps">
-            <article class="step reveal" style="--accent:var(--green)"><h3>Open the app</h3><p>Create your account and keep your practice in one place.</p></article>
-            <article class="step reveal" style="--accent:var(--yellow)"><h3>Take your free fluency check</h3><p>Speak inside the app and get a useful starting point.</p></article>
-            <article class="step reveal" style="--accent:var(--blue)"><h3>Get your level and speaking block</h3><p>Understand why speaking gets stuck and what to practise first.</p></article>
-            <article class="step reveal" style="--accent:var(--green)"><h3>Start your 7-Day Activation</h3><p>Train voice flow, word groups, sentence patterns, and confidence.</p></article>
-            <article class="step reveal" style="--accent:var(--yellow)"><h3>Practise daily</h3><p>Complete guided drills, visual practice, and real speaking missions.</p></article>
-            <article class="step reveal" style="--accent:var(--blue)"><h3>Continue with full practice</h3><p>Build deeper fluency through subscription-based daily training.</p></article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section offer" id="waitlist">
-        <div class="container">
-          <div class="offer-card reveal">
-            <div class="test-pill">Early Access <span>App</span></div>
-            <h2>Fluency Magic App Is Coming</h2>
-            <p class="lead">We are preparing the first version of the Fluency Magic speaking practice app. Join the early access list and be the first to try the free fluency check and 7-day activation.</p>
-            <form class="waitlist-form">
-              <label>First name<input name="firstName" placeholder="Your name"></label>
-              <label>Email<input name="email" type="email" placeholder="you@example.com"></label>
-              <label>WhatsApp number<input name="whatsapp" placeholder="+61..."></label>
-              <label>Main speaking goal<select name="goal"><option>Speak without hesitation</option><option>Improve interview confidence</option><option>Speak better at work</option><option>Sound more natural</option><option>Build daily speaking habit</option></select></label>
-              <div class="full actions" style="justify-content:center"><button class="button button-primary" type="button" data-app-button>Join Early Access</button></div>
-            </form>
-          </div>
-        </div>
-      </section>
-
-      <section class="closing">
-        <div class="container closing-grid">
-          <div class="reveal">
-            <h2>Your Ideas Deserve a Stronger Voice.</h2>
-            <p class="lead">If English gets stuck when you speak, do not wait for confidence to appear. Train your voice, words, patterns, and flow every day inside the Fluency Magic app.</p>
-            <p class="lead">Your ideas already matter. Fluency Magic helps you build the fluent voice that can carry them.</p>
-            <div class="actions">
-              <!-- TODO: Replace placeholder app CTA with real app store / PWA link. -->
-              <a class="button button-blue" href="/app">Get Your Free Fluency Level in the App</a>
-              <a class="button button-outline" href="#app-preview">See How the App Works</a>
-            </div>
-          </div>
-          <div class="closing-mark reveal" aria-hidden="true">
-            <img src="logo_1.png" alt="">
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        <strong>Fluency Magic</strong>
-        <span>Speaking-first English fluency training for real moments.</span>
-      </div>
-    </footer>
-  </div>
-
-  <div class="toast" role="status" aria-live="polite">Early access saved. Replace this placeholder with the real app signup flow.</div>
+  <div class="toast" role="status" aria-live="polite">Early access starts on the app page.</div>
 
   <script>
     const observer = new IntersectionObserver((entries) => {
@@ -2391,37 +771,6 @@
     }, { threshold: 0.14 });
 
     document.querySelectorAll(".reveal").forEach((item) => observer.observe(item));
-
-    const toast = document.querySelector(".toast");
-    document.querySelectorAll("[data-app-button]").forEach((button) => {
-      button.addEventListener("click", () => {
-        button.textContent = "Early Access Request Saved";
-        toast.classList.add("show");
-        window.clearTimeout(window.fluencyToast);
-        window.fluencyToast = window.setTimeout(() => toast.classList.remove("show"), 2600);
-      });
-    });
-
-    const storyCopy = document.getElementById("storyCopy");
-    document.querySelectorAll(".story-tab").forEach((tab) => {
-      tab.addEventListener("click", () => {
-        document.querySelectorAll(".story-tab").forEach((item) => item.classList.remove("active"));
-        tab.classList.add("active");
-        storyCopy.textContent = tab.dataset.story;
-      });
-    });
-
-    document.querySelectorAll(".story-moment, .path-node").forEach((item) => {
-      item.addEventListener("pointermove", (event) => {
-        const box = item.getBoundingClientRect();
-        const x = ((event.clientX - box.left) / box.width - .5) * 8;
-        const y = ((event.clientY - box.top) / box.height - .5) * -8;
-        item.style.transform = `translateY(-8px) rotateX(${y}deg) rotateY(${x}deg)`;
-      });
-      item.addEventListener("pointerleave", () => {
-        item.style.transform = "";
-      });
-    });
   </script>
 </body>
 </html>
